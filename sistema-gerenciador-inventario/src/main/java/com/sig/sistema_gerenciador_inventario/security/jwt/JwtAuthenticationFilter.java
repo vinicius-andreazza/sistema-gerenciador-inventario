@@ -1,7 +1,6 @@
 package com.sig.sistema_gerenciador_inventario.security.jwt;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,8 +31,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String username = null;
         String jwt = null;
 
-        jwt = extractToken(authHeader).get();
-        username = jwtClaims.extractSubject(jwt);
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            jwt = authHeader.substring(7);
+            username =jwtClaims.extractSubject(jwt);
+        }
+
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if(validateToken(jwt, userDetails)){
@@ -42,13 +44,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-    }
-
-    private Optional<String> extractToken(String authHeader) {
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            return Optional.of(authHeader.substring(7));
-        }
-        return Optional.empty();
     }
 
     private Boolean validateToken(String token, UserDetails userDetails){

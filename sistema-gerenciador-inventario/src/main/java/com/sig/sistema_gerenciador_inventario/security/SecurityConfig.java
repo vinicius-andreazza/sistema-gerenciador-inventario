@@ -33,11 +33,14 @@ public class SecurityConfig {
 
         http.cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
+                .securityMatcher("/**")
                 .authorizeHttpRequests(
                     auth -> auth
-                    .requestMatchers("/**").permitAll()
+                    .requestMatchers("/user/create").permitAll()
+                    .requestMatchers("/login/").permitAll()
                     .anyRequest().authenticated()
                 );
 

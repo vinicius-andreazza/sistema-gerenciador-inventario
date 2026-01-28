@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class JwtEncoder {
 
     private final JwtProperties jwtProperties;
-    private final int EXPIRATION_TIME = 3600;
+    private final int EXPIRATION_TIME = 3600 * 60 * 60;
 
     public String generateToken(String username, List<String> role) {
         return Jwts.builder()
