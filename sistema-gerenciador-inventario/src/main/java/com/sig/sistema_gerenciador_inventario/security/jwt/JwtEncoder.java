@@ -1,24 +1,29 @@
 package com.sig.sistema_gerenciador_inventario.security.jwt;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 
+@Component
 @RequiredArgsConstructor
 public class JwtEncoder {
 
     private final JwtProperties jwtProperties;
     private final int EXPIRATION_TIME = 3600;
 
-    public String generateToken(String username, Map<String, String> claims) {
+    public String generateToken(String username, List<String> role) {
         return Jwts.builder()
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .claims(claims)
-                .signWith(jwtProperties.getSecretKey())
+                .claim("role", role)
+                .signWith(Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8)))
                 .compact();
     }
 }

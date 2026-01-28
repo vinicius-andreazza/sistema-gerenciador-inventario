@@ -1,5 +1,8 @@
 package com.sig.sistema_gerenciador_inventario.security;
 
+import java.util.List;
+
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-        return UserPrincipal.builder().username(user.getUsername()).password(user.getPassword()).authorities(user.getRoles()).build();
+        return UserPrincipal.builder().username(user.getUsername()).password(user.getPassword()).authorities(List.of(new SimpleGrantedAuthority(user.getRoles().name()))).build();
     }
     
 }

@@ -1,7 +1,5 @@
 package com.sig.sistema_gerenciador_inventario.security.jwt;
 
-import javax.crypto.SecretKey;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,5 +11,5 @@ import lombok.Setter;
 @Configuration
 public class JwtProperties {
     @Value("${jwt.secret}")
-    private SecretKey secretKey;
+    private String secretKey;
 }

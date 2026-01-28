@@ -2,9 +2,12 @@ package com.sig.sistema_gerenciador_inventario.security.jwt;
 
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 
+@Component
 @RequiredArgsConstructor
 public class JwtClaims {
     private final JwtDecoder jwtDecoder;
