@@ -9,12 +9,14 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +29,12 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private UserRole roles;
+
+    public User(String username, String password, UserRole roles) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    
 }

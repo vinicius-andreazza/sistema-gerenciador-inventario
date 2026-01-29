@@ -13,6 +13,7 @@ import com.sig.sistema_gerenciador_inventario.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findAll(@RequestParam Long id){
+    public ResponseEntity<User> findAll(@PathVariable Long id){
         return userService.findById(id);
     }
     
