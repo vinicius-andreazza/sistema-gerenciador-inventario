@@ -8,8 +8,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sig.sistema_gerenciador_inventario.model.User;
+import com.sig.sistema_gerenciador_inventario.model.dto.UserRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.UserResponse;
 import com.sig.sistema_gerenciador_inventario.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,21 +22,22 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public ResponseEntity<User> create(User user) {
-        if(user.getUsername().isEmpty()){
+    public ResponseEntity<UserResponse> create(UserRequest userRequest) {
+        if(userRequest.username().isEmpty()){
             throw new RuntimeException();
         }
-        if(user.getPassword().isEmpty()){
+        if(userRequest.password().isEmpty()){
             throw new RuntimeException();
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User userCreated = null;
+        User userCreated = new User(userRequest.username(), passwordEncoder.encode(userRequest.password()), userRequest.roles());
+        UserResponse userResponse = null;
         try {
-            userCreated = userRepository.save(user);
+            User user = userRepository.save(userCreated);
+            userResponse = new UserResponse(user.getUsername(), user.getRoles());
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("Erro de integridade de dados.", e);
         }
-        return ResponseEntity.status(201).body(userCreated);
+        return ResponseEntity.status(201).body(userResponse);
     }
 
     public ResponseEntity<User> findById(Long id) {
@@ -47,21 +51,31 @@ public class UserService {
         return ResponseEntity.ok(userRepository.findAll());
     }
 
-    public ResponseEntity<User> update(User t) {
-        if (t.getUsername().isEmpty()) {
+    public ResponseEntity<UserResponse> update(UserRequest userRequest) {
+        if(userRequest.username().isEmpty()){
             throw new RuntimeException();
         }
-        if (t.getPassword().isEmpty()) {
+        if(userRequest.password().isEmpty()){
             throw new RuntimeException();
         }
-        t.setPassword(passwordEncoder.encode(t.getPassword()));
-        User userUpdated = userRepository.save(t);
-        return ResponseEntity.ok(userUpdated);
+        User userUpdated = new User(userRequest.username(), passwordEncoder.encode(userRequest.password()), userRequest.roles());
+        UserResponse userResponse;
+        try {
+            User user = userRepository.save(userUpdated);
+            userResponse = new UserResponse(user.getUsername(), user.getRoles());
+        } catch (DataIntegrityViolationException e) {
+            throw new RuntimeException("Erro de integridade de dados.", e);
+        }
+        return ResponseEntity.ok(userResponse);
 
     }
 
-    public ResponseEntity delete(User t) {
-        userRepository.delete(t);
+    @Transactional
+    public ResponseEntity delete(Long id) {
+        if(userRepository.existsById(id)){
+            userRepository.deleteById(id);
+        }
+        
         return ResponseEntity.noContent().build();
     }
 

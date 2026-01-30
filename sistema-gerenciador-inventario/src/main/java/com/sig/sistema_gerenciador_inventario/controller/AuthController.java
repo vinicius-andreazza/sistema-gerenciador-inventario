@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class AuthController {
     private final AuthService authService;
     
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<UserLoginResponse> login(@RequestBody UserLoginRequest userLoginRequest){
         return authService.login(userLoginRequest);
     }

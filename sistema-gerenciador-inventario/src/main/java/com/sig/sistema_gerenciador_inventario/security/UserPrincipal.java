@@ -2,7 +2,7 @@ package com.sig.sistema_gerenciador_inventario.security;
 
 import java.util.Collection;
 
-import org.jspecify.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,7 +21,7 @@ public class UserPrincipal implements UserDetails {
     }
 
     @Override
-    public @Nullable String getPassword() {
+    public @NonNull String getPassword() {
         return password;
     }
 
