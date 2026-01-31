@@ -48,6 +48,11 @@ public class User {
         this.password = password;
     }
 
+    public User(@NonNull String username, @NonNull UserRole roles) {
+        this.username = username;
+        this.roles = roles;
+    }
+
     public User() {
     }
 

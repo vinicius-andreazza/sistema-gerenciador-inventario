@@ -3,6 +3,8 @@ package com.sig.sistema_gerenciador_inventario.service;
 import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,7 +39,7 @@ public class UserService {
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("Erro de integridade de dados.", e);
         }
-        return ResponseEntity.status(201).body(userResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }
 
     public ResponseEntity<User> findById(Long id) {
@@ -52,17 +54,20 @@ public class UserService {
     }
 
     public ResponseEntity<UserResponse> update(UserRequest userRequest) {
-        if(userRequest.username().isEmpty()){
+        if(userRequest.username().isBlank()){
             throw new RuntimeException();
         }
-        if(userRequest.password().isEmpty()){
+        if(userRequest.password().isBlank()){
             throw new RuntimeException();
         }
-        User userUpdated = new User(userRequest.username(), passwordEncoder.encode(userRequest.password()), userRequest.roles());
+        User userShouldBeUpdated = userRepository.findByUsername(userRequest.username());
+        userShouldBeUpdated.setUsername(userRequest.username());
+        userShouldBeUpdated.setPassword(passwordEncoder.encode(userRequest.password()));
+        userShouldBeUpdated.setRoles(userRequest.roles());
         UserResponse userResponse;
         try {
-            User user = userRepository.save(userUpdated);
-            userResponse = new UserResponse(user.getUsername(), user.getRoles());
+            User userUpdated = userRepository.save(userShouldBeUpdated);
+            userResponse = new UserResponse(userUpdated.getUsername(), userUpdated.getRoles());
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException("Erro de integridade de dados.", e);
         }
