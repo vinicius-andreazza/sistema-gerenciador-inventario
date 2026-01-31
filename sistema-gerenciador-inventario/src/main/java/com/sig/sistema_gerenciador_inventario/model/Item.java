@@ -6,10 +6,13 @@ import com.sig.sistema_gerenciador_inventario.model.enums.CategoryItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.StatusItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.TypeItem;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.Getter;
@@ -19,10 +22,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Data
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long item_id;
 
     @NonNull
     private String name;
@@ -31,6 +35,7 @@ public class Item {
     private CategoryItem category;
 
     @NonNull
+    @Column(insertable=false, updatable=false)
     private TypeItem typeItem;
 
     @NonNull
@@ -58,10 +63,10 @@ public class Item {
 
     
 
-    public Item(Long id, @NonNull String name, @NonNull CategoryItem category, @NonNull TypeItem typeItem,
+    public Item(Long item_id, @NonNull String name, @NonNull CategoryItem category, @NonNull TypeItem typeItem,
             @NonNull String description, @NonNull int quantity, @NonNull String minimiumQuantity,
             @NonNull String measure, @NonNull StatusItem status, @NonNull User user, @NonNull ItemLocal itemLocal) {
-        this.id = id;
+        this.item_id = item_id;
         this.name = name;
         this.category = category;
         this.typeItem = typeItem;

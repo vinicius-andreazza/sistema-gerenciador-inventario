@@ -17,7 +17,7 @@ import lombok.Setter;
 public class ItemLocal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long local_id;
 
     @NonNull
     private String sectorName;
@@ -28,8 +28,8 @@ public class ItemLocal {
     @NonNull
     private String shelf;
 
-    public ItemLocal(Long id, @NonNull String sectorName, @NonNull int position, @NonNull String shelf) {
-        this.id = id;
+    public ItemLocal(Long local_id, @NonNull String sectorName, @NonNull int position, @NonNull String shelf) {
+        this.local_id = local_id;
         this.sectorName = sectorName;
         this.position = position;
         this.shelf = shelf;
