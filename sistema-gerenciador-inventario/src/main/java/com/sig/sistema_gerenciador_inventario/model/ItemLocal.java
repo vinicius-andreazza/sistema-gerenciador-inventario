@@ -23,7 +23,7 @@ public class ItemLocal {
     private String sectorName;
 
     @NonNull
-    private int position;
+    private Integer position;
 
     @NonNull
     private String shelf;

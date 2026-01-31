@@ -72,7 +72,7 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity delete(Long id) {
+    public ResponseEntity<?> delete(Long id) {
         if(!userRepository.existsById(id)){
             throw new InvalidKeyException("Não existe um usuario com esse ID");
         }
