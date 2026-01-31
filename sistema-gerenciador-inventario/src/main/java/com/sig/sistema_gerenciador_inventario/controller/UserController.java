@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.sig.sistema_gerenciador_inventario.model.User;
-import com.sig.sistema_gerenciador_inventario.model.dto.UserRequest;
-import com.sig.sistema_gerenciador_inventario.model.dto.UserResponse;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.UserRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.response.UserResponse;
 import com.sig.sistema_gerenciador_inventario.service.UserService;
 
 import lombok.RequiredArgsConstructor;

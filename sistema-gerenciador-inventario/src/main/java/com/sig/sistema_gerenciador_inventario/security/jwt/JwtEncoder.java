@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class JwtEncoder {
 
     private final JwtProperties jwtProperties;
-    private final int EXPIRATION_TIME = 3600 * 60 * 60;
+    private final int EXPIRATION_TIME = 60000;
 
     public String generateToken(String username, List<String> role) {
         return Jwts.builder()
@@ -23,6 +23,15 @@ public class JwtEncoder {
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .claim("role", role)
+                .signWith(Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8)))
+                .compact();
+    }
+
+    public String generateRefreshToken(String username) {
+        return Jwts.builder()
+                .subject(username)
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME * 60))
                 .signWith(Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8)))
                 .compact();
     }

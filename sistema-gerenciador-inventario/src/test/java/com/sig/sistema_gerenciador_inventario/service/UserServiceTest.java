@@ -1,7 +1,6 @@
 package com.sig.sistema_gerenciador_inventario.service;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Answers.*;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -17,8 +16,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.sig.sistema_gerenciador_inventario.model.User;
-import com.sig.sistema_gerenciador_inventario.model.dto.UserRequest;
-import com.sig.sistema_gerenciador_inventario.model.dto.UserResponse;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.UserRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.response.UserResponse;
 import com.sig.sistema_gerenciador_inventario.model.enums.UserRole;
 import com.sig.sistema_gerenciador_inventario.repository.UserRepository;
 
