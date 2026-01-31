@@ -7,7 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.sig.sistema_gerenciador_inventario.model.User;
-import com.sig.sistema_gerenciador_inventario.model.dto.request.UserRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.UserCreateRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.UserUpdateRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.response.UserResponse;
 import com.sig.sistema_gerenciador_inventario.service.UserService;
 
@@ -28,7 +29,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping()
-    public ResponseEntity<UserResponse> create(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserResponse> create(@RequestBody UserCreateRequest userRequest) {
         return userService.create(userRequest);
     }
 
@@ -43,7 +44,7 @@ public class UserController {
     }
 
     @PutMapping()
-    public ResponseEntity<UserResponse> update(@RequestBody UserRequest userRequest){
+    public ResponseEntity<UserResponse> update(@RequestBody UserUpdateRequest userRequest){
         return userService.update(userRequest);
     }
 

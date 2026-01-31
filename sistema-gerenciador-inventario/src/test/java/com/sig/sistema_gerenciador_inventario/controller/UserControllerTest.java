@@ -10,7 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.sig.sistema_gerenciador_inventario.model.dto.request.UserRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.UserCreateRequest;
 import com.sig.sistema_gerenciador_inventario.model.enums.UserRole;
 import com.sig.sistema_gerenciador_inventario.repository.UserRepository;
 import com.sig.sistema_gerenciador_inventario.service.UserService;
@@ -51,7 +51,7 @@ public class UserControllerTest {
 
     @Test
     void shouldNotCreateUserByIdWhenIsUnsecured() throws Exception {
-        UserRequest userRequest = new UserRequest("abecedario", "12345", UserRole.ROLE_USER);
+        UserCreateRequest userRequest = new UserCreateRequest("abecedario", "12345", UserRole.ROLE_USER);
         mockMvc.perform(post("/users")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(userRequest))
@@ -61,7 +61,7 @@ public class UserControllerTest {
 
     @Test
     void shouldNotUpdateUserWhenIsUnsecured() throws Exception {
-        UserRequest userRequest = new UserRequest("abecedario", "12345", UserRole.ROLE_USER);
+        UserCreateRequest userRequest = new UserCreateRequest("abecedario", "12345", UserRole.ROLE_USER);
         mockMvc.perform(post("/users")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(userRequest))
@@ -92,7 +92,7 @@ public class UserControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     void shouldNotCreateUserByIdWhenIsNormalUser() throws Exception {
-        UserRequest userRequest = new UserRequest("abecedario", "12345", UserRole.ROLE_USER);
+        UserCreateRequest userRequest = new UserCreateRequest("abecedario", "12345", UserRole.ROLE_USER);
         mockMvc.perform(post("/users")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(userRequest))
@@ -103,7 +103,7 @@ public class UserControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     void shouldNotUpdateUserWhenIsNormalUser() throws Exception {
-        UserRequest userRequest = new UserRequest("abecedario", "12345", UserRole.ROLE_USER);
+        UserCreateRequest userRequest = new UserCreateRequest("abecedario", "12345", UserRole.ROLE_USER);
         mockMvc.perform(post("/users")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(userRequest))
@@ -135,7 +135,7 @@ public class UserControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void shouldCreateUser() throws Exception {
-        UserRequest userRequest = new UserRequest("abecedario", "12345", UserRole.ROLE_USER);
+        UserCreateRequest userRequest = new UserCreateRequest("abecedario", "12345", UserRole.ROLE_USER);
         mockMvc.perform(post("/users")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(userRequest))
@@ -146,7 +146,7 @@ public class UserControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void shouldUpdateUser() throws Exception {
-        UserRequest userRequest = new UserRequest("abecedario", "12345", UserRole.ROLE_USER);
+        UserCreateRequest userRequest = new UserCreateRequest("abecedario", "12345", UserRole.ROLE_USER);
         mockMvc.perform(post("/users")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(userRequest))

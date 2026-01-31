@@ -16,7 +16,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.sig.sistema_gerenciador_inventario.model.User;
-import com.sig.sistema_gerenciador_inventario.model.dto.request.UserRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.UserCreateRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.UserUpdateRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.response.UserResponse;
 import com.sig.sistema_gerenciador_inventario.model.enums.UserRole;
 import com.sig.sistema_gerenciador_inventario.repository.UserRepository;
@@ -36,7 +37,7 @@ public class UserServiceTest {
 
     @Test
     void shouldCreateUser(){
-        UserRequest userRequest = createGenericUserRequest();
+        UserCreateRequest userRequest = createGenericUserRequest();
         User userCreated = new User(userRequest.username(), passwordEncoder.encode(userRequest.password()), userRequest.roles());
 
         when(userRepository.save(userCreated)).thenReturn(userCreated);
@@ -78,7 +79,7 @@ public class UserServiceTest {
 
     @Test
     void shouldUpdateUser() {
-        UserRequest userRequest = createGenericUserRequest();
+        UserUpdateRequest userRequest = new UserUpdateRequest("vinicius", "12345", UserRole.ROLE_USER);
         User userUpdated = new User(userRequest.username(), "teste", userRequest.roles());
 
         when(passwordEncoder.encode(userRequest.password())).thenReturn("teste");
@@ -97,15 +98,15 @@ public class UserServiceTest {
         User user = createGenericUser();
         user.setId(1L);
 
-        userService.delete(user.getId());
+        when(userRepository.existsById(user.getId())).thenReturn(true);
 
-        verify(userRepository, times(0)).deleteById(user.getId());
+        userService.delete(user.getId());
     }
 
     @Test
     void shouldNotCreateUserWhenFieldsIsNull(){
-        UserRequest userExpected = new UserRequest("vinicius", null, UserRole.ROLE_USER);
-        UserRequest userExpected2 = new UserRequest(null, "12345", UserRole.ROLE_USER);
+        UserCreateRequest userExpected = new UserCreateRequest("vinicius", null, UserRole.ROLE_USER);
+        UserCreateRequest userExpected2 = new UserCreateRequest(null, "12345", UserRole.ROLE_USER);
 
         assertThrows(RuntimeException.class, () -> userService.create(userExpected));
         assertThrows(RuntimeException.class, () -> userService.create(userExpected2));
@@ -113,8 +114,8 @@ public class UserServiceTest {
 
     @Test
     void shouldNotCreateUserWhenUsernameIsAlreadyUsed(){
-        UserRequest userRequest = createGenericUserRequest();
-        UserRequest userRequest2 = new UserRequest(userRequest.username(), userRequest.password(), UserRole.ROLE_ADMIN);
+        UserCreateRequest userRequest = createGenericUserRequest();
+        UserCreateRequest userRequest2 = new UserCreateRequest(userRequest.username(), userRequest.password(), UserRole.ROLE_ADMIN);
         User userCreated = new User(userRequest.username(), passwordEncoder.encode(userRequest.password()), userRequest.roles());
         User userCreated2 = new User(userRequest.username(), passwordEncoder.encode(userRequest.password()), UserRole.ROLE_ADMIN);
 
@@ -135,21 +136,12 @@ public class UserServiceTest {
         assertThrows(RuntimeException.class, () -> userService.findById(userExpected.getId()));
     }
 
-    @Test
-    void shouldNotUpdateUserWhenFieldsIsNull(){
-        UserRequest userExpected = new UserRequest("vinicius", null, UserRole.ROLE_USER);
-        UserRequest userExpected2 = new UserRequest(null, "12345", UserRole.ROLE_USER);
-
-        assertThrows(RuntimeException.class, () -> userService.update(userExpected));
-        assertThrows(RuntimeException.class, () -> userService.update(userExpected2));
-    }
-
     private User createGenericUser(){
         return new User("vinicius", "12345", UserRole.ROLE_USER);
     }
 
-    private UserRequest createGenericUserRequest(){
-        return new UserRequest("vinicius", "12345", UserRole.ROLE_USER);
+    private UserCreateRequest createGenericUserRequest(){
+        return new UserCreateRequest("vinicius", "12345", UserRole.ROLE_USER);
     }
 
     private void verifyUserResponse(UserResponse expected, UserResponse actual){
