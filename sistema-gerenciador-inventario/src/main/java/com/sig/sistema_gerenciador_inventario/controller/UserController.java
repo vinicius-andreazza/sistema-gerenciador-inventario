@@ -2,11 +2,11 @@ package com.sig.sistema_gerenciador_inventario.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.sig.sistema_gerenciador_inventario.model.User;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.UserCreateRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.UserUpdateRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.response.UserResponse;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
@@ -30,27 +30,28 @@ public class UserController {
 
     @PostMapping()
     public ResponseEntity<UserResponse> create(@RequestBody UserCreateRequest userRequest) {
-        return userService.create(userRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(userRequest)) ;
     }
 
     @GetMapping()
-    public ResponseEntity<List<User>> findAll(){
-        return userService.findAll();
+    public ResponseEntity<List<UserResponse>> findAll(){
+        return ResponseEntity.ok(userService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findAll(@PathVariable Long id){
-        return userService.findById(id);
+    public ResponseEntity<UserResponse> findAll(@PathVariable Long id){
+        return ResponseEntity.ok(userService.findById(id));
     }
 
     @PutMapping()
     public ResponseEntity<UserResponse> update(@RequestBody UserUpdateRequest userRequest){
-        return userService.update(userRequest);
+        return ResponseEntity.ok(userService.update(userRequest));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
-        return userService.delete(id);
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
     }
     
 }

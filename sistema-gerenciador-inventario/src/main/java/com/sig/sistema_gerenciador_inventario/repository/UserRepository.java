@@ -8,4 +8,5 @@ import com.sig.sistema_gerenciador_inventario.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     public User findByUsername(String username);
+    public boolean existsByUsername(String username);
 }
