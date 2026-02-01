@@ -19,6 +19,8 @@ import com.sig.sistema_gerenciador_inventario.model.dto.request.ItemLocalUpdateR
 import com.sig.sistema_gerenciador_inventario.model.dto.response.ItemLocalResponse;
 import com.sig.sistema_gerenciador_inventario.repository.ItemLocalRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @SpringBootTest
 @ActiveProfiles("test")
 public class ItemLocalServiceTest {
@@ -36,7 +38,7 @@ public class ItemLocalServiceTest {
 
         when(itemLocalRepository.save(itemLocalCreated)).thenReturn(itemLocalCreated);
 
-        ItemLocalResponse itemResponse = itemLocalService.create(itemLocalrequest).getBody();
+        ItemLocalResponse itemResponse = itemLocalService.create(itemLocalrequest);
         ItemLocalResponse itemExpected = new ItemLocalResponse(itemLocalCreated.getSectorName(), itemLocalCreated.getPosition(), itemLocalCreated.getShelf());
 
         verifyItemLocalResponse(itemResponse, itemExpected);
@@ -49,7 +51,7 @@ public class ItemLocalServiceTest {
         Long id = 1L;
         when(itemLocalRepository.findById(1L)).thenReturn(Optional.of(itemLocal));
 
-        ItemLocalResponse itemLocalResponse = itemLocalService.findById(id).getBody();
+        ItemLocalResponse itemLocalResponse = itemLocalService.findById(id);
 
         verify(itemLocalRepository, times(1)).findById(id);
         verifyItemLocalResponse(itemLocalResponse, itemLocalResponseExpected);
@@ -68,7 +70,7 @@ public class ItemLocalServiceTest {
         localsExpectedsReponse.add(mapToResponse(itemLocalExpected));
         localsExpectedsReponse.add(mapToResponse(itemLocalExpected2));
 
-        List<ItemLocalResponse> itemLocalResponses = itemLocalService.findAll().getBody();
+        List<ItemLocalResponse> itemLocalResponses = itemLocalService.findAll();
 
         verify(itemLocalRepository, times(1)).findAll();
         for(int i=0;i<localsExpecteds.size();i++){
@@ -91,7 +93,7 @@ public class ItemLocalServiceTest {
 
         when(itemLocalRepository.save(itemLocalShouldBeUpdated)).thenReturn(itemLocalShouldBeUpdated);
 
-        ItemLocalResponse itemLocalResponse = itemLocalService.update(itemLocalRequest).getBody();
+        ItemLocalResponse itemLocalResponse = itemLocalService.update(itemLocalRequest);
         ItemLocalResponse itemLocalResponseExcepted = new ItemLocalResponse(itemLocalShouldBeUpdated.getSectorName(), itemLocalShouldBeUpdated.getPosition(), itemLocalShouldBeUpdated.getShelf());
 
         verify(itemLocalRepository, times(1)).save(itemLocalShouldBeUpdated);
@@ -167,7 +169,7 @@ public class ItemLocalServiceTest {
 
         when(itemLocalRepository.existsById(itemLocalRequest.id())).thenReturn(false);
 
-        assertThrows(IllegalArgumentException.class, () -> itemLocalService.update(itemLocalRequest));
+        assertThrows(EntityNotFoundException.class, () -> itemLocalService.update(itemLocalRequest));
     }
 
     @Test

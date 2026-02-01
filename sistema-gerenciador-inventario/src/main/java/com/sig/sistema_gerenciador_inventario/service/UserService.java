@@ -14,6 +14,7 @@ import com.sig.sistema_gerenciador_inventario.model.dto.request.UserUpdateReques
 import com.sig.sistema_gerenciador_inventario.model.dto.response.UserResponse;
 import com.sig.sistema_gerenciador_inventario.repository.UserRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -25,18 +26,19 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public UserResponse create(UserCreateRequest userRequest) {
-        if(userRequest.username().isBlank()){
+        if (userRequest.username().isBlank()) {
             throw new IllegalArgumentException("Nome de usuario vazio");
         }
-        if(usernameAlreadyExists(userRequest.username())){
+        if (usernameAlreadyExists(userRequest.username())) {
             throw new DataIntegrityViolationException("Nome de usuario já utilizado");
         }
-        if(userRequest.password().isBlank()){
+        if (userRequest.password().isBlank()) {
             throw new IllegalArgumentException("Senha vazia");
         }
-        User userCreated = new User(userRequest.username(), passwordEncoder.encode(userRequest.password()), userRequest.roles());
+        User userCreated = new User(userRequest.username(), passwordEncoder.encode(userRequest.password()),
+                userRequest.roles());
         userCreated = userRepository.save(userCreated);
-        UserResponse userResponse  = new UserResponse(userCreated.getUsername(), userCreated.getRoles());
+        UserResponse userResponse = new UserResponse(userCreated.getUsername(), userCreated.getRoles());
         return userResponse;
     }
 
@@ -44,7 +46,8 @@ public class UserService {
         if (id == null) {
             throw new IllegalArgumentException("Id não pode ser nulo");
         }
-        User user = userRepository.findById(id).orElseThrow(() -> new InvalidKeyException("Usuário não encontrado"));
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
         return new UserResponse(user.getUsername(), user.getRoles());
     }
 
@@ -54,19 +57,30 @@ public class UserService {
 
     @Transactional
     public UserResponse update(UserUpdateRequest userRequest) {
-        if(userRequest.id() == null || userRequest.id() <= 0){
+        if (userRequest.id() == null || userRequest.id() <= 0) {
             throw new IllegalArgumentException("Id não pode ser nulo ou menor que 1");
         }
-        if(!userRepository.existsById(userRequest.id())){
-            throw new InvalidKeyException("Id invalido");
-        }
-        if(userRequest.username() != null && usernameAlreadyExists(userRequest.username())){
+        if (userRequest.username() != null && usernameAlreadyExists(userRequest.username())) {
             throw new DataIntegrityViolationException("Nome de usuario já utilizado");
         }
-        User userShouldBeUpdated = userRepository.findById(userRequest.id()).orElseThrow(() -> new InvalidKeyException("Usuário não encontrado"));
-        userShouldBeUpdated.setUsername(userRequest.username().isBlank() ? userShouldBeUpdated.getUsername() : userRequest.username());
-        userShouldBeUpdated.setPassword(userRequest.password().isBlank() ? userShouldBeUpdated.getPassword() : passwordEncoder.encode(userRequest.password()));
-        userShouldBeUpdated.setRoles(userRequest.roles() == null ? userShouldBeUpdated.getRoles() : userRequest.roles());
+
+        User userShouldBeUpdated = userRepository.findById(userRequest.id())
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+
+        userShouldBeUpdated.setUsername(
+                userRequest.username() == null || userRequest.username().isBlank() 
+                        ? userShouldBeUpdated.getUsername()
+                        : userRequest.username());
+
+        userShouldBeUpdated.setPassword(
+                userRequest.password() == null || userRequest.password().isBlank() 
+                        ? userShouldBeUpdated.getPassword()
+                        : passwordEncoder.encode(userRequest.password()));
+
+        userShouldBeUpdated
+                .setRoles(userRequest.roles() == null ? userShouldBeUpdated.getRoles() : userRequest.roles());
+
+
         User userUpdated = userRepository.save(userShouldBeUpdated);
         UserResponse userResponse = new UserResponse(userUpdated.getUsername(), userUpdated.getRoles());
         return userResponse;
@@ -75,13 +89,13 @@ public class UserService {
 
     @Transactional
     public void delete(Long id) {
-        if(!userRepository.existsById(id)){
+        if (!userRepository.existsById(id)) {
             throw new InvalidKeyException("Não existe um usuario com esse ID");
         }
         userRepository.deleteById(id);
     }
 
-    private boolean usernameAlreadyExists(String username){
+    private boolean usernameAlreadyExists(String username) {
         return userRepository.existsByUsername(username);
     }
 

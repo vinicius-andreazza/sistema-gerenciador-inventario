@@ -2,6 +2,7 @@ package com.sig.sistema_gerenciador_inventario.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,26 +30,27 @@ public class ItemLocalController {
 
     @PostMapping("")
     public ResponseEntity<ItemLocalResponse> createLocal(@RequestBody ItemLocalCreateRequest itemLocalCreateRequest) {
-        return itemLocalService.create(itemLocalCreateRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(itemLocalService.create(itemLocalCreateRequest));
     }
 
     @GetMapping("")
     public ResponseEntity<List<ItemLocalResponse>> findAll() throws Exception {
-        return itemLocalService.findAll();
+        return ResponseEntity.ok(itemLocalService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ItemLocalResponse> findById(@PathVariable Long id) {
-        return itemLocalService.findById(id);
+        return ResponseEntity.ok(itemLocalService.findById(id));
     }
 
     @PutMapping("")
     public ResponseEntity<ItemLocalResponse> update(@RequestBody ItemLocalUpdateRequest itemLocalUpdateRequest) {
-        return itemLocalService.update(itemLocalUpdateRequest);
+        return ResponseEntity.ok(itemLocalService.update(itemLocalUpdateRequest));
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        return itemLocalService.deleteById(id);
+        itemLocalService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
     
 }
