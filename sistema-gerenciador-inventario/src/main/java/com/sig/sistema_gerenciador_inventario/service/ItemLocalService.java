@@ -22,11 +22,14 @@ public class ItemLocalService {
     private final ItemLocalRepository itemLocalRepository;
 
     public ResponseEntity<ItemLocalResponse> create(ItemLocalCreateRequest itemLocalRequest){
-        if(itemLocalRequest.sectorName().isBlank()){
+        if(itemLocalRequest.sectorName().equals(null) || itemLocalRequest.sectorName().isBlank()){
             throw new IllegalArgumentException("Nome do setor não pode ser vazio");
         }
-        if(itemLocalRequest.shelf().isBlank()){
+        if(itemLocalRequest.shelf().equals(null)  || itemLocalRequest.shelf().isBlank()){
             throw new IllegalArgumentException("Lote não pode ser vazio");
+        }
+        if(itemLocalRequest.position() == null){
+            throw new IllegalArgumentException("Posição não pode ser nulo");
         }
         ItemLocal itemLocalCreated = new ItemLocal(itemLocalRequest.sectorName(), itemLocalRequest.position(), itemLocalRequest.shelf());
         try {
@@ -39,8 +42,8 @@ public class ItemLocalService {
     }
 
     public ResponseEntity<ItemLocalResponse> findById(Long id){
-        if(id == null){
-            throw new IllegalArgumentException("Id não pode ser nulo");
+        if(id == null || id < 1){
+            throw new IllegalArgumentException("Id não pode ser nulo ou menor que 1");
         }
         ItemLocal itemLocal;
         try {
@@ -65,6 +68,12 @@ public class ItemLocalService {
 
     @Transactional
     public ResponseEntity<ItemLocalResponse> update(ItemLocalUpdateRequest itemLocalUpdateRequest){
+        if(itemLocalUpdateRequest.id() == null || itemLocalUpdateRequest.id() < -1){
+            throw new IllegalArgumentException("Id não pode ser nulo ou menor que 1");
+        }
+        if(!itemLocalRepository.existsById(itemLocalUpdateRequest.id())){
+            throw new IllegalArgumentException("Id invalido");
+        }
         ItemLocal itemLocalShouldBeUpdated = itemLocalRepository.findById(itemLocalUpdateRequest.id()).get();
         itemLocalShouldBeUpdated.setSectorName(itemLocalUpdateRequest.sectorName().isBlank() ? itemLocalShouldBeUpdated.getSectorName() : itemLocalUpdateRequest.sectorName());
         itemLocalShouldBeUpdated.setPosition(itemLocalUpdateRequest.position() == null ? itemLocalShouldBeUpdated.getPosition() : itemLocalUpdateRequest.position());

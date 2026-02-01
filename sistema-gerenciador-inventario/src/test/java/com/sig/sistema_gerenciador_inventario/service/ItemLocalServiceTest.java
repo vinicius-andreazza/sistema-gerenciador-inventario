@@ -79,15 +79,22 @@ public class ItemLocalServiceTest {
     @Test
     void shouldUpdateItemLocal() {
         ItemLocalUpdateRequest itemLocalRequest = new ItemLocalUpdateRequest(1L, "produção", 2, "A11");
-        ItemLocal itemLocalUpdated = new ItemLocal(itemLocalRequest.id(),itemLocalRequest.sectorName(), itemLocalRequest.position(), itemLocalRequest.shelf());
+        Optional<ItemLocal> itemLocal =  Optional.of(new ItemLocal("teste", itemLocalRequest.position(), itemLocalRequest.shelf()));
 
-        when(itemLocalRepository.findById(itemLocalRequest.id())).thenReturn(Optional.of(new ItemLocal(itemLocalRequest.sectorName(), 123, itemLocalRequest.shelf())));
-        when(itemLocalRepository.save(itemLocalUpdated)).thenReturn(itemLocalUpdated);
+        when(itemLocalRepository.findById(itemLocalRequest.id())).thenReturn(itemLocal);
+
+        ItemLocal itemLocalShouldBeUpdated = itemLocal.get();
+        
+        itemLocalShouldBeUpdated.setSectorName(itemLocalRequest.sectorName().isBlank() ? itemLocalShouldBeUpdated.getSectorName() : itemLocalRequest.sectorName());
+        itemLocalShouldBeUpdated.setPosition(itemLocalRequest.position() == null ? itemLocalShouldBeUpdated.getPosition() : itemLocalRequest.position());
+        itemLocalShouldBeUpdated.setShelf(itemLocalRequest.shelf().isBlank() ? itemLocalShouldBeUpdated.getShelf() : itemLocalRequest.shelf());
+
+        when(itemLocalRepository.save(itemLocalShouldBeUpdated)).thenReturn(itemLocalShouldBeUpdated);
 
         ItemLocalResponse itemLocalResponse = itemLocalService.update(itemLocalRequest).getBody();
-        ItemLocalResponse itemLocalResponseExcepted = new ItemLocalResponse(itemLocalUpdated.getSectorName(), itemLocalUpdated.getPosition(), itemLocalUpdated.getShelf());
+        ItemLocalResponse itemLocalResponseExcepted = new ItemLocalResponse(itemLocalShouldBeUpdated.getSectorName(), itemLocalShouldBeUpdated.getPosition(), itemLocalShouldBeUpdated.getShelf());
 
-        verify(itemLocalRepository, times(1)).save(itemLocalUpdated);
+        verify(itemLocalRepository, times(1)).save(itemLocalShouldBeUpdated);
         verifyItemLocalResponse(itemLocalResponse, itemLocalResponseExcepted);
     }
 
@@ -99,6 +106,86 @@ public class ItemLocalServiceTest {
         when(itemLocalRepository.existsById(itemLocal.getLocal_id())).thenReturn(true);
 
         itemLocalService.deleteById(itemLocal.getLocal_id());
+    }
+
+    @Test
+    void shouldNotCreateItemLocalWhenFieldIsNull(){
+        ItemLocalCreateRequest itemLocalrequest = new ItemLocalCreateRequest(null, 2, "AB2");
+        ItemLocal itemLocalCreated = new ItemLocal(itemLocalrequest.sectorName(), itemLocalrequest.position(), itemLocalrequest.shelf());
+
+        when(itemLocalRepository.save(itemLocalCreated)).thenReturn(itemLocalCreated);
+
+        assertThrows(IllegalArgumentException.class, () -> itemLocalService.create(itemLocalrequest));
+    }
+    @Test
+    void shouldNotCreateItemLocalWhenFieldIsBlank(){
+        ItemLocalCreateRequest itemLocalrequest = new ItemLocalCreateRequest("", 2, "AB2");
+        ItemLocal itemLocalCreated = new ItemLocal(itemLocalrequest.sectorName(), itemLocalrequest.position(), itemLocalrequest.shelf());
+
+        when(itemLocalRepository.save(itemLocalCreated)).thenReturn(itemLocalCreated);
+
+        assertThrows(IllegalArgumentException.class, () -> itemLocalService.create(itemLocalrequest));
+    }
+
+    @Test
+    void shouldNotGetItemLocalWhenIdIsNull(){
+        ItemLocal itemLocal = createGenericItemLocal();
+        Long id = null;
+
+        when(itemLocalRepository.findById(id)).thenReturn(Optional.of(itemLocal));
+
+        assertThrows(IllegalArgumentException.class, () -> itemLocalService.findById(id));
+    }
+
+    @Test
+    void shouldNotGetItemLocalWhenIdIsSmallerThanOne(){
+        ItemLocal itemLocal = createGenericItemLocal();
+        Long id = -1L;
+
+        when(itemLocalRepository.findById(id)).thenReturn(Optional.of(itemLocal));
+
+        assertThrows(IllegalArgumentException.class, () -> itemLocalService.findById(id));
+    }
+
+    @Test
+    void shouldNotUpdateItemLocalWhenIdIsNull() {
+        ItemLocalUpdateRequest itemLocalRequest = new ItemLocalUpdateRequest(null, "produção", 2, "A11");
+
+        assertThrows(IllegalArgumentException.class, () -> itemLocalService.update(itemLocalRequest));
+    }
+
+    @Test
+    void shouldNotUpdateItemLocalWhenIdIsSmallerThanOne() {
+        ItemLocalUpdateRequest itemLocalRequest = new ItemLocalUpdateRequest(-1L, "produção", 2, "A11");
+
+        assertThrows(IllegalArgumentException.class, () -> itemLocalService.update(itemLocalRequest));
+    }
+
+    @Test
+    void shouldNotUpdateItemLocalWhenItemLocalIdNotExists() {
+        ItemLocalUpdateRequest itemLocalRequest = new ItemLocalUpdateRequest(10L, "produção", 2, "A11");
+
+        when(itemLocalRepository.existsById(itemLocalRequest.id())).thenReturn(false);
+
+        assertThrows(IllegalArgumentException.class, () -> itemLocalService.update(itemLocalRequest));
+    }
+
+    @Test
+    void shouldNotDeleteItemLocalWhenItemLocalIdNotExist() {
+        ItemLocal itemLocal = createGenericItemLocal();
+        itemLocal.setLocal_id(1L);
+
+        when(itemLocalRepository.existsById(itemLocal.getLocal_id())).thenReturn(false);
+
+        assertThrows(IllegalArgumentException.class, () -> itemLocalService.deleteById(itemLocal.getLocal_id()));
+    }
+
+    @Test
+    void shouldNotDeleteItemLocalWhenIdIsNull() {
+        ItemLocal itemLocal = createGenericItemLocal();
+        itemLocal.setLocal_id(null);
+
+        assertThrows(IllegalArgumentException.class, () -> itemLocalService.deleteById(itemLocal.getLocal_id()));
     }
 
     private ItemLocalResponse mapToResponse(ItemLocal itemLocal){

@@ -30,7 +30,7 @@ public class RawMaterial extends Item {
 
     @NonNull
     @ManyToOne
-    @JoinTable(name = "Supplier", joinColumns = @JoinColumn(name = "item_id"), inverseJoinColumns = @JoinColumn(name = "supplier_id"))
+    @JoinTable(name = "Supplier", joinColumns = @JoinColumn(name = "supplier_id"), inverseJoinColumns = @JoinColumn(name = "item_id"))
     private Set<Supplier> supplier;
 
     public RawMaterial(@NonNull Long id,@NonNull String name, @NonNull CategoryItem category, @NonNull TypeItem typeItem,
