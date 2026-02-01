@@ -30,4 +30,9 @@ public class GlobalHandlerException {
     public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException ex){
         return ResponseEntity.internalServerError().body(ex.getMessage());
     }
+
+    @ExceptionHandler(ExpiredRefreshTokenException.class)
+    public ResponseEntity<?> handleExpiredRefreshTokenException(ExpiredRefreshTokenException ex){
+        return ResponseEntity.status(401).body(ex.getMessage());
+    }
 }
