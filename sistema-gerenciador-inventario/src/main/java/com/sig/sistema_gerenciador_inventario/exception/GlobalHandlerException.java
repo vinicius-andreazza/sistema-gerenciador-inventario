@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalHandlerException {
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity handleIllegalArgumentException(IllegalArgumentException ex){
+    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex){
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity handleDataIntegrityViolationException(DataIntegrityViolationException ex){
+    public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException ex){
         return ResponseEntity.internalServerError().body(ex.getMessage());
     }
 
     @ExceptionHandler(InvalidKeyException.class)
-    public ResponseEntity handleInvalidKeyException(InvalidKeyException ex){
+    public ResponseEntity<?> handleInvalidKeyException(InvalidKeyException ex){
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 }

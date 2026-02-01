@@ -22,10 +22,10 @@ public class ItemLocalService {
     private final ItemLocalRepository itemLocalRepository;
 
     public ResponseEntity<ItemLocalResponse> create(ItemLocalCreateRequest itemLocalRequest){
-        if(itemLocalRequest.sectorName().equals(null) || itemLocalRequest.sectorName().isBlank()){
+        if(itemLocalRequest.sectorName() == null || itemLocalRequest.sectorName().isBlank()){
             throw new IllegalArgumentException("Nome do setor não pode ser vazio");
         }
-        if(itemLocalRequest.shelf().equals(null)  || itemLocalRequest.shelf().isBlank()){
+        if(itemLocalRequest.shelf() == null  || itemLocalRequest.shelf().isBlank()){
             throw new IllegalArgumentException("Lote não pode ser vazio");
         }
         if(itemLocalRequest.position() == null){
@@ -56,13 +56,14 @@ public class ItemLocalService {
     }
 
     public ResponseEntity<List<ItemLocalResponse>> findAll() throws Exception{
-        List<ItemLocal> itemLocal;
-        try {
-            itemLocal = itemLocalRepository.findAll();
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-        List<ItemLocalResponse> itemLocalResponse = itemLocal.stream().map(i -> new ItemLocalResponse(i.getSectorName(), i.getPosition(), i.getShelf())).toList();
+        List<ItemLocalResponse> itemLocalResponse = itemLocalRepository.findAll()
+            .stream()
+            .map(i -> new ItemLocalResponse(
+                    i.getSectorName(),
+                    i.getPosition(),
+                    i.getShelf()
+            ))
+            .toList();
         return ResponseEntity.ok(itemLocalResponse);
     }
 
