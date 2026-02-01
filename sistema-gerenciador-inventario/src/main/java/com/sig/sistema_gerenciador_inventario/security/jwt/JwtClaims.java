@@ -1,6 +1,7 @@
 package com.sig.sistema_gerenciador_inventario.security.jwt;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -16,8 +17,8 @@ public class JwtClaims {
         return jwtDecoder.decoder(token).parseSignedClaims(token).getPayload();
     }
 
-    public String extractRole(String token, String claim) {
-        return getPayload(token).get(claim, String.class);
+    public List<String> extractRole(String token) {
+        return getPayload(token).get("role", List.class);
     }
 
     public String extractSubject(String token) {
@@ -26,5 +27,9 @@ public class JwtClaims {
 
     public Date extractExpiration(String token) {
         return getPayload(token).getExpiration();
+    }
+
+    public String extractType(String token){
+        return getPayload(token).get("type", String.class);
     }
 }

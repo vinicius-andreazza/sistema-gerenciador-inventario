@@ -47,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private Boolean validateToken(String token, UserDetails userDetails){
-        return jwtValidate.validate(token, userDetails);
+        return jwtValidate.validateAccessToken(token, userDetails);
     }
 
     private UsernamePasswordAuthenticationToken createAuthToken(UserDetails userDetails, HttpServletRequest request){

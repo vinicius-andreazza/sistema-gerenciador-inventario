@@ -23,6 +23,7 @@ public class JwtEncoder {
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .claim("role", role)
+                .claim("type", "access")
                 .signWith(Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8)))
                 .compact();
     }
@@ -31,6 +32,7 @@ public class JwtEncoder {
         return Jwts.builder()
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
+                .claim("type", "refresh")
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME * 60))
                 .signWith(Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8)))
                 .compact();
