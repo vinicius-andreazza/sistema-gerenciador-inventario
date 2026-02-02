@@ -11,6 +11,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.sig.sistema_gerenciador_inventario.model.dto.request.UserCreateRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.UserUpdateRequest;
 import com.sig.sistema_gerenciador_inventario.model.enums.UserRole;
 import com.sig.sistema_gerenciador_inventario.repository.UserRepository;
 import com.sig.sistema_gerenciador_inventario.service.UserService;
@@ -61,8 +62,8 @@ public class UserControllerTest {
 
     @Test
     void shouldNotUpdateUserWhenIsUnsecured() throws Exception {
-        UserCreateRequest userRequest = new UserCreateRequest("abecedario", "12345", UserRole.ROLE_USER);
-        mockMvc.perform(post("/users")
+        UserUpdateRequest userRequest = new UserUpdateRequest(1L,"abecedario", "12345", UserRole.ROLE_USER);
+        mockMvc.perform(put("/users")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(userRequest))
         )
@@ -103,8 +104,8 @@ public class UserControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     void shouldNotUpdateUserWhenIsNormalUser() throws Exception {
-        UserCreateRequest userRequest = new UserCreateRequest("abecedario", "12345", UserRole.ROLE_USER);
-        mockMvc.perform(post("/users")
+        UserUpdateRequest userRequest = new UserUpdateRequest(1L,"abecedario", "12345", UserRole.ROLE_USER);
+        mockMvc.perform(put("/users")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(userRequest))
         )
@@ -140,14 +141,14 @@ public class UserControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(userRequest))
         )
-            .andExpect(status().isOk());
+            .andExpect(status().isCreated());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void shouldUpdateUser() throws Exception {
-        UserCreateRequest userRequest = new UserCreateRequest("abecedario", "12345", UserRole.ROLE_USER);
-        mockMvc.perform(post("/users")
+        UserUpdateRequest userRequest = new UserUpdateRequest(1L,"abecedario", "12345", UserRole.ROLE_USER);
+        mockMvc.perform(put("/users")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(userRequest))
         )
@@ -158,6 +159,6 @@ public class UserControllerTest {
     @WithMockUser(roles = "ADMIN")
     void shouldDeleteUser() throws Exception {
         mockMvc.perform(delete("/users/1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 }
