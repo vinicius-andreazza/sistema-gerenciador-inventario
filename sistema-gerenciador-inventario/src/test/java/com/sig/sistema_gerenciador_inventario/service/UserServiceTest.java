@@ -44,7 +44,7 @@ public class UserServiceTest {
         when(userRepository.save(userCreated)).thenReturn(userCreated);
 
         UserResponse userResponse = userService.create(userRequest);
-        UserResponse userExcepted = new UserResponse(userCreated.getUsername(), userCreated.getRoles());
+        UserResponse userExcepted = new UserResponse(userCreated.getId(),userCreated.getUsername(), userCreated.getRoles());
 
         verifyUserResponse(userResponse, userExcepted);
     }
@@ -58,7 +58,7 @@ public class UserServiceTest {
         UserResponse userActual = userService.findById(id);
 
         verify(userRepository, times(1)).findById(id);
-        verifyUserResponse(userActual, new UserResponse(userExpected.getUsername(), userExpected.getRoles()));
+        verifyUserResponse(userActual, new UserResponse(userExpected.getId(),userExpected.getUsername(), userExpected.getRoles()));
     }
 
     @Test
@@ -72,8 +72,8 @@ public class UserServiceTest {
 
         List<UserResponse> userActuals = userService.findAll();
         List<UserResponse> usersResponseExpecteds = new ArrayList<>();
-        usersResponseExpecteds.add(new UserResponse(userExpected.getUsername(), userExpected.getRoles()));
-        usersResponseExpecteds.add(new UserResponse(userExpected2.getUsername(), userExpected2.getRoles()));
+        usersResponseExpecteds.add(new UserResponse(userExpected.getId(),userExpected.getUsername(), userExpected.getRoles()));
+        usersResponseExpecteds.add(new UserResponse(userExpected.getId(),userExpected2.getUsername(), userExpected2.getRoles()));
         verify(userRepository, times(1)).findAll();
         for(int i=0;i<usersExpecteds.size();i++){
             verifyUserResponse(userActuals.get(i), usersResponseExpecteds.get(i));
@@ -91,7 +91,7 @@ public class UserServiceTest {
         when(userRepository.save(userUpdated)).thenReturn(userUpdated);
 
         UserResponse userResponse = userService.update(userRequest);
-        UserResponse userExcepted = new UserResponse(userUpdated.getUsername(), userUpdated.getRoles());
+        UserResponse userExcepted = new UserResponse(userUpdated.getId(),userUpdated.getUsername(), userUpdated.getRoles());
 
         verify(userRepository, times(1)).save(userUpdated);
         verifyUserResponse(userResponse, userExcepted);
@@ -127,7 +127,7 @@ public class UserServiceTest {
         when(userRepository.save(userCreated2)).thenThrow(DataIntegrityViolationException.class);
 
         UserResponse userResponse = userService.create(userRequest);
-        UserResponse userExcepted = new UserResponse(userCreated.getUsername(), userCreated.getRoles());
+        UserResponse userExcepted = new UserResponse(userCreated.getId(),userCreated.getUsername(), userCreated.getRoles());
         verifyUserResponse(userResponse, userExcepted);
         assertThrows(RuntimeException.class, () -> userService.create(userRequest2));
     }

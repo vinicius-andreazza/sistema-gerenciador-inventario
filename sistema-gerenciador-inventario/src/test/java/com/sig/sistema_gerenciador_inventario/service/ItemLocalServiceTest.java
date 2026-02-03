@@ -39,7 +39,7 @@ public class ItemLocalServiceTest {
         when(itemLocalRepository.save(itemLocalCreated)).thenReturn(itemLocalCreated);
 
         ItemLocalResponse itemResponse = itemLocalService.create(itemLocalrequest);
-        ItemLocalResponse itemExpected = new ItemLocalResponse(itemLocalCreated.getSectorName(), itemLocalCreated.getPosition(), itemLocalCreated.getShelf());
+        ItemLocalResponse itemExpected = new ItemLocalResponse(itemLocalCreated.getLocal_id(),itemLocalCreated.getSectorName(), itemLocalCreated.getPosition(), itemLocalCreated.getShelf());
 
         verifyItemLocalResponse(itemResponse, itemExpected);
     }
@@ -47,7 +47,7 @@ public class ItemLocalServiceTest {
     @Test
     void shouldGetItemLocal(){
         ItemLocal itemLocal = createGenericItemLocal();
-        ItemLocalResponse itemLocalResponseExpected = new ItemLocalResponse(itemLocal.getSectorName(), itemLocal.getPosition(), itemLocal.getShelf());
+        ItemLocalResponse itemLocalResponseExpected = new ItemLocalResponse(itemLocal.getLocal_id(),itemLocal.getSectorName(), itemLocal.getPosition(), itemLocal.getShelf());
         Long id = 1L;
         when(itemLocalRepository.findById(1L)).thenReturn(Optional.of(itemLocal));
 
@@ -94,7 +94,7 @@ public class ItemLocalServiceTest {
         when(itemLocalRepository.save(itemLocalShouldBeUpdated)).thenReturn(itemLocalShouldBeUpdated);
 
         ItemLocalResponse itemLocalResponse = itemLocalService.update(itemLocalRequest);
-        ItemLocalResponse itemLocalResponseExcepted = new ItemLocalResponse(itemLocalShouldBeUpdated.getSectorName(), itemLocalShouldBeUpdated.getPosition(), itemLocalShouldBeUpdated.getShelf());
+        ItemLocalResponse itemLocalResponseExcepted = new ItemLocalResponse(itemLocalShouldBeUpdated.getLocal_id(),itemLocalShouldBeUpdated.getSectorName(), itemLocalShouldBeUpdated.getPosition(), itemLocalShouldBeUpdated.getShelf());
 
         verify(itemLocalRepository, times(1)).save(itemLocalShouldBeUpdated);
         verifyItemLocalResponse(itemLocalResponse, itemLocalResponseExcepted);
@@ -191,7 +191,7 @@ public class ItemLocalServiceTest {
     }
 
     private ItemLocalResponse mapToResponse(ItemLocal itemLocal){
-        return new ItemLocalResponse(itemLocal.getSectorName(), itemLocal.getPosition(), itemLocal.getShelf());
+        return new ItemLocalResponse(itemLocal.getLocal_id(),itemLocal.getSectorName(), itemLocal.getPosition(), itemLocal.getShelf());
     }
 
     private ItemLocal createGenericItemLocal(){

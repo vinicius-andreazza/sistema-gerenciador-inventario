@@ -38,7 +38,7 @@ public class UserService {
         User userCreated = new User(userRequest.username(), passwordEncoder.encode(userRequest.password()),
                 userRequest.roles());
         userCreated = userRepository.save(userCreated);
-        UserResponse userResponse = new UserResponse(userCreated.getUsername(), userCreated.getRoles());
+        UserResponse userResponse = new UserResponse(userCreated.getId(),userCreated.getUsername(), userCreated.getRoles());
         return userResponse;
     }
 
@@ -48,11 +48,11 @@ public class UserService {
         }
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
-        return new UserResponse(user.getUsername(), user.getRoles());
+        return new UserResponse(user.getId(),user.getUsername(), user.getRoles());
     }
 
     public List<UserResponse> findAll() {
-        return userRepository.findAll().stream().map(u -> new UserResponse(u.getUsername(), u.getRoles())).toList();
+        return userRepository.findAll().stream().map(u -> new UserResponse(u.getId(),u.getUsername(), u.getRoles())).toList();
     }
 
     @Transactional
@@ -82,7 +82,7 @@ public class UserService {
 
 
         User userUpdated = userRepository.save(userShouldBeUpdated);
-        UserResponse userResponse = new UserResponse(userUpdated.getUsername(), userUpdated.getRoles());
+        UserResponse userResponse = new UserResponse(userUpdated.getId(), userUpdated.getUsername(), userUpdated.getRoles());
         return userResponse;
 
     }

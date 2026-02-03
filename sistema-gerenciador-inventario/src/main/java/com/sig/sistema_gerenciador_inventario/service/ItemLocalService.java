@@ -32,7 +32,7 @@ public class ItemLocalService {
         ItemLocal itemLocalCreated = new ItemLocal(itemLocalRequest.sectorName(), itemLocalRequest.position(),
                 itemLocalRequest.shelf());
         itemLocalCreated = itemLocalRepository.save(itemLocalCreated);
-        ItemLocalResponse itemLocalResponse = new ItemLocalResponse(itemLocalCreated.getSectorName(),
+        ItemLocalResponse itemLocalResponse = new ItemLocalResponse(itemLocalCreated.getLocal_id(),itemLocalCreated.getSectorName(),
                 itemLocalCreated.getPosition(), itemLocalCreated.getShelf());
         return itemLocalResponse;
     }
@@ -43,7 +43,7 @@ public class ItemLocalService {
         }
         ItemLocal itemLocal = itemLocalRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Local não encontrado"));
-        ItemLocalResponse itemLocalResponse = new ItemLocalResponse(itemLocal.getSectorName(), itemLocal.getPosition(),
+        ItemLocalResponse itemLocalResponse = new ItemLocalResponse(itemLocal.getLocal_id(),itemLocal.getSectorName(), itemLocal.getPosition(),
                 itemLocal.getShelf());
         return itemLocalResponse;
     }
@@ -51,7 +51,7 @@ public class ItemLocalService {
     public List<ItemLocalResponse> findAll() {
         return itemLocalRepository.findAll()
                 .stream()
-                .map(i -> new ItemLocalResponse(
+                .map(i -> new ItemLocalResponse(i.getLocal_id(),
                         i.getSectorName(),
                         i.getPosition(),
                         i.getShelf()))
@@ -84,7 +84,7 @@ public class ItemLocalService {
 
 
         ItemLocal itemUpdated = itemLocalRepository.save(itemLocalShouldBeUpdated);
-        ItemLocalResponse itemLocalResponse = new ItemLocalResponse(itemUpdated.getSectorName(),
+        ItemLocalResponse itemLocalResponse = new ItemLocalResponse(itemUpdated.getLocal_id(),itemUpdated.getSectorName(),
                 itemUpdated.getPosition(), itemUpdated.getShelf());
         return itemLocalResponse;
     }

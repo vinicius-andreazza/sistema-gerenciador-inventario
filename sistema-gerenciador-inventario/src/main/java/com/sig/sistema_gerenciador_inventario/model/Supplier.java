@@ -5,7 +5,9 @@ import java.util.Set;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,7 +35,7 @@ public class Supplier {
     private String email;
 
     @Nullable
-    @ManyToMany(mappedBy = "supplier")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "supplier")
     private Set<RawMaterial> rawMaterial;
 
     public Supplier(Long supplier_id, @NonNull String name, @Nullable String phone, @NonNull String email,

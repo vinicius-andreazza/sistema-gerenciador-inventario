@@ -47,6 +47,7 @@ public class ItemLocalController {
     public ResponseEntity<ItemLocalResponse> update(@RequestBody ItemLocalUpdateRequest itemLocalUpdateRequest) {
         return ResponseEntity.ok(itemLocalService.update(itemLocalUpdateRequest));
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
         itemLocalService.deleteById(id);

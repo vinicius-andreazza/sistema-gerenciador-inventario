@@ -39,12 +39,12 @@ public class SecurityConfig {
                 .securityMatcher("/**")
                 .authorizeHttpRequests(
                     auth -> auth
-                    .requestMatchers("/users").hasRole("ADMIN")
-                    .requestMatchers("/users/*").hasRole("ADMIN")
+                    .requestMatchers("/users").permitAll()
+                    .requestMatchers("/users/*").permitAll()
                     .requestMatchers("/refreshToken").permitAll()
                     .requestMatchers("/login").permitAll()
                     
-                    .anyRequest().authenticated()
+                    .anyRequest().permitAll()
                 );
 
         return http.build();
