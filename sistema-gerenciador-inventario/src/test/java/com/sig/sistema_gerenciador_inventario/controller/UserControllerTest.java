@@ -10,8 +10,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.sig.sistema_gerenciador_inventario.model.dto.request.UserCreateRequest;
-import com.sig.sistema_gerenciador_inventario.model.dto.request.UserUpdateRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.UserRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.UserPatchRequest;
 import com.sig.sistema_gerenciador_inventario.model.enums.UserRole;
 import com.sig.sistema_gerenciador_inventario.repository.UserRepository;
 import com.sig.sistema_gerenciador_inventario.service.UserService;
@@ -38,22 +38,24 @@ public class UserControllerTest {
     @MockitoBean
     private UserService userService;
 
+    private final String endpoint = "/users";
+
     @Test
     void shouldNotReturnAllUsersWhenIsUnsecured() throws Exception {
-        mockMvc.perform(get("/users"))
+        mockMvc.perform(get(endpoint))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     void shouldNotReturnUserByIdWhenIsUnsecured() throws Exception {
-        mockMvc.perform(get("/users/1"))
+        mockMvc.perform(get(endpoint + "/1"))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     void shouldNotCreateUserByIdWhenIsUnsecured() throws Exception {
-        UserCreateRequest userRequest = new UserCreateRequest("abecedario", "12345", UserRole.ROLE_USER);
-        mockMvc.perform(post("/users")
+        UserRequest userRequest = new UserRequest("abecedario", "12345", UserRole.ROLE_USER);
+        mockMvc.perform(post(endpoint)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(userRequest))
         )
@@ -61,9 +63,21 @@ public class UserControllerTest {
     }
 
     @Test
-    void shouldNotUpdateUserWhenIsUnsecured() throws Exception {
-        UserUpdateRequest userRequest = new UserUpdateRequest(1L,"abecedario", "12345", UserRole.ROLE_USER);
-        mockMvc.perform(put("/users")
+    void shouldNotPutUserWhenIsUnsecured() throws Exception {
+        UserRequest userRequest = new UserRequest("abecedario", "12345", UserRole.ROLE_USER);
+        Long id = 1L;
+        mockMvc.perform(put(endpoint +"/"+ id)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(userRequest))
+        )
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void shouldNotPatchUserWhenIsUnsecured() throws Exception {
+        UserPatchRequest userRequest = new UserPatchRequest("abecedario", "12345", UserRole.ROLE_USER);
+        Long id = 1L;
+        mockMvc.perform(patch(endpoint +"/"+ id)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(userRequest))
         )
@@ -72,29 +86,29 @@ public class UserControllerTest {
 
     @Test
     void shouldNotDeleteUserWhenIsUnsecured() throws Exception {
-        mockMvc.perform(delete("/users/1"))
+        mockMvc.perform(delete(endpoint + "/1"))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockUser(roles = "USER")
     void shouldNotReturnAllUsersWhenIsNormalUser() throws Exception {
-        mockMvc.perform(get("/users"))
+        mockMvc.perform(get(endpoint))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockUser(roles = "USER")
     void shouldNotReturnUserByIdWhenIsNormalUser() throws Exception {
-        mockMvc.perform(get("/users/1"))
+        mockMvc.perform(get(endpoint + "/1"))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockUser(roles = "USER")
     void shouldNotCreateUserByIdWhenIsNormalUser() throws Exception {
-        UserCreateRequest userRequest = new UserCreateRequest("abecedario", "12345", UserRole.ROLE_USER);
-        mockMvc.perform(post("/users")
+        UserRequest userRequest = new UserRequest("abecedario", "12345", UserRole.ROLE_USER);
+        mockMvc.perform(post(endpoint)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(userRequest))
         )
@@ -103,9 +117,10 @@ public class UserControllerTest {
 
     @Test
     @WithMockUser(roles = "USER")
-    void shouldNotUpdateUserWhenIsNormalUser() throws Exception {
-        UserUpdateRequest userRequest = new UserUpdateRequest(1L,"abecedario", "12345", UserRole.ROLE_USER);
-        mockMvc.perform(put("/users")
+    void shouldNotPutUserWhenIsNormalUser() throws Exception {
+        UserPatchRequest userRequest = new UserPatchRequest("abecedario", "12345", UserRole.ROLE_USER);
+        Long id = 1L;
+        mockMvc.perform(put(endpoint+"/"+id)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(userRequest))
         )
@@ -114,30 +129,43 @@ public class UserControllerTest {
 
     @Test
     @WithMockUser(roles = "USER")
+    void shouldNotPatchUserWhenIsNormalUser() throws Exception {
+        UserRequest userRequest = new UserRequest("abecedario", "12345", UserRole.ROLE_USER);
+        Long id = 1L;
+        mockMvc.perform(patch(endpoint+"/"+id)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(userRequest))
+        )
+            .andExpect(status().isForbidden());
+    }
+
+
+    @Test
+    @WithMockUser(roles = "USER")
     void shouldNotDeleteUserWhenIsNormalUser() throws Exception {
-        mockMvc.perform(delete("/users/1"))
+        mockMvc.perform(delete(endpoint + "/1"))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void shouldReturnAllUsers() throws Exception {
-        mockMvc.perform(get("/users"))
+        mockMvc.perform(get(endpoint))
                 .andExpect(status().isOk());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void shouldReturnUserById() throws Exception {
-        mockMvc.perform(get("/users/1"))
+        mockMvc.perform(get(endpoint + "/1"))
                 .andExpect(status().isOk());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void shouldCreateUser() throws Exception {
-        UserCreateRequest userRequest = new UserCreateRequest("abecedario", "12345", UserRole.ROLE_USER);
-        mockMvc.perform(post("/users")
+        UserRequest userRequest = new UserRequest("abecedario", "12345", UserRole.ROLE_USER);
+        mockMvc.perform(post(endpoint)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(userRequest))
         )
@@ -145,20 +173,33 @@ public class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "ADMIN")
-    void shouldUpdateUser() throws Exception {
-        UserUpdateRequest userRequest = new UserUpdateRequest(1L,"abecedario", "12345", UserRole.ROLE_USER);
-        mockMvc.perform(put("/users")
+    @WithMockUser(roles = "USER")
+    void shouldPutUser() throws Exception {
+        UserPatchRequest userRequest = new UserPatchRequest("abecedario", "12345", UserRole.ROLE_USER);
+        Long id = 1L;
+        mockMvc.perform(put(endpoint+"/"+id)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(userRequest))
         )
-            .andExpect(status().isOk());
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void shouldPatchUser() throws Exception {
+        UserRequest userRequest = new UserRequest("abecedario", "12345", UserRole.ROLE_USER);
+        Long id = 1L;
+        mockMvc.perform(patch(endpoint+"/"+id)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(userRequest))
+        )
+            .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void shouldDeleteUser() throws Exception {
-        mockMvc.perform(delete("/users/1"))
+        mockMvc.perform(delete(endpoint + "/1"))
                 .andExpect(status().isNoContent());
     }
 }

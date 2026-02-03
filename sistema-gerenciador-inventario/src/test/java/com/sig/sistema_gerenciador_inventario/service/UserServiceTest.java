@@ -18,8 +18,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.sig.sistema_gerenciador_inventario.model.User;
-import com.sig.sistema_gerenciador_inventario.model.dto.request.UserCreateRequest;
-import com.sig.sistema_gerenciador_inventario.model.dto.request.UserUpdateRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.UserRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.UserPatchRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.response.UserResponse;
 import com.sig.sistema_gerenciador_inventario.model.enums.UserRole;
 import com.sig.sistema_gerenciador_inventario.repository.UserRepository;
@@ -38,7 +38,7 @@ public class UserServiceTest {
 
     @Test
     void shouldCreateUser(){
-        UserCreateRequest userRequest = createGenericUserRequest();
+        UserRequest userRequest = createGenericUserRequest();
         User userCreated = new User(userRequest.username(), passwordEncoder.encode(userRequest.password()), userRequest.roles());
 
         when(userRepository.save(userCreated)).thenReturn(userCreated);
@@ -81,16 +81,35 @@ public class UserServiceTest {
     }
 
     @Test
-    void shouldUpdateUser() {
-        UserUpdateRequest userRequest = new UserUpdateRequest(1L,"vinicius", "12345", UserRole.ROLE_USER);
+    void shouldPatchUpdateUser() {
+        UserPatchRequest userRequest = new UserPatchRequest("vinicius", "12345", UserRole.ROLE_USER);
+        Long id = 1L;
         User userUpdated = new User(userRequest.username(), "teste", userRequest.roles());
 
         when(passwordEncoder.encode(userRequest.password())).thenReturn("teste");
-        when(userRepository.existsById(userRequest.id())).thenReturn(true);
-        when(userRepository.findById(userRequest.id())).thenReturn(Optional.of(new User(userRequest.username(), "123", UserRole.ROLE_ADMIN)));
+        when(userRepository.existsById(id)).thenReturn(true);
+        when(userRepository.findById(id)).thenReturn(Optional.of(new User(userRequest.username(), "123", UserRole.ROLE_ADMIN)));
         when(userRepository.save(userUpdated)).thenReturn(userUpdated);
 
-        UserResponse userResponse = userService.update(userRequest);
+        UserResponse userResponse = userService.patchUpdate(id ,userRequest);
+        UserResponse userExcepted = new UserResponse(userUpdated.getId(),userUpdated.getUsername(), userUpdated.getRoles());
+
+        verify(userRepository, times(1)).save(userUpdated);
+        verifyUserResponse(userResponse, userExcepted);
+    }
+
+    @Test
+    void shouldPutUpdateUser() {
+        UserRequest userRequest = new UserRequest("vinicius", "teste", UserRole.ROLE_USER);
+        Long id = 1L;
+        User userUpdated = new User(userRequest.username(), "teste", userRequest.roles());
+
+        when(passwordEncoder.encode(userRequest.password())).thenReturn("teste");
+        when(userRepository.existsById(id)).thenReturn(true);
+        when(userRepository.findById(id)).thenReturn(Optional.of(new User(userRequest.username(), "123", UserRole.ROLE_ADMIN)));
+        when(userRepository.save(userUpdated)).thenReturn(userUpdated);
+
+        UserResponse userResponse = userService.putUpdate(id ,userRequest);
         UserResponse userExcepted = new UserResponse(userUpdated.getId(),userUpdated.getUsername(), userUpdated.getRoles());
 
         verify(userRepository, times(1)).save(userUpdated);
@@ -109,8 +128,8 @@ public class UserServiceTest {
 
     @Test
     void shouldNotCreateUserWhenFieldsIsNull(){
-        UserCreateRequest userExpected = new UserCreateRequest("vinicius", null, UserRole.ROLE_USER);
-        UserCreateRequest userExpected2 = new UserCreateRequest(null, "12345", UserRole.ROLE_USER);
+        UserRequest userExpected = new UserRequest("vinicius", null, UserRole.ROLE_USER);
+        UserRequest userExpected2 = new UserRequest(null, "12345", UserRole.ROLE_USER);
 
         assertThrows(RuntimeException.class, () -> userService.create(userExpected));
         assertThrows(RuntimeException.class, () -> userService.create(userExpected2));
@@ -118,8 +137,8 @@ public class UserServiceTest {
 
     @Test
     void shouldNotCreateUserWhenUsernameIsAlreadyUsed(){
-        UserCreateRequest userRequest = createGenericUserRequest();
-        UserCreateRequest userRequest2 = new UserCreateRequest(userRequest.username(), userRequest.password(), UserRole.ROLE_ADMIN);
+        UserRequest userRequest = createGenericUserRequest();
+        UserRequest userRequest2 = new UserRequest(userRequest.username(), userRequest.password(), UserRole.ROLE_ADMIN);
         User userCreated = new User(userRequest.username(), passwordEncoder.encode(userRequest.password()), userRequest.roles());
         User userCreated2 = new User(userRequest.username(), passwordEncoder.encode(userRequest.password()), UserRole.ROLE_ADMIN);
 
@@ -144,8 +163,8 @@ public class UserServiceTest {
         return new User("vinicius", "12345", UserRole.ROLE_USER);
     }
 
-    private UserCreateRequest createGenericUserRequest(){
-        return new UserCreateRequest("vinicius", "12345", UserRole.ROLE_USER);
+    private UserRequest createGenericUserRequest(){
+        return new UserRequest("vinicius", "12345", UserRole.ROLE_USER);
     }
 
     private void verifyUserResponse(UserResponse expected, UserResponse actual){

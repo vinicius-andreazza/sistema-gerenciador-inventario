@@ -9,8 +9,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sig.sistema_gerenciador_inventario.model.User;
-import com.sig.sistema_gerenciador_inventario.model.dto.request.UserCreateRequest;
-import com.sig.sistema_gerenciador_inventario.model.dto.request.UserUpdateRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.UserPatchRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.UserRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.response.UserResponse;
 import com.sig.sistema_gerenciador_inventario.repository.UserRepository;
 
@@ -25,7 +25,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserResponse create(UserCreateRequest userRequest) {
+    public UserResponse create(UserRequest userRequest) {
         if (userRequest.username().isBlank()) {
             throw new IllegalArgumentException("Nome de usuario vazio");
         }
@@ -56,15 +56,46 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponse update(UserUpdateRequest userRequest) {
-        if (userRequest.id() == null || userRequest.id() <= 0) {
+    public UserResponse putUpdate(Long id, UserRequest userRequest) {
+        if (id == null || id<= 0) {
+            throw new IllegalArgumentException("Id não pode ser nulo ou menor que 1");
+        }
+        if (userRequest.username().isBlank()) {
+            throw new IllegalArgumentException("Nome de usuario vazio");
+        }
+        if (userRequest.password().isBlank()) {
+            throw new IllegalArgumentException("Senha vazia");
+        }
+        if (userRequest.roles() == null) {
+            throw new IllegalArgumentException("Role não pode ser nula");
+        }
+        if (usernameAlreadyExists(userRequest.username())) {
+            throw new DataIntegrityViolationException("Nome de usuario já utilizado");
+        }
+
+        User userShouldBeUpdated = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+        userShouldBeUpdated.setUsername(userRequest.username());
+        userShouldBeUpdated.setPassword(passwordEncoder.encode(userRequest.password()));
+        userShouldBeUpdated.setRoles(userRequest.roles());
+
+        User userUpdated = userRepository.save(userShouldBeUpdated);
+
+        UserResponse userResponse = new UserResponse(userUpdated.getId(), userUpdated.getUsername(), userUpdated.getRoles());
+        return userResponse;
+
+    }
+
+    @Transactional
+    public UserResponse patchUpdate(Long id, UserPatchRequest userRequest) {
+        if (id == null || id<= 0) {
             throw new IllegalArgumentException("Id não pode ser nulo ou menor que 1");
         }
         if (userRequest.username() != null && usernameAlreadyExists(userRequest.username())) {
             throw new DataIntegrityViolationException("Nome de usuario já utilizado");
         }
 
-        User userShouldBeUpdated = userRepository.findById(userRequest.id())
+        User userShouldBeUpdated = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
 
         userShouldBeUpdated.setUsername(

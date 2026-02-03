@@ -6,8 +6,7 @@ import com.sig.sistema_gerenciador_inventario.model.enums.UserRole;
 
 import jakarta.annotation.Nullable;
 
-public record UserUpdateRequest(
-    @NonNull Long id,
+public record UserPatchRequest(
     @Nullable String username,
     @Nullable String password,
     @Nullable UserRole roles) {
