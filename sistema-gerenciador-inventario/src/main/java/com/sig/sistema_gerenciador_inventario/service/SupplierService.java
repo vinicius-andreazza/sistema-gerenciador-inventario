@@ -19,10 +19,10 @@ public class SupplierService {
     private final SupplierRepository supplierRepository;
 
     public SupplierResponse create(SupplierCreateRequest supplierCreateRequest) {
-        if (supplierCreateRequest.name().isBlank()) {
+        if (supplierCreateRequest.name() == null || supplierCreateRequest.name().isBlank()) {
             throw new IllegalArgumentException("Nome não pode ser vazio");
         }
-        if (supplierCreateRequest.email().isBlank()) {
+        if (supplierCreateRequest.email() == null || supplierCreateRequest.email().isBlank()) {
             throw new IllegalArgumentException("Email não pode ser vazio");
         }
         Supplier supplierCreated = new Supplier(supplierCreateRequest.name(), supplierCreateRequest.phone(),
