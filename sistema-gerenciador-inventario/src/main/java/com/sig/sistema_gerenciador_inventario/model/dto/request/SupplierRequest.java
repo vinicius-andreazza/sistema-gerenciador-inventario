@@ -8,10 +8,10 @@ import com.sig.sistema_gerenciador_inventario.model.RawMaterial;
 
 import jakarta.annotation.Nullable;
 
-public record SupplierCreateRequest(
+public record SupplierRequest(
     @NonNull String name,
     @Nullable String phone,
-    @NonNull String email,
+    @NonNull  String email,
     @Nullable Set<RawMaterial> rawMaterials
 ) {
     

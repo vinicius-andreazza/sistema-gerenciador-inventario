@@ -1,9 +1,6 @@
 package com.sig.sistema_gerenciador_inventario.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
@@ -16,8 +13,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.sig.sistema_gerenciador_inventario.model.dto.request.SupplierCreateRequest;
-import com.sig.sistema_gerenciador_inventario.model.dto.request.SupplierUpdateRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.SupplierRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.SupplierPatchRequest;
 import com.sig.sistema_gerenciador_inventario.repository.SupplierRepository;
 import com.sig.sistema_gerenciador_inventario.service.SupplierService;
 
@@ -55,7 +52,7 @@ public class SupplierControllerTest {
 
     @Test
     void shouldNotCreateSupplierByIdWhenIsUnsecured() throws Exception {
-        SupplierCreateRequest supplierRequest = new SupplierCreateRequest("Marchetti", "(47) 99231-5863",
+        SupplierRequest supplierRequest = new SupplierRequest("Marchetti", "(47) 99231-5863",
                 "marchetti@gmail.com", null);
         mockMvc.perform(post(endpoint)
             .contentType(MediaType.APPLICATION_JSON)
@@ -66,9 +63,20 @@ public class SupplierControllerTest {
 
     @Test
     void shouldNotUpdateSupplierWhenIsUnsecured() throws Exception {
-        SupplierUpdateRequest supplierRequest = new SupplierUpdateRequest(1L,"Marchetti", "(47) 99231-5863",
+        SupplierRequest supplierRequest = new SupplierRequest("Marchetti", "(47) 99231-5863",
                 "marchetti@gmail.com", null);
-        mockMvc.perform(put(endpoint)
+        mockMvc.perform(put(endpoint+"/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(supplierRequest))
+        )
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void shouldNotPatchUpdateSupplierWhenIsUnsecured() throws Exception {
+        SupplierPatchRequest supplierRequest = new SupplierPatchRequest("Marchetti", "(47) 99231-5863",
+                "marchetti@gmail.com", null);
+        mockMvc.perform(patch(endpoint+"/1")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(supplierRequest))
         )
@@ -83,22 +91,22 @@ public class SupplierControllerTest {
 
     @Test
     @WithMockUser(roles = "USER")
-    void shouldAllSuppliersWhenIsNormalSupplier() throws Exception {
+    void shouldAllSuppliersWhenIsNormalUser() throws Exception {
         mockMvc.perform(get(endpoint))
                 .andExpect(status().isOk());
     }
 
     @Test
     @WithMockUser(roles = "USER")
-    void shouldReturnSupplierByIdWhenIsNormalSupplier() throws Exception {
+    void shouldReturnSupplierByIdWhenIsNormalUser() throws Exception {
         mockMvc.perform(get(endpoint + "/1"))
                 .andExpect(status().isOk());
     }
 
     @Test
     @WithMockUser(roles = "USER")
-    void shouldCreateSupplierByIdWhenIsNormalSupplier() throws Exception {
-        SupplierCreateRequest supplierRequest = new SupplierCreateRequest("Marchetti", "(47) 99231-5863",
+    void shouldCreateSupplierByIdWhenIsNormalUser() throws Exception {
+        SupplierRequest supplierRequest = new SupplierRequest("Marchetti", "(47) 99231-5863",
                 "marchetti@gmail.com", null);
         mockMvc.perform(post(endpoint)
             .contentType(MediaType.APPLICATION_JSON)
@@ -109,10 +117,10 @@ public class SupplierControllerTest {
 
     @Test
     @WithMockUser(roles = "USER")
-    void shouldUpdateSupplierWhenIsNormalSupplier() throws Exception {
-        SupplierUpdateRequest supplierRequest = new SupplierUpdateRequest(1L,"Marchetti", "(47) 99231-5863",
+    void shouldUpdateSupplierWhenIsNormalUser() throws Exception {
+        SupplierRequest supplierRequest = new SupplierRequest("Marchetti", "(47) 99231-5863",
                 "marchetti@gmail.com", null);
-        mockMvc.perform(put(endpoint)
+        mockMvc.perform(put(endpoint+"/1")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(supplierRequest))
         )
@@ -121,7 +129,19 @@ public class SupplierControllerTest {
 
     @Test
     @WithMockUser(roles = "USER")
-    void shouldDeleteSupplierWhenIsNormalSupplier() throws Exception {
+    void shouldPatchUpdateSupplierWhenIsNormalUser() throws Exception {
+        SupplierPatchRequest supplierRequest = new SupplierPatchRequest("Marchetti", "(47) 99231-5863",
+                "marchetti@gmail.com", null);
+        mockMvc.perform(patch(endpoint+"/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(supplierRequest))
+        )
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void shouldDeleteSupplierWhenIsNormalUser() throws Exception {
         mockMvc.perform(delete(endpoint + "/1"))
                 .andExpect(status().isNoContent());
     }
@@ -143,7 +163,7 @@ public class SupplierControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void shouldCreateSupplier() throws Exception {
-        SupplierCreateRequest supplierRequest = new SupplierCreateRequest("Marchetti", "(47) 99231-5863",
+        SupplierRequest supplierRequest = new SupplierRequest("Marchetti", "(47) 99231-5863",
                 "marchetti@gmail.com", null);
         mockMvc.perform(post(endpoint)
             .contentType(MediaType.APPLICATION_JSON)
@@ -154,10 +174,22 @@ public class SupplierControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void shouldUpdateSupplier() throws Exception {
-        SupplierUpdateRequest supplierRequest = new SupplierUpdateRequest(1L,"Marchetti", "(47) 99231-5863",
+    void shouldPutUpdateSupplier() throws Exception {
+        SupplierRequest supplierRequest = new SupplierRequest("Marchetti", "(47) 99231-5863",
                 "marchetti@gmail.com", null);
-        mockMvc.perform(put(endpoint)
+        mockMvc.perform(put(endpoint+"/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(supplierRequest))
+        )
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void shouldPatchUpdateSupplier() throws Exception {
+        SupplierPatchRequest supplierRequest = new SupplierPatchRequest("Marchetti", "(47) 99231-5863",
+                "marchetti@gmail.com", null);
+        mockMvc.perform(patch(endpoint+"/1")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(supplierRequest))
         )

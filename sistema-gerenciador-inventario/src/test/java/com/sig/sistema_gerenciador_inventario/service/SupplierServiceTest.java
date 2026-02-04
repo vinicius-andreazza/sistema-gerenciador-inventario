@@ -17,8 +17,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.sig.sistema_gerenciador_inventario.model.Supplier;
-import com.sig.sistema_gerenciador_inventario.model.dto.request.SupplierCreateRequest;
-import com.sig.sistema_gerenciador_inventario.model.dto.request.SupplierUpdateRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.SupplierRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.SupplierPatchRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.response.SupplierResponse;
 import com.sig.sistema_gerenciador_inventario.repository.SupplierRepository;
 
@@ -35,7 +35,7 @@ public class SupplierServiceTest {
 
     @Test
     void shouldCreateSupplier() {
-        SupplierCreateRequest supplierRequest = new SupplierCreateRequest("Marchetti", "(47) 99231-5863",
+        SupplierRequest supplierRequest = new SupplierRequest("Marchetti", "(47) 99231-5863",
                 "marchetti@gmail.com", null);
         Supplier supplierCreate = new Supplier(supplierRequest.name(), supplierRequest.phone(), supplierRequest.email(),
                 supplierRequest.rawMaterials());
@@ -85,15 +85,34 @@ public class SupplierServiceTest {
     }
 
     @Test
-    void shouldUpdateSupplier() {
-        SupplierUpdateRequest supplierRequest = new SupplierUpdateRequest(1L, "Marchetti", "(47) 99231-5863", "marchetti@gmail.com", null);
-        Supplier supplier = new Supplier(supplierRequest.id(), supplierRequest.name(), supplierRequest.phone(), supplierRequest.email(), supplierRequest.rawMaterials());
+    void shouldPutUpdateSupplier() {
+        SupplierRequest supplierRequest = new SupplierRequest("Marchetti", "(47) 99231-5863", "marchetti@gmail.com", null);
+        Long id = 1L;
+        Supplier supplier = new Supplier(id, supplierRequest.name(), supplierRequest.phone(), supplierRequest.email(), supplierRequest.rawMaterials());
 
-        when(supplierRepository.findById(supplierRequest.id()))
-                .thenReturn(Optional.of(new Supplier(supplierRequest.id(), "Port", supplierRequest.phone(), supplierRequest.email(), supplierRequest.rawMaterials())));
+        when(supplierRepository.findById(id))
+                .thenReturn(Optional.of(new Supplier(id, "Port", supplierRequest.phone(), supplierRequest.email(), supplierRequest.rawMaterials())));
         when(supplierRepository.save(supplier)).thenReturn(supplier);
 
-        SupplierResponse supplierResponse = supplierService.update(supplierRequest);
+        SupplierResponse supplierResponse = supplierService.putUpdate(id, supplierRequest);
+        SupplierResponse supplierResponseExcepted = new SupplierResponse(supplier.getSupplier_id(), supplier.getName(),
+        supplier.getPhone(), supplier.getEmail());
+
+        verify(supplierRepository, times(1)).save(supplier);
+        verifySupplierResponse(supplierResponse, supplierResponseExcepted);
+    }
+
+    @Test
+    void shouldPatchUpdateSupplier() {
+        SupplierPatchRequest supplierPatchRequest = new SupplierPatchRequest("Marchetti", "(47) 99231-5863", "marchetti@gmail.com", null);
+        Long id = 1L;
+        Supplier supplier = new Supplier(id, supplierPatchRequest.name(), supplierPatchRequest.phone(), supplierPatchRequest.email(), supplierPatchRequest.rawMaterials());
+
+        when(supplierRepository.findById(id))
+                .thenReturn(Optional.of(new Supplier(id, "Port", supplierPatchRequest.phone(), supplierPatchRequest.email(), supplierPatchRequest.rawMaterials())));
+        when(supplierRepository.save(supplier)).thenReturn(supplier);
+
+        SupplierResponse supplierResponse = supplierService.patchUpdate(id, supplierPatchRequest);
         SupplierResponse supplierResponseExcepted = new SupplierResponse(supplier.getSupplier_id(), supplier.getName(),
         supplier.getPhone(), supplier.getEmail());
 
@@ -112,7 +131,7 @@ public class SupplierServiceTest {
 
     @Test
     void shouldCreateSupplierWhenPhoneIsNull() {
-        SupplierCreateRequest supplierRequest = new SupplierCreateRequest("Marchetti", null,
+        SupplierRequest supplierRequest = new SupplierRequest("Marchetti", null,
                 "marchetti@gmail.com", null);
         Supplier supplierCreate = new Supplier(supplierRequest.name(), supplierRequest.phone(), supplierRequest.email(),
                 supplierRequest.rawMaterials());
@@ -128,9 +147,9 @@ public class SupplierServiceTest {
 
     @Test
     void shouldNotCreateSupplierWhenNameOrEmailIsNull() {
-        SupplierCreateRequest supplierRequest = new SupplierCreateRequest("Marchetti", "(47) 99231-5863",
+        SupplierRequest supplierRequest = new SupplierRequest("Marchetti", "(47) 99231-5863",
                 null, null);
-            SupplierCreateRequest supplierRequest1 = new SupplierCreateRequest(null, "(47) 99231-5863",
+            SupplierRequest supplierRequest1 = new SupplierRequest(null, "(47) 99231-5863",
                 "marchetti@gmail.com", null);
 
         assertThrows(IllegalArgumentException.class, () -> supplierService.create(supplierRequest));
@@ -149,9 +168,15 @@ public class SupplierServiceTest {
     }
 
     @Test
-    void shouldNotUpdatedWhenIdIsNullOrBlank(){
-        assertThrows(IllegalArgumentException.class,() -> supplierService.update(new SupplierUpdateRequest(null, null, null, null, null)));
-        assertThrows(IllegalArgumentException.class,() -> supplierService.update(new SupplierUpdateRequest(-1L, null, null, null, null)));
+    void shouldNotPutUpdatedWhenIdIsNullOrBlank(){
+        assertThrows(IllegalArgumentException.class,() -> supplierService.putUpdate(null,new SupplierRequest( null, null, null, null)));
+        assertThrows(IllegalArgumentException.class,() -> supplierService.putUpdate(-1L,new SupplierRequest( null, null, null, null)));
+    }
+
+    @Test
+    void shouldNotPutUpdatedWhenNameOrEmailIsNull(){
+        assertThrows(IllegalArgumentException.class,() -> supplierService.putUpdate(null,new SupplierRequest( "null", "null", null, null)));
+        assertThrows(IllegalArgumentException.class,() -> supplierService.putUpdate(-1L,new SupplierRequest( null, "null", "null", null)));
     }
 
     private void verifySupplierResponse(SupplierResponse response1, SupplierResponse response2) {
