@@ -10,8 +10,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.sig.sistema_gerenciador_inventario.model.dto.request.ItemLocalCreateRequest;
-import com.sig.sistema_gerenciador_inventario.model.dto.request.ItemLocalUpdateRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.ItemLocalRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.ItemLocalPatchRequest;
 import com.sig.sistema_gerenciador_inventario.repository.ItemLocalRepository;
 import com.sig.sistema_gerenciador_inventario.service.ItemLocalService;
 
@@ -53,7 +53,7 @@ public class ItemLocalControllerServiceTest {
 
     @Test
     void shouldNotCreateLocalByIdWhenIsUnsecured() throws Exception {
-        ItemLocalCreateRequest localRequest = new ItemLocalCreateRequest("Estoque", 1, "A");
+        ItemLocalRequest localRequest = new ItemLocalRequest("Estoque", 1, "A");
         mockMvc.perform(post(endpoint)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(localRequest))
@@ -62,9 +62,19 @@ public class ItemLocalControllerServiceTest {
     }
 
     @Test
-    void shouldNotUpdateLocalWhenIsUnsecured() throws Exception {
-        ItemLocalUpdateRequest localRequest = new ItemLocalUpdateRequest(1L,"Estoque", 1, "A");
-        mockMvc.perform(put(endpoint)
+    void shouldNotPutUpdateLocalWhenIsUnsecured() throws Exception {
+        ItemLocalRequest localRequest = new ItemLocalRequest("Estoque", 1, "A");
+        mockMvc.perform(put(endpoint+"/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(localRequest))
+        )
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void shouldNotPatchUpdateLocalWhenIsUnsecured() throws Exception {
+        ItemLocalPatchRequest localRequest = new ItemLocalPatchRequest("Estoque", 1, "A");
+        mockMvc.perform(patch(endpoint+"/1")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(localRequest))
         )
@@ -94,7 +104,7 @@ public class ItemLocalControllerServiceTest {
     @Test
     @WithMockUser(roles = "USER")
     void shouldCreateLocalByIdWhenIsNormalLocal() throws Exception {
-        ItemLocalCreateRequest localRequest = new ItemLocalCreateRequest("Estoque", 1, "A");
+        ItemLocalRequest localRequest = new ItemLocalRequest("Estoque", 1, "A");
         mockMvc.perform(post(endpoint)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(localRequest))
@@ -104,9 +114,20 @@ public class ItemLocalControllerServiceTest {
 
     @Test
     @WithMockUser(roles = "USER")
-    void shouldUpdateLocalWhenIsNormalLocal() throws Exception {
-        ItemLocalUpdateRequest localRequest = new ItemLocalUpdateRequest(1L,"Estoque", 1, "A");
-        mockMvc.perform(put(endpoint)
+    void shouldPutUpdateLocalWhenIsNormalLocal() throws Exception {
+        ItemLocalRequest localRequest = new ItemLocalRequest("Estoque", 1, "A");
+        mockMvc.perform(put(endpoint+"/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(localRequest))
+        )
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "USER")
+    void shouldPatchUpdateLocalWhenIsNormalLocal() throws Exception {
+        ItemLocalPatchRequest localRequest = new ItemLocalPatchRequest("Estoque", 1, "A");
+        mockMvc.perform(put(endpoint+"/1")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(localRequest))
         )
@@ -137,7 +158,7 @@ public class ItemLocalControllerServiceTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     void shouldCreateLocal() throws Exception {
-        ItemLocalCreateRequest localRequest = new ItemLocalCreateRequest("Estoque", 1, "A");
+        ItemLocalRequest localRequest = new ItemLocalRequest("Estoque", 1, "A");
         mockMvc.perform(post(endpoint)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(localRequest))
@@ -147,9 +168,20 @@ public class ItemLocalControllerServiceTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void shouldUpdateLocal() throws Exception {
-        ItemLocalUpdateRequest localRequest = new ItemLocalUpdateRequest(1L,"Estoque", 1, "A");
-        mockMvc.perform(put(endpoint)
+    void shouldPutUpdateLocal() throws Exception {
+        ItemLocalRequest localRequest = new ItemLocalRequest("Estoque", 1, "A");
+        mockMvc.perform(put(endpoint+"/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(localRequest))
+        )
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void shouldPatchUpdateLocal() throws Exception {
+        ItemLocalPatchRequest localRequest = new ItemLocalPatchRequest("Estoque", 1, "A");
+        mockMvc.perform(put(endpoint+"/1")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(localRequest))
         )

@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.sig.sistema_gerenciador_inventario.model.ItemLocal;
-import com.sig.sistema_gerenciador_inventario.model.dto.request.ItemLocalCreateRequest;
-import com.sig.sistema_gerenciador_inventario.model.dto.request.ItemLocalUpdateRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.ItemLocalRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.ItemLocalPatchRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.response.ItemLocalResponse;
 import com.sig.sistema_gerenciador_inventario.repository.ItemLocalRepository;
 
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class ItemLocalService {
     private final ItemLocalRepository itemLocalRepository;
 
-    public ItemLocalResponse create(ItemLocalCreateRequest itemLocalRequest) {
+    public ItemLocalResponse create(ItemLocalRequest itemLocalRequest) {
         if (itemLocalRequest.sectorName() == null || itemLocalRequest.sectorName().isBlank()) {
             throw new IllegalArgumentException("Nome do setor não pode ser vazio");
         }
@@ -59,28 +59,49 @@ public class ItemLocalService {
     }
 
     @Transactional
-    public ItemLocalResponse update(ItemLocalUpdateRequest itemLocalUpdateRequest) {
-        if (itemLocalUpdateRequest.id() == null || itemLocalUpdateRequest.id() <= 0) {
+    public ItemLocalResponse putUpdate(Long id, ItemLocalRequest itemLocalRequest) {
+        if (id == null || id <= 0) {
             throw new IllegalArgumentException("Id não pode ser nulo ou menor que 1");
         }
 
-        ItemLocal itemLocalShouldBeUpdated = itemLocalRepository.findById(itemLocalUpdateRequest.id())
+        ItemLocal itemLocalShouldBeUpdated = itemLocalRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Local não encontrado"));
+
+
+        itemLocalShouldBeUpdated.setSectorName(itemLocalRequest.sectorName());
+        itemLocalShouldBeUpdated.setPosition(itemLocalRequest.position());
+        itemLocalShouldBeUpdated.setShelf(itemLocalRequest.shelf());
+
+        ItemLocal itemUpdated = itemLocalRepository.save(itemLocalShouldBeUpdated);
+        
+        ItemLocalResponse itemLocalResponse = new ItemLocalResponse(itemUpdated.getLocal_id(),itemUpdated.getSectorName(),
+                itemUpdated.getPosition(), itemUpdated.getShelf());
+        return itemLocalResponse;
+    }
+
+    @Transactional
+    public ItemLocalResponse patchUpdate(Long id, ItemLocalPatchRequest itemLocalPatchRequest) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("Id não pode ser nulo ou menor que 1");
+        }
+
+        ItemLocal itemLocalShouldBeUpdated = itemLocalRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Local não encontrado"));
 
 
         itemLocalShouldBeUpdated.setSectorName(
-                itemLocalUpdateRequest.sectorName() == null || itemLocalUpdateRequest.sectorName().isBlank()
+                itemLocalPatchRequest.sectorName() == null
                         ? itemLocalShouldBeUpdated.getSectorName()
-                        : itemLocalUpdateRequest.sectorName());
+                        : itemLocalPatchRequest.sectorName());
 
         itemLocalShouldBeUpdated
-                .setPosition(itemLocalUpdateRequest.position() == null ? itemLocalShouldBeUpdated.getPosition()
-                        : itemLocalUpdateRequest.position());
+                .setPosition(itemLocalPatchRequest.position() == null ? itemLocalShouldBeUpdated.getPosition()
+                        : itemLocalPatchRequest.position());
 
         itemLocalShouldBeUpdated
-                .setShelf(itemLocalUpdateRequest.shelf() == null || itemLocalUpdateRequest.shelf().isBlank()
+                .setShelf(itemLocalPatchRequest.shelf() == null
                         ? itemLocalShouldBeUpdated.getShelf()
-                        : itemLocalUpdateRequest.shelf());
+                        : itemLocalPatchRequest.shelf());
 
 
         ItemLocal itemUpdated = itemLocalRepository.save(itemLocalShouldBeUpdated);
