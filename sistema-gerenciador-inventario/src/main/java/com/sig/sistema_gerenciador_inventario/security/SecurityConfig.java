@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.sig.sistema_gerenciador_inventario.security.jwt.JwtAuthenticationFilter;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -26,6 +27,7 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomUserDetailsService customUserDetailsService;
+    private final CustomLogoutHandler customLogoutHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
@@ -37,10 +39,16 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .securityMatcher("/**")
+                .logout((logout) -> 
+                    logout.addLogoutHandler(customLogoutHandler)
+                    .logoutSuccessHandler((request, response, authentication) ->
+                        response.setStatus(HttpServletResponse.SC_OK)
+                    )
+                )
                 .authorizeHttpRequests(
                     auth -> auth
-                    .requestMatchers("/users").hasRole("ADMIN")
-                    .requestMatchers("/users/*").hasRole("ADMIN")
+                    .requestMatchers("/users").permitAll()
+                    .requestMatchers("/users/*").permitAll()
                     .requestMatchers("/locals").hasAnyRole("ADMIN", "USER")
                     .requestMatchers("/locals/**").hasAnyRole("ADMIN", "USER")
                     .requestMatchers("/suppliers").hasAnyRole("ADMIN", "USER")

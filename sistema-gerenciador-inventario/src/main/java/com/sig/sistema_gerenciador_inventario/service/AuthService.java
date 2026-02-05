@@ -11,11 +11,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.sig.sistema_gerenciador_inventario.exception.ExpiredRefreshTokenException;
+import com.sig.sistema_gerenciador_inventario.model.RefreshToken;
 import com.sig.sistema_gerenciador_inventario.model.User;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.RefreshTokenRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.UserLoginRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.response.RefreshTokenResponse;
 import com.sig.sistema_gerenciador_inventario.model.dto.response.UserLoginResponse;
+import com.sig.sistema_gerenciador_inventario.repository.RefreshTokenRepository;
 import com.sig.sistema_gerenciador_inventario.repository.UserRepository;
 import com.sig.sistema_gerenciador_inventario.security.jwt.JwtClaims;
 import com.sig.sistema_gerenciador_inventario.security.jwt.JwtEncoder;
@@ -32,6 +34,7 @@ public class AuthService {
     private final JwtValidate jwtValidate;
     private final JwtClaims jwtClaims;
     private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public UserLoginResponse login(UserLoginRequest login){
         Authentication auth = authenticationManager.authenticate(
@@ -41,15 +44,17 @@ public class AuthService {
 
         String token = jwtEncoder.generateToken(auth.getName(), auth.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
 
-        String refreshToken = jwtEncoder.generateRefreshToken(auth.getName());
-        return new UserLoginResponse(token, refreshToken);
+        System.out.println(auth.getName());
+        RefreshToken refreshToken =  new RefreshToken(jwtEncoder.generateRefreshToken(auth.getName()), auth.getName());
+        refreshTokenRepository.save(refreshToken);
+        return new UserLoginResponse(token, refreshToken.getToken());
     }
 
     public RefreshTokenResponse refreshToken(RefreshTokenRequest refresh){
-        if(!jwtValidate.validateRefreshToken(refresh.refreshToken())){
+        if(jwtValidate.validateRefreshToken(refresh.refreshToken())){
             throw new ExpiredRefreshTokenException("Resfresh Token expirado");
         }
-        User user = userRepository.findByUsername(jwtClaims.extractSubject(refresh.refreshToken()));;
+        User user = userRepository.findByUsername(jwtClaims.extractSubject(refresh.refreshToken()));
 
         String token = jwtEncoder.generateToken(user.getUsername(), List.of(String.valueOf(new SimpleGrantedAuthority(user.getRoles().name()))));
 
