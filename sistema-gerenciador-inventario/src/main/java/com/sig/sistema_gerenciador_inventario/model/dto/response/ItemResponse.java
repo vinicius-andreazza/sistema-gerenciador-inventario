@@ -3,10 +3,8 @@ package com.sig.sistema_gerenciador_inventario.model.dto.response;
 import org.jspecify.annotations.NonNull;
 
 import com.sig.sistema_gerenciador_inventario.model.ItemLocal;
-import com.sig.sistema_gerenciador_inventario.model.User;
 import com.sig.sistema_gerenciador_inventario.model.enums.CategoryItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.StatusItem;
-import com.sig.sistema_gerenciador_inventario.model.enums.TypeItem;
 
 import lombok.Getter;
 

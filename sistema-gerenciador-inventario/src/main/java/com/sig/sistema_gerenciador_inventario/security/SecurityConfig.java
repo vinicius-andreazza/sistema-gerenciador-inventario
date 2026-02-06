@@ -54,6 +54,10 @@ public class SecurityConfig {
                     .requestMatchers("/suppliers").hasAnyRole("ADMIN", "USER")
                     .requestMatchers("/suppliers/**").hasAnyRole("ADMIN", "USER")
                     .requestMatchers("/refreshToken").permitAll()
+                    .requestMatchers("/products").permitAll()
+                    .requestMatchers("/products/**").permitAll()
+                    .requestMatchers("/rawMaterials").permitAll()
+                    .requestMatchers("/rawMaterials/**").permitAll()
                     .requestMatchers("/login").permitAll()
                     
                     .anyRequest().permitAll()
