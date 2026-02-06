@@ -2,11 +2,17 @@ package com.sig.sistema_gerenciador_inventario.service;
 
 import org.springframework.stereotype.Service;
 
+import com.sig.sistema_gerenciador_inventario.mapper.dtos.response.ProductResponseMapper;
+import com.sig.sistema_gerenciador_inventario.mapper.dtos.response.RawMaterialResponseMapper;
+import com.sig.sistema_gerenciador_inventario.mapper.models.ProductMapper;
+import com.sig.sistema_gerenciador_inventario.mapper.models.RawMaterialMapper;
 import com.sig.sistema_gerenciador_inventario.model.Item;
 import com.sig.sistema_gerenciador_inventario.model.Product;
 import com.sig.sistema_gerenciador_inventario.model.RawMaterial;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.ProductRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.RawMaterialRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.response.ProductResponse;
+import com.sig.sistema_gerenciador_inventario.model.dto.response.RawMaterialResponse;
 import com.sig.sistema_gerenciador_inventario.repository.ItemRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -16,54 +22,18 @@ import lombok.RequiredArgsConstructor;
 public class ItemService {
     private final ItemRepository itemRepository;
 
-    public Product create(ProductRequest productRequest){
+    public ProductResponse create(ProductRequest productRequest){
         Item product = new Product();
-        product = toProduct(productRequest);
-        return (Product) itemRepository.save(product);
+        product = ProductMapper.productMapper(productRequest);
+        Product productCreated = (Product) itemRepository.save(product);
+        return ProductResponseMapper.productMapper(productCreated);
     }
 
-    public RawMaterial create(RawMaterialRequest rawMaterialRequest){
+    public RawMaterialResponse create(RawMaterialRequest rawMaterialRequest){
         Item rawMaterial = new RawMaterial();
-        rawMaterial = toRawMaterial(rawMaterialRequest);
-        return (RawMaterial) itemRepository.save(rawMaterial);
+        rawMaterial = RawMaterialMapper.rawMaterialMapper(rawMaterialRequest);
+        RawMaterial rawMaterialCreated = (RawMaterial) itemRepository.save(rawMaterial);
+        return RawMaterialResponseMapper.rawMaterialMapper(rawMaterialCreated);
     }
-
-    private Product toProduct(ProductRequest request) {
-        return new Product(
-                request.getName(),
-                request.getCategory(),
-                request.getTypeItem(),
-                request.getDescription(),
-                request.getQuantity(),
-                request.getMinimiumQuantity(),
-                request.getMeasure(),
-                request.getStatus(),
-                request.getUser(),
-                request.getItemLocal(),
-                request.getValue(),
-                request.getWeight(),
-                request.getHeight(),
-                request.getLength(),
-                request.getDepth()
-        );
-    }
-
-    private RawMaterial toRawMaterial(RawMaterialRequest request) {
-
-        return new RawMaterial(
-                request.getName(),
-                request.getCategory(),
-                request.getTypeItem(),
-                request.getDescription(),
-                request.getQuantity(),
-                request.getMinimiumQuantity(),
-                request.getMeasure(),
-                request.getStatus(),
-                request.getUser(),
-                request.getItemLocal(),
-                request.getBatch(),
-                request.getUnitValue(),
-                request.getSupplier()
-        );
-    }
+                    
 }
