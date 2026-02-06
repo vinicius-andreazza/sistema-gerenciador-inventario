@@ -35,4 +35,23 @@ public class ItemResponse {
 
     @NonNull
     private ItemLocal itemLocal;
+
+    public ItemResponse(@NonNull String name, @NonNull CategoryItem category, @NonNull String description,
+            @NonNull int quantity, @NonNull String minimiumQuantity, @NonNull String measure,
+            @NonNull StatusItem status, @NonNull ItemLocal itemLocal) {
+        this.name = name;
+        this.category = category;
+        this.description = description;
+        this.quantity = quantity;
+        this.minimiumQuantity = minimiumQuantity;
+        this.measure = measure;
+        this.status = status;
+        this.itemLocal = itemLocal;
+    }
+
+    public ItemResponse() {
+    }
+
+    
+
 }

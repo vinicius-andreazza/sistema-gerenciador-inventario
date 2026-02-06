@@ -35,5 +35,5 @@ public class ItemService {
         RawMaterial rawMaterialCreated = (RawMaterial) itemRepository.save(rawMaterial);
         return RawMaterialResponseMapper.rawMaterialMapper(rawMaterialCreated);
     }
-                    
+
 }
