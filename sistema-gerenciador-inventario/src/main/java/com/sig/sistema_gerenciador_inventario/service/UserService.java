@@ -8,12 +8,13 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.sig.sistema_gerenciador_inventario.mapper.models.UserMapper;
+import com.sig.sistema_gerenciador_inventario.mapper.response.UserResponseMapper;
 import com.sig.sistema_gerenciador_inventario.model.User;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.UserPatchRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.UserRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.response.UserResponse;
 import com.sig.sistema_gerenciador_inventario.repository.UserRepository;
-import com.sig.sistema_gerenciador_inventario.mapper.dtos.response.UserResponseMapper;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -36,10 +37,11 @@ public class UserService {
         if (userRequest.password().isBlank()) {
             throw new IllegalArgumentException("Senha vazia");
         }
-        User userCreated = new User(userRequest.username(), passwordEncoder.encode(userRequest.password()),
-                userRequest.roles());
+        User userCreated = UserMapper.userMap(userRequest);
+
         userCreated = userRepository.save(userCreated);
-        UserResponse userResponse = UserResponseMapper.userResponseMapper(userCreated);
+
+        UserResponse userResponse = UserResponseMapper.userResponseMap(userCreated);
         return userResponse;
     }
 
@@ -49,11 +51,11 @@ public class UserService {
         }
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
-        return UserResponseMapper.userResponseMapper(user);
+        return UserResponseMapper.userResponseMap(user);
     }
 
     public List<UserResponse> findAll() {
-        return userRepository.findAll().stream().map(UserResponseMapper::userResponseMapper).toList();
+        return userRepository.findAll().stream().map(UserResponseMapper::userResponseMap).toList();
     }
 
     @Transactional
@@ -82,7 +84,7 @@ public class UserService {
 
         User userUpdated = userRepository.save(userShouldBeUpdated);
 
-        UserResponse userResponse = UserResponseMapper.userResponseMapper(userUpdated);
+        UserResponse userResponse = UserResponseMapper.userResponseMap(userUpdated);
         return userResponse;
 
     }
@@ -114,7 +116,7 @@ public class UserService {
 
 
         User userUpdated = userRepository.save(userShouldBeUpdated);
-        UserResponse userResponse = UserResponseMapper.userResponseMapper(userUpdated);
+        UserResponse userResponse = UserResponseMapper.userResponseMap(userUpdated);
         return userResponse;
 
     }

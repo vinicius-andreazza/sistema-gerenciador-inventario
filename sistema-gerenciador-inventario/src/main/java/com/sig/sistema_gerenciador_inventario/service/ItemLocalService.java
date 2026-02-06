@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.sig.sistema_gerenciador_inventario.mapper.models.ItemLocalMapper;
+import com.sig.sistema_gerenciador_inventario.mapper.response.ItemLocalResponseMapper;
 import com.sig.sistema_gerenciador_inventario.model.ItemLocal;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.ItemLocalRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.ItemLocalPatchRequest;
@@ -29,11 +31,9 @@ public class ItemLocalService {
         if (itemLocalRequest.position() == null) {
             throw new IllegalArgumentException("Posição não pode ser nulo");
         }
-        ItemLocal itemLocalCreated = new ItemLocal(itemLocalRequest.sectorName(), itemLocalRequest.position(),
-                itemLocalRequest.shelf());
+        ItemLocal itemLocalCreated = ItemLocalMapper.itemLocalMap(itemLocalRequest);
         itemLocalCreated = itemLocalRepository.save(itemLocalCreated);
-        ItemLocalResponse itemLocalResponse = new ItemLocalResponse(itemLocalCreated.getLocal_id(),itemLocalCreated.getSectorName(),
-                itemLocalCreated.getPosition(), itemLocalCreated.getShelf());
+        ItemLocalResponse itemLocalResponse = ItemLocalResponseMapper.itemLocalMap(itemLocalCreated);
         return itemLocalResponse;
     }
 
@@ -43,18 +43,14 @@ public class ItemLocalService {
         }
         ItemLocal itemLocal = itemLocalRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Local não encontrado"));
-        ItemLocalResponse itemLocalResponse = new ItemLocalResponse(itemLocal.getLocal_id(),itemLocal.getSectorName(), itemLocal.getPosition(),
-                itemLocal.getShelf());
+        ItemLocalResponse itemLocalResponse = ItemLocalResponseMapper.itemLocalMap(itemLocal);
         return itemLocalResponse;
     }
 
     public List<ItemLocalResponse> findAll() {
         return itemLocalRepository.findAll()
                 .stream()
-                .map(i -> new ItemLocalResponse(i.getLocal_id(),
-                        i.getSectorName(),
-                        i.getPosition(),
-                        i.getShelf()))
+                .map(ItemLocalResponseMapper::itemLocalMap)
                 .toList();
     }
 
@@ -74,8 +70,7 @@ public class ItemLocalService {
 
         ItemLocal itemUpdated = itemLocalRepository.save(itemLocalShouldBeUpdated);
         
-        ItemLocalResponse itemLocalResponse = new ItemLocalResponse(itemUpdated.getLocal_id(),itemUpdated.getSectorName(),
-                itemUpdated.getPosition(), itemUpdated.getShelf());
+        ItemLocalResponse itemLocalResponse = ItemLocalResponseMapper.itemLocalMap(itemUpdated);
         return itemLocalResponse;
     }
 
@@ -105,8 +100,8 @@ public class ItemLocalService {
 
 
         ItemLocal itemUpdated = itemLocalRepository.save(itemLocalShouldBeUpdated);
-        ItemLocalResponse itemLocalResponse = new ItemLocalResponse(itemUpdated.getLocal_id(),itemUpdated.getSectorName(),
-                itemUpdated.getPosition(), itemUpdated.getShelf());
+
+        ItemLocalResponse itemLocalResponse = ItemLocalResponseMapper.itemLocalMap(itemUpdated);
         return itemLocalResponse;
     }
 

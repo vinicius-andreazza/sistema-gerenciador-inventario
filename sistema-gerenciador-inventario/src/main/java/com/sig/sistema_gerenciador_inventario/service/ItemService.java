@@ -2,10 +2,10 @@ package com.sig.sistema_gerenciador_inventario.service;
 
 import org.springframework.stereotype.Service;
 
-import com.sig.sistema_gerenciador_inventario.mapper.dtos.response.ProductResponseMapper;
-import com.sig.sistema_gerenciador_inventario.mapper.dtos.response.RawMaterialResponseMapper;
 import com.sig.sistema_gerenciador_inventario.mapper.models.ProductMapper;
 import com.sig.sistema_gerenciador_inventario.mapper.models.RawMaterialMapper;
+import com.sig.sistema_gerenciador_inventario.mapper.response.ProductResponseMapper;
+import com.sig.sistema_gerenciador_inventario.mapper.response.RawMaterialResponseMapper;
 import com.sig.sistema_gerenciador_inventario.model.Item;
 import com.sig.sistema_gerenciador_inventario.model.Product;
 import com.sig.sistema_gerenciador_inventario.model.RawMaterial;
@@ -24,16 +24,16 @@ public class ItemService {
 
     public ProductResponse create(ProductRequest productRequest){
         Item product = new Product();
-        product = ProductMapper.productMapper(productRequest);
+        product = ProductMapper.productMap(productRequest);
         Product productCreated = (Product) itemRepository.save(product);
-        return ProductResponseMapper.productMapper(productCreated);
+        return ProductResponseMapper.productMap(productCreated);
     }
 
     public RawMaterialResponse create(RawMaterialRequest rawMaterialRequest){
         Item rawMaterial = new RawMaterial();
-        rawMaterial = RawMaterialMapper.rawMaterialMapper(rawMaterialRequest);
+        rawMaterial = RawMaterialMapper.rawMaterialMap(rawMaterialRequest);
         RawMaterial rawMaterialCreated = (RawMaterial) itemRepository.save(rawMaterial);
-        return RawMaterialResponseMapper.rawMaterialMapper(rawMaterialCreated);
+        return RawMaterialResponseMapper.rawMaterialMap(rawMaterialCreated);
     }
 
 }

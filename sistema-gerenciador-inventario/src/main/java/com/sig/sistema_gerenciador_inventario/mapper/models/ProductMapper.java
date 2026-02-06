@@ -4,7 +4,7 @@ import com.sig.sistema_gerenciador_inventario.model.Product;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.ProductRequest;
 
 public interface ProductMapper {
-    public static Product productMapper(ProductRequest request){
+    public static Product productMap(ProductRequest request){
         return new Product(
                 request.getName(),
                 request.getCategory(),

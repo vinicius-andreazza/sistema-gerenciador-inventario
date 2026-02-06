@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.sig.sistema_gerenciador_inventario.mapper.models.SupplierMapper;
+import com.sig.sistema_gerenciador_inventario.mapper.response.SupplierResponseMapper;
 import com.sig.sistema_gerenciador_inventario.model.Supplier;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.SupplierRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.SupplierPatchRequest;
@@ -25,17 +27,15 @@ public class SupplierService {
         if (supplierRequest.email() == null || supplierRequest.email().isBlank()) {
             throw new IllegalArgumentException("Email não pode ser vazio");
         }
-        Supplier supplierCreated = new Supplier(supplierRequest.name(), supplierRequest.phone(),
-                supplierRequest.email(), supplierRequest.rawMaterials());
+        Supplier supplierCreated = SupplierMapper.supplierMap(supplierRequest);
         supplierCreated = supplierRepository.save(supplierCreated);
-        SupplierResponse response = new SupplierResponse(supplierCreated.getSupplier_id(), supplierCreated.getName(),
-                supplierCreated.getPhone(), supplierCreated.getEmail());
+        SupplierResponse response = SupplierResponseMapper.supplierResponseMap(supplierCreated);
         return response;
     }
 
     public List<SupplierResponse> findAll() {
         return supplierRepository.findAll().stream()
-                .map(s -> new SupplierResponse(s.getSupplier_id(), s.getName(), s.getPhone(), s.getEmail())).toList();
+                .map(SupplierResponseMapper::supplierResponseMap).toList();
     }
 
     public SupplierResponse findById(Long id) {
@@ -44,8 +44,7 @@ public class SupplierService {
         }
         Supplier supplier = supplierRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Id invalido"));
-        return new SupplierResponse(supplier.getSupplier_id(), supplier.getName(), supplier.getPhone(),
-                supplier.getEmail());
+        return SupplierResponseMapper.supplierResponseMap(supplier);
     }
 
     public SupplierResponse putUpdate(Long id, SupplierRequest supplierRequest) {
@@ -68,8 +67,7 @@ public class SupplierService {
 
         Supplier supplierUpdated = supplierRepository.save(supplierShouldBeUpdated);
 
-        return new SupplierResponse(supplierUpdated.getSupplier_id(), supplierUpdated.getName(),
-                supplierUpdated.getPhone(), supplierUpdated.getEmail());
+        return SupplierResponseMapper.supplierResponseMap(supplierUpdated);
     }
 
     public SupplierResponse patchUpdate(Long id, SupplierPatchRequest supplierPatchRequest) {
@@ -98,8 +96,7 @@ public class SupplierService {
 
         Supplier supplierUpdated = supplierRepository.save(supplierShouldBeUpdated);
 
-        return new SupplierResponse(supplierUpdated.getSupplier_id(), supplierUpdated.getName(),
-                supplierUpdated.getPhone(), supplierUpdated.getEmail());
+        return SupplierResponseMapper.supplierResponseMap(supplierUpdated);
     }
 
     public void deleteById(Long id) {

@@ -1,10 +1,10 @@
-package com.sig.sistema_gerenciador_inventario.mapper.dtos.response;
+package com.sig.sistema_gerenciador_inventario.mapper.response;
 
 import com.sig.sistema_gerenciador_inventario.model.RawMaterial;
 import com.sig.sistema_gerenciador_inventario.model.dto.response.RawMaterialResponse;
 
 public interface RawMaterialResponseMapper {
-    public static RawMaterialResponse rawMaterialMapper(RawMaterial rawMaterial){
+    public static RawMaterialResponse rawMaterialMap(RawMaterial rawMaterial){
         return new RawMaterialResponse(
                 rawMaterial.getName(),
                 rawMaterial.getCategory(),

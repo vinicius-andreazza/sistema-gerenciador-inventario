@@ -4,7 +4,7 @@ import com.sig.sistema_gerenciador_inventario.model.RawMaterial;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.RawMaterialRequest;
 
 public interface RawMaterialMapper {
-    public static RawMaterial rawMaterialMapper(RawMaterialRequest request) {
+    public static RawMaterial rawMaterialMap(RawMaterialRequest request) {
         return new RawMaterial(
                 request.getName(),
                 request.getCategory(),

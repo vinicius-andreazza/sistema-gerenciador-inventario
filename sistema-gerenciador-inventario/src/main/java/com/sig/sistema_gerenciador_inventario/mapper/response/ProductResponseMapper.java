@@ -1,10 +1,10 @@
-package com.sig.sistema_gerenciador_inventario.mapper.dtos.response;
+package com.sig.sistema_gerenciador_inventario.mapper.response;
 
 import com.sig.sistema_gerenciador_inventario.model.Product;
 import com.sig.sistema_gerenciador_inventario.model.dto.response.ProductResponse;
 
 public interface ProductResponseMapper {
-    public static ProductResponse productMapper(Product product){
+    public static ProductResponse productMap(Product product){
         return new ProductResponse(
                 product.getName(),
                 product.getCategory(),
