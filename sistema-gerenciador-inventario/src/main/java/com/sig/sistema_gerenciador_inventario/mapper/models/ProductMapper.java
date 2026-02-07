@@ -1,6 +1,7 @@
 package com.sig.sistema_gerenciador_inventario.mapper.models;
 
 import com.sig.sistema_gerenciador_inventario.model.Product;
+import com.sig.sistema_gerenciador_inventario.model.dto.request.ProductPatchRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.ProductRequest;
 
 public interface ProductMapper {

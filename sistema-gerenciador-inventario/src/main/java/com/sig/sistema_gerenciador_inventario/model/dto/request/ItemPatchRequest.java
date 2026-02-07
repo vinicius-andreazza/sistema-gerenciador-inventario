@@ -1,44 +1,43 @@
 package com.sig.sistema_gerenciador_inventario.model.dto.request;
 
-import org.jspecify.annotations.NonNull;
-
 import com.sig.sistema_gerenciador_inventario.model.ItemLocal;
 import com.sig.sistema_gerenciador_inventario.model.User;
 import com.sig.sistema_gerenciador_inventario.model.enums.CategoryItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.StatusItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.TypeItem;
 
+import jakarta.annotation.Nullable;
 import lombok.Getter;
 
 @Getter
-public class ItemRequest {
-    @NonNull
+public class ItemPatchRequest {
+    @Nullable
     private String name;
 
-    @NonNull
+    @Nullable
     private CategoryItem category;
 
-    @NonNull
+    @Nullable
     private TypeItem typeItem;
 
-    @NonNull
+    @Nullable
     private String description;
 
-    @NonNull
+    @Nullable
     private Integer quantity;
 
-    @NonNull
+    @Nullable
     private String minimiumQuantity;
 
-    @NonNull
+    @Nullable
     private String measure;
 
-    @NonNull
+    @Nullable
     private StatusItem status;
 
-    @NonNull
+    @Nullable
     private User user;
 
-    @NonNull
+    @Nullable
     private ItemLocal itemLocal;
 }

@@ -1,23 +1,22 @@
 package com.sig.sistema_gerenciador_inventario.model.dto.request;
 
-import org.jspecify.annotations.NonNull;
-
+import jakarta.annotation.Nullable;
 import lombok.Getter;
 
 @Getter
-public class ProductRequest extends ItemRequest {
-    @NonNull
+public class ProductPatchRequest extends ItemPatchRequest {
+    @Nullable
     private Double value;
 
-    @NonNull
+    @Nullable
     private Double weight;
 
-    @NonNull
+    @Nullable
     private Double height;
 
-    @NonNull
+    @Nullable
     private Double length;
 
-    @NonNull
+    @Nullable
     private Double depth;
 }

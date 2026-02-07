@@ -25,10 +25,10 @@ import lombok.Setter;
 public class RawMaterial extends Item {
 
     @NonNull
-    private int batch;
+    private Integer batch;
 
     @NonNull
-    private double unitValue;
+    private Double unitValue;
 
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
@@ -36,9 +36,9 @@ public class RawMaterial extends Item {
     private Set<Supplier> supplier;
 
     public RawMaterial(@NonNull Long id,@NonNull String name, @NonNull CategoryItem category, @NonNull TypeItem typeItem,
-            @NonNull String description, @NonNull int quantity, @NonNull String minimiumQuantity,
+            @NonNull String description, @NonNull Integer quantity, @NonNull String minimiumQuantity,
             @NonNull String measure, @NonNull StatusItem status, @NonNull User user, @NonNull ItemLocal itemLocal,
-            @NonNull int batch, @NonNull double unitValue, @NonNull Set<Supplier> supplier) {
+            @NonNull Integer batch, @NonNull Double unitValue, @NonNull Set<Supplier> supplier) {
         super(id, name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user, itemLocal);
         this.batch = batch;
         this.unitValue = unitValue;
@@ -46,9 +46,9 @@ public class RawMaterial extends Item {
     }
 
     public RawMaterial(@NonNull String name, @NonNull CategoryItem category, @NonNull TypeItem typeItem,
-            @NonNull String description, @NonNull int quantity, @NonNull String minimiumQuantity,
+            @NonNull String description, @NonNull Integer quantity, @NonNull String minimiumQuantity,
             @NonNull String measure, @NonNull StatusItem status, @NonNull User user, @NonNull ItemLocal itemLocal,
-            @NonNull int batch, @NonNull double unitValue, @NonNull Set<Supplier> supplier) {
+            @NonNull Integer batch, @NonNull Double unitValue, @NonNull Set<Supplier> supplier) {
         super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user, itemLocal);
         this.batch = batch;
         this.unitValue = unitValue;

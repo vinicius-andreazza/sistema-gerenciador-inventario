@@ -18,25 +18,25 @@ import lombok.Setter;
 public class Product extends Item {
     
     @NonNull
-    private double value;
+    private Double value;
 
     @NonNull
-    private double weight;
+    private Double weight;
 
     @NonNull
-    private double height;
+    private Double height;
 
     @NonNull
-    private double length;
+    private Double length;
 
     @NonNull
-    private double depth;
+    private Double depth;
 
     public Product(Long item_id, @NonNull String name, @NonNull CategoryItem category, @NonNull TypeItem typeItem,
-            @NonNull String description, @NonNull int quantity, @NonNull String minimiumQuantity,
+            @NonNull String description, @NonNull Integer quantity, @NonNull String minimiumQuantity,
             @NonNull String measure, @NonNull StatusItem status, @NonNull User user, @NonNull ItemLocal itemLocal,
-            @NonNull double value, @NonNull double weight, @NonNull double height, @NonNull double length,
-            @NonNull double depth) {
+            @NonNull Double value, @NonNull Double weight, @NonNull Double height, @NonNull Double length,
+            @NonNull Double depth) {
         super(item_id, name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user,
                 itemLocal);
         this.value = value;
@@ -47,10 +47,10 @@ public class Product extends Item {
     }
 
     public Product(@NonNull String name, @NonNull CategoryItem category, @NonNull TypeItem typeItem,
-            @NonNull String description, @NonNull int quantity, @NonNull String minimiumQuantity,
+            @NonNull String description, @NonNull Integer quantity, @NonNull String minimiumQuantity,
             @NonNull String measure, @NonNull StatusItem status, @NonNull User user, @NonNull ItemLocal itemLocal,
-            @NonNull double value, @NonNull double weight, @NonNull double height, @NonNull double length,
-            @NonNull double depth) {
+            @NonNull Double value, @NonNull Double weight, @NonNull Double height, @NonNull Double length,
+            @NonNull Double depth) {
         super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user, itemLocal);
         this.value = value;
         this.weight = weight;

@@ -42,7 +42,7 @@ public class Item {
     private String description;
 
     @NonNull
-    private int quantity;
+    private Integer quantity;
 
     @NonNull
     private String minimiumQuantity;
@@ -64,7 +64,7 @@ public class Item {
     
 
     public Item(Long item_id, @NonNull String name, @NonNull CategoryItem category, @NonNull TypeItem typeItem,
-            @NonNull String description, @NonNull int quantity, @NonNull String minimiumQuantity,
+            @NonNull String description, @NonNull Integer quantity, @NonNull String minimiumQuantity,
             @NonNull String measure, @NonNull StatusItem status, @NonNull User user, @NonNull ItemLocal itemLocal) {
         this.item_id = item_id;
         this.name = name;
@@ -82,7 +82,7 @@ public class Item {
 
 
     public Item(@NonNull String name, @NonNull CategoryItem category, @NonNull TypeItem typeItem,
-            @NonNull String description, @NonNull int quantity, @NonNull String minimiumQuantity,
+            @NonNull String description, @NonNull Integer quantity, @NonNull String minimiumQuantity,
             @NonNull String measure, @NonNull StatusItem status, @NonNull User user, @NonNull ItemLocal itemLocal) {
         this.name = name;
         this.category = category;
