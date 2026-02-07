@@ -1,6 +1,6 @@
 package com.sig.sistema_gerenciador_inventario.model.dto.request;
 
-import org.jspecify.annotations.NonNull;
+
 
 import com.sig.sistema_gerenciador_inventario.model.ItemLocal;
 import com.sig.sistema_gerenciador_inventario.model.User;
@@ -8,37 +8,40 @@ import com.sig.sistema_gerenciador_inventario.model.enums.CategoryItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.StatusItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.TypeItem;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
 public class ItemRequest {
-    @NonNull
+
+    @NotBlank
     private String name;
 
-    @NonNull
+    @NotNull
     private CategoryItem category;
 
-    @NonNull
+    @NotNull
     private TypeItem typeItem;
 
-    @NonNull
+    @NotBlank
     private String description;
 
-    @NonNull
+    @NotNull
     private Integer quantity;
 
-    @NonNull
-    private String minimiumQuantity;
+    @NotNull
+    private Integer minimiumQuantity;
 
-    @NonNull
+    @NotBlank
     private String measure;
 
-    @NonNull
+    @NotNull
     private StatusItem status;
 
-    @NonNull
+    @NotNull
     private User user;
 
-    @NonNull
+    @NotNull
     private ItemLocal itemLocal;
 }

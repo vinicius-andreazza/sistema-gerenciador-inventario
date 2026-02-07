@@ -4,17 +4,17 @@ import java.util.Set;
 
 import com.sig.sistema_gerenciador_inventario.model.Supplier;
 
-import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.Null;
 import lombok.Getter;
 
 @Getter
 public class RawMaterialPatchRequest extends ItemPatchRequest {
-    @Nullable
+    @Null
     private Integer batch;
 
-    @Nullable
+    @Null
     private Double unitValue;
 
-    @Nullable
+    @Null
     private Set<Supplier> supplier;
 }

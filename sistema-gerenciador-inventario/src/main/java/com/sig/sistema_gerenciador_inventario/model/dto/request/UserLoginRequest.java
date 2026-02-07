@@ -1,9 +1,9 @@
 package com.sig.sistema_gerenciador_inventario.model.dto.request;
 
-import org.jspecify.annotations.NonNull;
+import jakarta.validation.constraints.NotNull;
 
 public record UserLoginRequest(
-    @NonNull String username,
-    @NonNull String password
+    @NotNull String username,
+    @NotNull String password
 ) {
 }

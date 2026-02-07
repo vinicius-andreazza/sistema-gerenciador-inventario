@@ -1,22 +1,22 @@
 package com.sig.sistema_gerenciador_inventario.model.dto.request;
 
-import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.Null;
 import lombok.Getter;
 
 @Getter
 public class ProductPatchRequest extends ItemPatchRequest {
-    @Nullable
+    @Null
     private Double value;
 
-    @Nullable
+    @Null
     private Double weight;
 
-    @Nullable
+    @Null
     private Double height;
 
-    @Nullable
+    @Null
     private Double length;
 
-    @Nullable
+    @Null
     private Double depth;
 }

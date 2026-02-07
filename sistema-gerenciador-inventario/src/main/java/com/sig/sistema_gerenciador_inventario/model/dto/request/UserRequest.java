@@ -1,15 +1,16 @@
 package com.sig.sistema_gerenciador_inventario.model.dto.request;
 
 
-import org.jspecify.annotations.NonNull;
-
 import com.sig.sistema_gerenciador_inventario.model.enums.UserRole;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 
 public record UserRequest(
-    @NonNull String username,
-    @NonNull String password,
-    @NonNull UserRole roles
+    @NotBlank String username,
+    @NotBlank String password,
+    @NotNull UserRole roles
 ) {
     
 }

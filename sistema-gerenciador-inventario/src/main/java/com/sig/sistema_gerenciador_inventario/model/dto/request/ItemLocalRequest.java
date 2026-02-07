@@ -1,11 +1,12 @@
 package com.sig.sistema_gerenciador_inventario.model.dto.request;
 
-import org.jspecify.annotations.NonNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record ItemLocalRequest(
-    @NonNull String sectorName,
-    @NonNull Integer position,
-    @NonNull String shelf
+    @NotBlank String sectorName,
+    @NotNull Integer position,
+    @NotBlank String shelf
 ) {
     
 }

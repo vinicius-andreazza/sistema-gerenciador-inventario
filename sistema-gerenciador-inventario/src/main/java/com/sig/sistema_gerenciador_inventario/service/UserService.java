@@ -2,8 +2,6 @@ package com.sig.sistema_gerenciador_inventario.service;
 
 import java.util.List;
 
-import javax.management.openmbean.InvalidKeyException;
-
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,14 +26,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public UserResponse create(UserRequest userRequest) {
-        if (userRequest.username().isBlank()) {
-            throw new IllegalArgumentException("Nome de usuario vazio");
-        }
         if (usernameAlreadyExists(userRequest.username())) {
             throw new DataIntegrityViolationException("Nome de usuario já utilizado");
-        }
-        if (userRequest.password().isBlank()) {
-            throw new IllegalArgumentException("Senha vazia");
         }
         User userCreated = UserMapper.userMap(userRequest);
 
@@ -63,15 +55,6 @@ public class UserService {
         if (id == null || id<= 0) {
             throw new IllegalArgumentException("Id não pode ser nulo ou menor que 1");
         }
-        if (userRequest.username().isBlank()) {
-            throw new IllegalArgumentException("Nome de usuario vazio");
-        }
-        if (userRequest.password().isBlank()) {
-            throw new IllegalArgumentException("Senha vazia");
-        }
-        if (userRequest.roles() == null) {
-            throw new IllegalArgumentException("Role não pode ser nula");
-        }
         if (usernameAlreadyExists(userRequest.username())) {
             throw new DataIntegrityViolationException("Nome de usuario já utilizado");
         }
@@ -94,7 +77,7 @@ public class UserService {
         if (id == null || id<= 0) {
             throw new IllegalArgumentException("Id não pode ser nulo ou menor que 1");
         }
-        if (userRequest.username() != null && usernameAlreadyExists(userRequest.username())) {
+        if (usernameAlreadyExists(userRequest.username())) {
             throw new DataIntegrityViolationException("Nome de usuario já utilizado");
         }
 
@@ -123,10 +106,11 @@ public class UserService {
 
     @Transactional
     public void delete(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new InvalidKeyException("Não existe um usuario com esse ID");
+        try {
+            userRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
-        userRepository.deleteById(id);
     }
 
     private boolean usernameAlreadyExists(String username) {

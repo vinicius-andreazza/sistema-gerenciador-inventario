@@ -1,7 +1,5 @@
 package com.sig.sistema_gerenciador_inventario.model;
 
-import org.jspecify.annotations.NonNull;
-
 import com.sig.sistema_gerenciador_inventario.model.enums.CategoryItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.StatusItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.TypeItem;
@@ -14,6 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,44 +28,44 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long item_id;
 
-    @NonNull
+    @NotBlank
     private String name;
 
-    @NonNull
+    @NotNull
     private CategoryItem category;
 
-    @NonNull
+    @NotNull
     @Column(insertable=false, updatable=false)
     private TypeItem typeItem;
 
-    @NonNull
+    @NotBlank
     private String description;
 
-    @NonNull
+    @NotNull
     private Integer quantity;
 
-    @NonNull
-    private String minimiumQuantity;
+    @NotNull
+    private Integer minimiumQuantity;
 
-    @NonNull
+    @NotBlank
     private String measure;
 
-    @NonNull
+    @NotNull
     private StatusItem status;
 
-    @NonNull
+    @NotNull
     @ManyToOne
     private User user;
 
-    @NonNull
+    @NotNull
     @ManyToOne
     private ItemLocal itemLocal;
 
     
 
-    public Item(Long item_id, @NonNull String name, @NonNull CategoryItem category, @NonNull TypeItem typeItem,
-            @NonNull String description, @NonNull Integer quantity, @NonNull String minimiumQuantity,
-            @NonNull String measure, @NonNull StatusItem status, @NonNull User user, @NonNull ItemLocal itemLocal) {
+    public Item(Long item_id, @NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
+            @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
+            @NotBlank String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal) {
         this.item_id = item_id;
         this.name = name;
         this.category = category;
@@ -81,9 +81,9 @@ public class Item {
 
 
 
-    public Item(@NonNull String name, @NonNull CategoryItem category, @NonNull TypeItem typeItem,
-            @NonNull String description, @NonNull Integer quantity, @NonNull String minimiumQuantity,
-            @NonNull String measure, @NonNull StatusItem status, @NonNull User user, @NonNull ItemLocal itemLocal) {
+    public Item(@NotNull String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
+            @NotNull String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
+            @NotNull String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal) {
         this.name = name;
         this.category = category;
         this.typeItem = typeItem;

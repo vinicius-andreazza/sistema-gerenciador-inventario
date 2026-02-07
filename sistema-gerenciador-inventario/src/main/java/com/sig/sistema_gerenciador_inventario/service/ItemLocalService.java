@@ -22,15 +22,6 @@ public class ItemLocalService {
     private final ItemLocalRepository itemLocalRepository;
 
     public ItemLocalResponse create(ItemLocalRequest itemLocalRequest) {
-        if (itemLocalRequest.sectorName() == null || itemLocalRequest.sectorName().isBlank()) {
-            throw new IllegalArgumentException("Nome do setor não pode ser vazio");
-        }
-        if (itemLocalRequest.shelf() == null || itemLocalRequest.shelf().isBlank()) {
-            throw new IllegalArgumentException("Lote não pode ser vazio");
-        }
-        if (itemLocalRequest.position() == null) {
-            throw new IllegalArgumentException("Posição não pode ser nulo");
-        }
         ItemLocal itemLocalCreated = ItemLocalMapper.itemLocalMap(itemLocalRequest);
         itemLocalCreated = itemLocalRepository.save(itemLocalCreated);
         ItemLocalResponse itemLocalResponse = ItemLocalResponseMapper.itemLocalMap(itemLocalCreated);
@@ -107,10 +98,11 @@ public class ItemLocalService {
 
     @Transactional
     public void deleteById(Long id) {
-        if (!itemLocalRepository.existsById(id)) {
-            throw new IllegalArgumentException("Id invalido");
+        try {
+            itemLocalRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
-        itemLocalRepository.deleteById(id);
     }
 
 }

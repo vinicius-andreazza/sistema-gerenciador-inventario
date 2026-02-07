@@ -2,20 +2,19 @@ package com.sig.sistema_gerenciador_inventario.model.dto.request;
 
 import java.util.Set;
 
-import org.jspecify.annotations.NonNull;
-
 import com.sig.sistema_gerenciador_inventario.model.Supplier;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
 public class RawMaterialRequest extends ItemRequest {
-    @NonNull
+    @NotNull
     private Integer batch;
 
-    @NonNull
+    @NotNull
     private Double unitValue;
 
-    @NonNull
+    @NotNull
     private Set<Supplier> supplier;
 }

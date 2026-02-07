@@ -21,12 +21,6 @@ public class SupplierService {
     private final SupplierRepository supplierRepository;
 
     public SupplierResponse create(SupplierRequest supplierRequest) {
-        if (supplierRequest.name() == null || supplierRequest.name().isBlank()) {
-            throw new IllegalArgumentException("Nome não pode ser vazio");
-        }
-        if (supplierRequest.email() == null || supplierRequest.email().isBlank()) {
-            throw new IllegalArgumentException("Email não pode ser vazio");
-        }
         Supplier supplierCreated = SupplierMapper.supplierMap(supplierRequest);
         supplierCreated = supplierRepository.save(supplierCreated);
         SupplierResponse response = SupplierResponseMapper.supplierResponseMap(supplierCreated);
@@ -50,12 +44,6 @@ public class SupplierService {
     public SupplierResponse putUpdate(Long id, SupplierRequest supplierRequest) {
         if (id == null || id <= 0) {
             throw new IllegalArgumentException("Id não pode ser nulo ou menor do que 1");
-        }
-        if (supplierRequest.name() == null || supplierRequest.name().isBlank()) {
-            throw new IllegalArgumentException("Nome não pode ser vazio");
-        }
-        if (supplierRequest.email() == null || supplierRequest.email().isBlank()) {
-            throw new IllegalArgumentException("Email não pode ser vazio");
         }
         Supplier supplierShouldBeUpdated = supplierRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Id invalido"));
@@ -100,9 +88,10 @@ public class SupplierService {
     }
 
     public void deleteById(Long id) {
-        if (!supplierRepository.existsById(id)) {
-            throw new EntityNotFoundException("Id invalido");
+        try {
+            supplierRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
-        supplierRepository.deleteById(id);
     }
 }

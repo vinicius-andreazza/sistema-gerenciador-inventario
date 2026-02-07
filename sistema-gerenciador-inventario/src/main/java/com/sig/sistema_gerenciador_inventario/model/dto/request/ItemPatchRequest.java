@@ -6,38 +6,42 @@ import com.sig.sistema_gerenciador_inventario.model.enums.CategoryItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.StatusItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.TypeItem;
 
-import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Null;
 import lombok.Getter;
 
 @Getter
 public class ItemPatchRequest {
-    @Nullable
+    @Null
+    @NotEmpty
     private String name;
 
-    @Nullable
+    @Null
     private CategoryItem category;
 
-    @Nullable
+    @Null
     private TypeItem typeItem;
 
-    @Nullable
+    @Null
+    @NotEmpty
     private String description;
 
-    @Nullable
+    @Null
     private Integer quantity;
 
-    @Nullable
-    private String minimiumQuantity;
+    @Null
+    private Integer minimiumQuantity;
 
-    @Nullable
+    @Null
+    @NotEmpty
     private String measure;
 
-    @Nullable
+    @Null
     private StatusItem status;
 
-    @Nullable
+    @Null
     private User user;
 
-    @Nullable
+    @Null
     private ItemLocal itemLocal;
 }

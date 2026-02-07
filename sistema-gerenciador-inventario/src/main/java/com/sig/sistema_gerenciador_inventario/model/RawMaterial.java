@@ -2,8 +2,6 @@ package com.sig.sistema_gerenciador_inventario.model;
 
 import java.util.Set;
 
-import org.jspecify.annotations.NonNull;
-
 import com.sig.sistema_gerenciador_inventario.model.enums.CategoryItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.StatusItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.TypeItem;
@@ -15,6 +13,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,31 +24,31 @@ import lombok.Setter;
 @PrimaryKeyJoinColumn(name="item_id")
 public class RawMaterial extends Item {
 
-    @NonNull
+    @NotNull
     private Integer batch;
 
-    @NonNull
+    @NotNull
     private Double unitValue;
 
-    @NonNull
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "Supplier_Material", joinColumns = @JoinColumn(name = "item_id"), inverseJoinColumns = @JoinColumn(name = "supplier_id"))
     private Set<Supplier> supplier;
 
-    public RawMaterial(@NonNull Long id,@NonNull String name, @NonNull CategoryItem category, @NonNull TypeItem typeItem,
-            @NonNull String description, @NonNull Integer quantity, @NonNull String minimiumQuantity,
-            @NonNull String measure, @NonNull StatusItem status, @NonNull User user, @NonNull ItemLocal itemLocal,
-            @NonNull Integer batch, @NonNull Double unitValue, @NonNull Set<Supplier> supplier) {
+    public RawMaterial(@NotNull Long id,@NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
+            @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
+            @NotBlank String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal,
+            @NotNull Integer batch, @NotNull Double unitValue, @NotNull Set<Supplier> supplier) {
         super(id, name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user, itemLocal);
         this.batch = batch;
         this.unitValue = unitValue;
         this.supplier = supplier;
     }
 
-    public RawMaterial(@NonNull String name, @NonNull CategoryItem category, @NonNull TypeItem typeItem,
-            @NonNull String description, @NonNull Integer quantity, @NonNull String minimiumQuantity,
-            @NonNull String measure, @NonNull StatusItem status, @NonNull User user, @NonNull ItemLocal itemLocal,
-            @NonNull Integer batch, @NonNull Double unitValue, @NonNull Set<Supplier> supplier) {
+    public RawMaterial(@NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
+            @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
+            @NotBlank String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal,
+            @NotNull Integer batch, @NotNull Double unitValue, @NotNull Set<Supplier> supplier) {
         super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user, itemLocal);
         this.batch = batch;
         this.unitValue = unitValue;

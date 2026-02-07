@@ -2,8 +2,6 @@ package com.sig.sistema_gerenciador_inventario.model;
 
 import java.util.Set;
 
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -12,6 +10,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,21 +27,22 @@ public class Supplier {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long supplier_id;
 
-    @NonNull
+    @NotBlank
     private String name;
 
-    @Nullable
+    @Null
+    @Pattern(regexp = "(?:([1-9]{2})?)(\\\\d{4,5})(\\\\d{4})$/", message = "Celular inválido")
     private String phone;
 
-    @NonNull
+    @NotBlank
     private String email;
 
-    @Nullable
+    @Null
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "supplier")
     private Set<RawMaterial> rawMaterial;
 
-    public Supplier(Long supplier_id, @NonNull String name, @Nullable String phone, @NonNull String email,
-            @Nullable Set<RawMaterial> rawMaterial) {
+    public Supplier(Long supplier_id, @NotBlank String name, @Null String phone, @NotBlank String email,
+            @Null Set<RawMaterial> rawMaterial) {
         this.supplier_id = supplier_id;
         this.name = name;
         this.phone = phone;
@@ -47,15 +50,15 @@ public class Supplier {
         this.rawMaterial = rawMaterial;
     }
 
-    public Supplier(@NonNull String name, @Nullable String phone, @NonNull String email,
-            @Nullable Set<RawMaterial> rawMaterial) {
+    public Supplier(@NotNull String name, @Null String phone, @NotNull String email,
+            @Null Set<RawMaterial> rawMaterial) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.rawMaterial = rawMaterial;
     }
 
-    public Supplier(@NonNull String name, @NonNull String email) {
+    public Supplier(@NotNull String name, @NotNull String email) {
         this.name = name;
         this.email = email;
     }

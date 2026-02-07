@@ -26,7 +26,7 @@ public class ProductResponse extends ItemResponse {
     private double depth;
 
     public ProductResponse(@NonNull String name, @NonNull CategoryItem category, @NonNull String description,
-            @NonNull int quantity, @NonNull String minimiumQuantity, @NonNull String measure,
+            @NonNull int quantity, @NonNull Integer minimiumQuantity, @NonNull String measure,
             @NonNull StatusItem status, @NonNull ItemLocal itemLocal, @NonNull double value, @NonNull double weight,
             @NonNull double height, @NonNull double length, @NonNull double depth) {
         super(name, category, description, quantity, minimiumQuantity, measure, status, itemLocal);

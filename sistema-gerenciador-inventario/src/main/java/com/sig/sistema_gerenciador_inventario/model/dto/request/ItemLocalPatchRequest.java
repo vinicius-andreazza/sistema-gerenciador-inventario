@@ -1,11 +1,12 @@
 package com.sig.sistema_gerenciador_inventario.model.dto.request;
 
-import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Null;
 
 public record ItemLocalPatchRequest(
-    @Nullable String sectorName,
-    @Nullable Integer position,
-    @Nullable String shelf
+    @Null @NotEmpty String sectorName,
+    @Null Integer position,
+    @Null @NotEmpty String shelf
 ) {
     
 }

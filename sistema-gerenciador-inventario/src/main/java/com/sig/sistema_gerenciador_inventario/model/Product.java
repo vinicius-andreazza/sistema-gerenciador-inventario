@@ -1,13 +1,13 @@
 package com.sig.sistema_gerenciador_inventario.model;
 
-import org.jspecify.annotations.NonNull;
-
 import com.sig.sistema_gerenciador_inventario.model.enums.CategoryItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.StatusItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.TypeItem;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,26 +17,26 @@ import lombok.Setter;
 @PrimaryKeyJoinColumn(name="item_id")
 public class Product extends Item {
     
-    @NonNull
+    @NotNull
     private Double value;
 
-    @NonNull
+    @NotNull
     private Double weight;
 
-    @NonNull
+    @NotNull
     private Double height;
 
-    @NonNull
+    @NotNull
     private Double length;
 
-    @NonNull
+    @NotNull
     private Double depth;
 
-    public Product(Long item_id, @NonNull String name, @NonNull CategoryItem category, @NonNull TypeItem typeItem,
-            @NonNull String description, @NonNull Integer quantity, @NonNull String minimiumQuantity,
-            @NonNull String measure, @NonNull StatusItem status, @NonNull User user, @NonNull ItemLocal itemLocal,
-            @NonNull Double value, @NonNull Double weight, @NonNull Double height, @NonNull Double length,
-            @NonNull Double depth) {
+    public Product(Long item_id, @NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
+            @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
+            @NotBlank String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal,
+            @NotNull Double value, @NotNull Double weight, @NotNull Double height, @NotNull Double length,
+            @NotNull Double depth) {
         super(item_id, name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user,
                 itemLocal);
         this.value = value;
@@ -46,11 +46,11 @@ public class Product extends Item {
         this.depth = depth;
     }
 
-    public Product(@NonNull String name, @NonNull CategoryItem category, @NonNull TypeItem typeItem,
-            @NonNull String description, @NonNull Integer quantity, @NonNull String minimiumQuantity,
-            @NonNull String measure, @NonNull StatusItem status, @NonNull User user, @NonNull ItemLocal itemLocal,
-            @NonNull Double value, @NonNull Double weight, @NonNull Double height, @NonNull Double length,
-            @NonNull Double depth) {
+    public Product(@NotNull String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
+            @NotNull String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
+            @NotNull String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal,
+            @NotNull Double value, @NotNull Double weight, @NotNull Double height, @NotNull Double length,
+            @NotNull Double depth) {
         super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user, itemLocal);
         this.value = value;
         this.weight = weight;

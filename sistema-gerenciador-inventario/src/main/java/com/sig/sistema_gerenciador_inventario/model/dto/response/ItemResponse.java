@@ -20,10 +20,10 @@ public class ItemResponse {
     private String description;
 
     @NonNull
-    private int quantity;
+    private Integer quantity;
 
     @NonNull
-    private String minimiumQuantity;
+    private Integer minimiumQuantity;
 
     @NonNull
     private String measure;
@@ -35,7 +35,7 @@ public class ItemResponse {
     private ItemLocal itemLocal;
 
     public ItemResponse(@NonNull String name, @NonNull CategoryItem category, @NonNull String description,
-            @NonNull int quantity, @NonNull String minimiumQuantity, @NonNull String measure,
+            @NonNull Integer quantity, @NonNull Integer minimiumQuantity, @NonNull String measure,
             @NonNull StatusItem status, @NonNull ItemLocal itemLocal) {
         this.name = name;
         this.category = category;

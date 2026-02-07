@@ -1,7 +1,5 @@
 package com.sig.sistema_gerenciador_inventario.model;
 
-import org.jspecify.annotations.NonNull;
-
 import com.sig.sistema_gerenciador_inventario.model.enums.UserRole;
 
 import jakarta.persistence.Column;
@@ -12,6 +10,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,28 +28,28 @@ public class User {
     private Long id;
 
     @Column(unique = true)
-    @NonNull
+    @NotBlank
     private String username;
 
-    @NonNull
+    @NotBlank
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @NonNull
+    @NotNull
     private UserRole roles;
 
-    public User(@NonNull String username, @NonNull String password, @NonNull UserRole roles) {
+    public User(@NotBlank String username, @NotBlank String password, @NotNull UserRole roles) {
         this.username = username;
         this.password = password;
         this.roles = roles;
     }
 
-    public User(@NonNull String username, @NonNull String password) {
+    public User(@NotBlank String username, @NotBlank String password) {
         this.username = username;
         this.password = password;
     }
 
-    public User(@NonNull String username, @NonNull UserRole roles) {
+    public User(@NotBlank String username, @NotNull UserRole roles) {
         this.username = username;
         this.roles = roles;
     }
