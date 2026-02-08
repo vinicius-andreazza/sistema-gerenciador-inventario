@@ -6,6 +6,7 @@ import com.sig.sistema_gerenciador_inventario.model.dto.response.RawMaterialResp
 public interface RawMaterialResponseMapper {
     public static RawMaterialResponse rawMaterialMap(RawMaterial rawMaterial){
         return new RawMaterialResponse(
+            rawMaterial.getItem_id(),
                 rawMaterial.getName(),
                 rawMaterial.getCategory(),
                 rawMaterial.getDescription(),

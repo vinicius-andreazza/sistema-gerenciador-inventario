@@ -44,4 +44,21 @@ public class ItemPatchRequest {
 
     @Null
     private ItemLocal itemLocal;
+
+    public ItemPatchRequest(@Null @NotEmpty String name, @Null CategoryItem category, @Null TypeItem typeItem,
+            @Null @NotEmpty String description, @Null Integer quantity, @Null Integer minimiumQuantity,
+            @Null @NotEmpty String measure, @Null StatusItem status, @Null User user, @Null ItemLocal itemLocal) {
+        this.name = name;
+        this.category = category;
+        this.typeItem = typeItem;
+        this.description = description;
+        this.quantity = quantity;
+        this.minimiumQuantity = minimiumQuantity;
+        this.measure = measure;
+        this.status = status;
+        this.user = user;
+        this.itemLocal = itemLocal;
+    }
+
+    
 }

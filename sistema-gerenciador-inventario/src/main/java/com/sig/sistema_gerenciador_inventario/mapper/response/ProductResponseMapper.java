@@ -6,6 +6,7 @@ import com.sig.sistema_gerenciador_inventario.model.dto.response.ProductResponse
 public interface ProductResponseMapper {
     public static ProductResponse productMap(Product product){
         return new ProductResponse(
+                product.getItem_id(),
                 product.getName(),
                 product.getCategory(),
                 product.getDescription(),

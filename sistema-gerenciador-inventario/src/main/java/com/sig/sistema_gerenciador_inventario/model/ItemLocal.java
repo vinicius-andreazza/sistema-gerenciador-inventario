@@ -28,7 +28,7 @@ public class ItemLocal {
     @NotBlank
     private String shelf;
 
-    public ItemLocal(Long local_id, @NotBlank String sectorName, @NotNull int position, @NotBlank String shelf) {
+    public ItemLocal(Long local_id, @NotBlank String sectorName, @NotNull Integer position, @NotBlank String shelf) {
         this.local_id = local_id;
         this.sectorName = sectorName;
         this.position = position;

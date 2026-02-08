@@ -30,9 +30,8 @@ public class UserService {
             throw new DataIntegrityViolationException("Nome de usuario já utilizado");
         }
         User userCreated = UserMapper.userMap(userRequest);
-
+        userCreated.setPassword(passwordEncoder.encode(userCreated.getPassword()));
         userCreated = userRepository.save(userCreated);
-
         UserResponse userResponse = UserResponseMapper.userResponseMap(userCreated);
         return userResponse;
     }

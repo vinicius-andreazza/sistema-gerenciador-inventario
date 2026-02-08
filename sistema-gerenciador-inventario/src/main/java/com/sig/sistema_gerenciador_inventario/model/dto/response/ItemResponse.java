@@ -11,6 +11,9 @@ import lombok.Getter;
 @Getter
 public class ItemResponse {
     @NonNull
+    private Long id;
+
+    @NonNull
     private String name;
 
     @NonNull
@@ -33,6 +36,22 @@ public class ItemResponse {
 
     @NonNull
     private ItemLocal itemLocal;
+
+    
+
+    public ItemResponse(@NonNull Long id, @NonNull String name, @NonNull CategoryItem category,
+            @NonNull String description, @NonNull Integer quantity, @NonNull Integer minimiumQuantity,
+            @NonNull String measure, @NonNull StatusItem status, @NonNull ItemLocal itemLocal) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.description = description;
+        this.quantity = quantity;
+        this.minimiumQuantity = minimiumQuantity;
+        this.measure = measure;
+        this.status = status;
+        this.itemLocal = itemLocal;
+    }
 
     public ItemResponse(@NonNull String name, @NonNull CategoryItem category, @NonNull String description,
             @NonNull Integer quantity, @NonNull Integer minimiumQuantity, @NonNull String measure,

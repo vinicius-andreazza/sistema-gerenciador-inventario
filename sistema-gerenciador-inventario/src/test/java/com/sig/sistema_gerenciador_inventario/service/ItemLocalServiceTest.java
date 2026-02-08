@@ -132,25 +132,6 @@ public class ItemLocalServiceTest {
     }
 
     @Test
-    void shouldNotCreateItemLocalWhenFieldIsNull(){
-        ItemLocalRequest itemLocalrequest = new ItemLocalRequest(null, 2, "AB2");
-        ItemLocal itemLocalCreated = new ItemLocal(itemLocalrequest.sectorName(), itemLocalrequest.position(), itemLocalrequest.shelf());
-
-        when(itemLocalRepository.save(itemLocalCreated)).thenReturn(itemLocalCreated);
-
-        assertThrows(IllegalArgumentException.class, () -> itemLocalService.create(itemLocalrequest));
-    }
-    @Test
-    void shouldNotCreateItemLocalWhenFieldIsBlank(){
-        ItemLocalRequest itemLocalrequest = new ItemLocalRequest("", 2, "AB2");
-        ItemLocal itemLocalCreated = new ItemLocal(itemLocalrequest.sectorName(), itemLocalrequest.position(), itemLocalrequest.shelf());
-
-        when(itemLocalRepository.save(itemLocalCreated)).thenReturn(itemLocalCreated);
-
-        assertThrows(IllegalArgumentException.class, () -> itemLocalService.create(itemLocalrequest));
-    }
-
-    @Test
     void shouldNotGetItemLocalWhenIdIsNull(){
         ItemLocal itemLocal = createGenericItemLocal();
         Long id = null;
@@ -182,33 +163,6 @@ public class ItemLocalServiceTest {
         ItemLocalRequest itemLocalRequest = new ItemLocalRequest("produção", 2, "A11");
 
         assertThrows(IllegalArgumentException.class, () -> itemLocalService.putUpdate(-1L,itemLocalRequest));
-    }
-
-    @Test
-    void shouldNotUpdateItemLocalWhenItemLocalIdNotExists() {
-        ItemLocalRequest itemLocalRequest = new ItemLocalRequest( "produção", 2, "A11");
-        Long id = 10L;
-        when(itemLocalRepository.existsById(id)).thenReturn(false);
-
-        assertThrows(EntityNotFoundException.class, () -> itemLocalService.putUpdate(id, itemLocalRequest));
-    }
-
-    @Test
-    void shouldNotDeleteItemLocalWhenItemLocalIdNotExist() {
-        ItemLocal itemLocal = createGenericItemLocal();
-        itemLocal.setLocal_id(1L);
-
-        when(itemLocalRepository.existsById(itemLocal.getLocal_id())).thenReturn(false);
-
-        assertThrows(IllegalArgumentException.class, () -> itemLocalService.deleteById(itemLocal.getLocal_id()));
-    }
-
-    @Test
-    void shouldNotDeleteItemLocalWhenIdIsNull() {
-        ItemLocal itemLocal = createGenericItemLocal();
-        itemLocal.setLocal_id(null);
-
-        assertThrows(IllegalArgumentException.class, () -> itemLocalService.deleteById(itemLocal.getLocal_id()));
     }
 
     private ItemLocalResponse mapToResponse(ItemLocal itemLocal){

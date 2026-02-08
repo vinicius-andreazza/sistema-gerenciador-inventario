@@ -17,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
+import com.sig.sistema_gerenciador_inventario.mapper.models.UserMapper;
+import com.sig.sistema_gerenciador_inventario.mapper.response.UserResponseMapper;
 import com.sig.sistema_gerenciador_inventario.model.User;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.UserRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.UserPatchRequest;
@@ -39,12 +41,15 @@ public class UserServiceTest {
     @Test
     void shouldCreateUser(){
         UserRequest userRequest = createGenericUserRequest();
+
         User userCreated = new User(userRequest.username(), passwordEncoder.encode(userRequest.password()), userRequest.roles());
+
+        UserResponse userExcepted = new UserResponse(null,userCreated.getUsername(), userCreated.getRoles());
 
         when(userRepository.save(userCreated)).thenReturn(userCreated);
 
         UserResponse userResponse = userService.create(userRequest);
-        UserResponse userExcepted = new UserResponse(userCreated.getId(),userCreated.getUsername(), userCreated.getRoles());
+        
 
         verifyUserResponse(userResponse, userExcepted);
     }
@@ -141,7 +146,7 @@ public class UserServiceTest {
         UserRequest userRequest2 = new UserRequest(userRequest.username(), userRequest.password(), UserRole.ROLE_ADMIN);
         User userCreated = new User(userRequest.username(), passwordEncoder.encode(userRequest.password()), userRequest.roles());
         User userCreated2 = new User(userRequest.username(), passwordEncoder.encode(userRequest.password()), UserRole.ROLE_ADMIN);
-
+        
         when(userRepository.save(userCreated)).thenReturn(userCreated);
         when(userRepository.save(userCreated2)).thenThrow(DataIntegrityViolationException.class);
 

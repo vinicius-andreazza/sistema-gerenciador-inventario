@@ -38,6 +38,14 @@ public class User {
     @NotNull
     private UserRole roles;
 
+    public User(Long id,@NotBlank String username, @NotBlank String password, @NotNull UserRole roles) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    
     public User(@NotBlank String username, @NotBlank String password, @NotNull UserRole roles) {
         this.username = username;
         this.password = password;

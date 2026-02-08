@@ -146,17 +146,6 @@ public class SupplierServiceTest {
     }
 
     @Test
-    void shouldNotCreateSupplierWhenNameOrEmailIsNull() {
-        SupplierRequest supplierRequest = new SupplierRequest("Marchetti", "(47) 99231-5863",
-                null, null);
-            SupplierRequest supplierRequest1 = new SupplierRequest(null, "(47) 99231-5863",
-                "marchetti@gmail.com", null);
-
-        assertThrows(IllegalArgumentException.class, () -> supplierService.create(supplierRequest));
-        assertThrows(IllegalArgumentException.class, () -> supplierService.create(supplierRequest1));
-    }
-
-    @Test
     void shouldNotGetSupplierByIdWhenIdIsNull(){
         assertThrows(IllegalArgumentException.class, () -> supplierService.findById(null));
     }

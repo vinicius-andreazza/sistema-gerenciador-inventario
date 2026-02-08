@@ -22,6 +22,18 @@ public class RawMaterialResponse extends ItemResponse {
     @NonNull
     private Set<Supplier> supplier;
 
+    
+
+    public RawMaterialResponse(@NonNull Long id, @NonNull String name, @NonNull CategoryItem category,
+            @NonNull String description, @NonNull Integer quantity, @NonNull Integer minimiumQuantity,
+            @NonNull String measure, @NonNull StatusItem status, @NonNull ItemLocal itemLocal, @NonNull int batch,
+            @NonNull double unitValue, @NonNull Set<Supplier> supplier) {
+        super(id, name, category, description, quantity, minimiumQuantity, measure, status, itemLocal);
+        this.batch = batch;
+        this.unitValue = unitValue;
+        this.supplier = supplier;
+    }
+
     public RawMaterialResponse(@NonNull String name, @NonNull CategoryItem category, @NonNull String description,
             @NonNull int quantity, @NonNull Integer minimiumQuantity, @NonNull String measure,
             @NonNull StatusItem status, @NonNull ItemLocal itemLocal, @NonNull int batch, @NonNull double unitValue,

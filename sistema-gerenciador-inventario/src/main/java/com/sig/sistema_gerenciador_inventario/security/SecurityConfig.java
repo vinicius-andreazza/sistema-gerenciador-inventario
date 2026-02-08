@@ -47,17 +47,19 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(
                     auth -> auth
-                    .requestMatchers("/users").permitAll()
-                    .requestMatchers("/users/*").permitAll()
+                    .requestMatchers("/users").hasRole("ADMIN")
+                    .requestMatchers("/users/*").hasRole("ADMIN")
+                    
                     .requestMatchers("/locals").hasAnyRole("ADMIN", "USER")
                     .requestMatchers("/locals/**").hasAnyRole("ADMIN", "USER")
                     .requestMatchers("/suppliers").hasAnyRole("ADMIN", "USER")
                     .requestMatchers("/suppliers/**").hasAnyRole("ADMIN", "USER")
+                    .requestMatchers("/products").hasAnyRole("ADMIN", "USER")
+                    .requestMatchers("/products/**").hasAnyRole("ADMIN", "USER")
+                    .requestMatchers("/rawMaterials").hasAnyRole("ADMIN", "USER")
+                    .requestMatchers("/rawMaterials/**").hasAnyRole("ADMIN", "USER")
+
                     .requestMatchers("/refreshToken").permitAll()
-                    .requestMatchers("/products").permitAll()
-                    .requestMatchers("/products/**").permitAll()
-                    .requestMatchers("/rawMaterials").permitAll()
-                    .requestMatchers("/rawMaterials/**").permitAll()
                     .requestMatchers("/login").permitAll()
                     
                     .anyRequest().permitAll()
