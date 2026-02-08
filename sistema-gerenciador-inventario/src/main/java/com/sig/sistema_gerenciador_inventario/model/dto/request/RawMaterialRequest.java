@@ -40,5 +40,8 @@ public class RawMaterialRequest extends ItemRequest {
         this.supplier = supplier;
     }
 
+    public RawMaterialRequest() {
+    }
+
     
 }

@@ -60,5 +60,8 @@ public class ItemPatchRequest {
         this.itemLocal = itemLocal;
     }
 
+    public ItemPatchRequest() {
+    }
+
     
 }

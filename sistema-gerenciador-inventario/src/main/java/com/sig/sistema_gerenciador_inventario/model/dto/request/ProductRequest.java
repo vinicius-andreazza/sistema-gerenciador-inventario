@@ -46,5 +46,8 @@ public class ProductRequest extends ItemRequest {
         this.depth = depth;
     }
 
+    public ProductRequest() {
+    }
+
     
 }

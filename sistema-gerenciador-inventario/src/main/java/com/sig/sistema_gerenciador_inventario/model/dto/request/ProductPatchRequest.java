@@ -49,7 +49,10 @@ public class ProductPatchRequest extends ItemPatchRequest {
         super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user, itemLocal);
     }
 
-    
 
+
+    public ProductPatchRequest() {
+    }
+    
     
 }
