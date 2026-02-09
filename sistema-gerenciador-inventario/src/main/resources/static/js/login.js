@@ -33,13 +33,15 @@ form.addEventListener("submit", async function (event) {
 
         const data = await response.json();
 
-        setCookie("tokenJWT", data.tokenJWT, 1);
+        setCookie("token", data.token, 1);
         setCookie("refreshToken", data.refreshToken, 7);
 
-        window.location.href = "dashboard.html";
+        window.location.href = "/userDashboard";
 
     } catch (error) {
         errorMessage.textContent = error.message;
+        deleteCookie("token")
+        deleteCookie("refreshToken")
     }
 });
 function setCookie(name, value, days) {

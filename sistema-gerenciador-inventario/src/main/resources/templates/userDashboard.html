@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gerenciamento de Usuários</title>
+  <link rel="stylesheet" href="css/userDashboard.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Gerenciamento de Usuários</h1>
+      <p>Painel administrativo</p>
+    </header>
+
+    <div class="content">
+      <!-- Lista de usuários -->
+      <section class="card">
+        <div class="card-header">
+          <h2>Usuários Cadastrados</h2>
+          <button id="refreshUsersBtn">Atualizar lista</button>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>Cargo</th>
+            </tr>
+          </thead>
+          <tbody id="userTableBody">
+            <!-- usuários renderizados via JS -->
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Formulário -->
+      <section class="card">
+        <h2>Novo Usuário</h2>
+        <form id="userForm">
+          <label>
+            Nome
+            <input type="text" id="name" required />
+          </label>
+
+          <label>
+            Senha
+            <input type="password" id="password" required />
+          </label>
+
+          <label>
+            Cargo
+            <select id="role" required>
+              <option value="">Selecione</option>
+              <option value="Gerente">Gerente</option>
+              <option value="Funcionário">Funcionário</option>
+              <option value="Administrador">Administrador</option>
+            </select>
+          </label>
+
+          <button type="submit">Cadastrar Usuário</button>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <script src="js/userDashboard.js"></script>
+</body>
+</html>
