@@ -6,7 +6,7 @@ const users = [];
 
 const API_URL = "http://localhost:8080";
 
-userForm.addEventListener("submit", function (event) {
+userForm.addEventListener("submit", async function (event) {
   event.preventDefault();
 
   const name = document.getElementById("name").value;
@@ -15,12 +15,24 @@ userForm.addEventListener("submit", function (event) {
 
   const user = {
     name,
-    password, // futuramente: hash no backend
+    password,
     role
   };
 
-  users.push(user);
-  renderUsers();
+  const response = await fetch(`${API_URL}/users`, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    credentials: "include",
+    body: JSON.stringify({
+        username: user.name,
+        password: user.password,
+        roles: user.role
+    })
+});
+
+  users.push(response.json().user);
   userForm.reset();
 });
 
