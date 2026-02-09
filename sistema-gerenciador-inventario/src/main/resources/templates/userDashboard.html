@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Gerenciamento de Usuários</title>
   <link rel="stylesheet" href="css/userDashboard.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
 </head>
 <body>
   <div class="container">
@@ -11,6 +12,10 @@
       <h1>Gerenciamento de Usuários</h1>
       <p>Painel administrativo</p>
     </header>
+
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+
+    <div th:replace="fragments/sidebar :: sidebar"></div>
 
     <div class="content">
       <!-- Lista de usuários -->
@@ -65,5 +70,6 @@
   </div>
 
   <script src="js/userDashboard.js"></script>
+  <script src="js/sidebar.js"></script>
 </body>
 </html>
