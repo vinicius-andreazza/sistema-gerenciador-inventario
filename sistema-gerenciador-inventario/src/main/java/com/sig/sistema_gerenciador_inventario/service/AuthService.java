@@ -23,6 +23,8 @@ import com.sig.sistema_gerenciador_inventario.security.jwt.JwtClaims;
 import com.sig.sistema_gerenciador_inventario.security.jwt.JwtEncoder;
 import com.sig.sistema_gerenciador_inventario.security.jwt.JwtValidate;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -36,17 +38,32 @@ public class AuthService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public UserLoginResponse login(UserLoginRequest login){
+    public UserLoginResponse login(UserLoginRequest login, HttpServletResponse response){
         Authentication auth = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(login.username(), login.password())
         );
         SecurityContextHolder.getContext().setAuthentication(auth);
-
+        
         String token = jwtEncoder.generateToken(auth.getName(), auth.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
-
-        System.out.println(auth.getName());
+        
         RefreshToken refreshToken =  new RefreshToken(jwtEncoder.generateRefreshToken(auth.getName()), auth.getName());
         refreshTokenRepository.save(refreshToken);
+
+
+        Cookie cookieToken = new Cookie("token", token);
+        cookieToken.setHttpOnly(true);
+        cookieToken.setPath("/");
+        cookieToken.setAttribute("SameSite", "Lax");
+        cookieToken.setMaxAge(60 * 5);
+
+        Cookie cookieRefreshToken = new Cookie("refreshToken", refreshToken.getToken());
+        cookieRefreshToken.setHttpOnly(true);
+        cookieRefreshToken.setPath("/");
+        cookieToken.setAttribute("SameSite", "Lax");
+        cookieRefreshToken.setMaxAge(60 * 60 * 24 * 7);
+
+        response.addCookie(cookieToken);
+        response.addCookie(cookieRefreshToken);
         return new UserLoginResponse(token, refreshToken.getToken());
     }
 

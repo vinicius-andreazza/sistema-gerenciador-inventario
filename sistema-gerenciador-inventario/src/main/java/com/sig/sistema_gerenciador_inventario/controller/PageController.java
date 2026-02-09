@@ -13,4 +13,9 @@ public class PageController {
         return "index";
     }
     
+    @GetMapping("/userDashboard")
+    public String getUserDashboard() {
+        return "userDashboard";
+    }
+
 }

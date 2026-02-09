@@ -11,6 +11,7 @@ import com.sig.sistema_gerenciador_inventario.model.dto.response.RefreshTokenRes
 import com.sig.sistema_gerenciador_inventario.model.dto.response.UserLoginResponse;
 import com.sig.sistema_gerenciador_inventario.service.AuthService;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,8 +24,8 @@ public class AuthController {
     private final AuthService authService;
     
     @PostMapping("/login")
-    public ResponseEntity<UserLoginResponse> login(@RequestBody UserLoginRequest userLoginRequest){
-        return ResponseEntity.ok(authService.login(userLoginRequest));
+    public ResponseEntity<UserLoginResponse> login(@RequestBody UserLoginRequest userLoginRequest, HttpServletResponse response){
+        return ResponseEntity.ok(authService.login(userLoginRequest, response));
     }
 
     @PostMapping("/refreshToken")
