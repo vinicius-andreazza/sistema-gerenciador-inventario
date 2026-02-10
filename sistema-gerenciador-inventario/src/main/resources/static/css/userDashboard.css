@@ -145,3 +145,24 @@ button:hover {
   background-color: #222;
 }
 
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.actions .edit {
+  background: #facc15;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.actions .delete {
+  background: #ef4444;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+}

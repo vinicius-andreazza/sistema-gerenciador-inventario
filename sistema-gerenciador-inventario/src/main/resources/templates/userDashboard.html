@@ -28,9 +28,10 @@
         <table>
           <thead>
             <tr>
-                <th>Id</th>
-                <th>Nome</th>
-                <th>Cargo</th>
+              <th>Id</th>
+              <th>Nome</th>
+              <th>Cargo</th>
+              <th>Ações</th>
             </tr>
           </thead>
           <tbody id="userTableBody">
@@ -45,17 +46,17 @@
         <form id="userForm">
           <label>
             Nome
-            <input type="text" id="name" required />
+            <input type="text" id="name"  />
           </label>
 
           <label>
             Senha
-            <input type="password" id="password" required />
+            <input type="password" id="password" />
           </label>
 
           <label>
             Cargo
-            <select id="role" required>
+            <select id="role" >
               <option value="">Selecione</option>
               <option value="ROLE_ADMIN">ROLE_ADMIN</option>
               <option value="ROLE_USER">ROLE_USER</option>

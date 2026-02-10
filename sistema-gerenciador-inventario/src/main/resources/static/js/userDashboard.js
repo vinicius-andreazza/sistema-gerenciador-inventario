@@ -6,41 +6,8 @@ const users = [];
 
 const API_URL = "http://localhost:8080";
 
-userForm.addEventListener("submit", async function (event) {
-    event.preventDefault();
-
-    const name = document.getElementById("name").value;
-    const password = document.getElementById("password").value;
-    const role = document.getElementById("role").value;
-
-    const user = {
-        name,
-        password,
-        role
-    };
-
-    const response = await fetch(`${API_URL}/users`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify({
-            username: user.name,
-            password: user.password,
-            roles: user.role
-        })
-    });
-
-    renderUsers()
-    userForm.reset();
-});
-
 async function renderUsers() {
     try {
-        const tr = userTableBody.children
-        let id = 0;
-        if (tr.length == 0) {
             const response = await fetch(`${API_URL}/users`, {
                 method: "GET",
                 credentials: "include"
@@ -61,16 +28,26 @@ async function renderUsers() {
                     <td>${user.id}</td>
                     <td>${user.username}</td>
                     <td>${user.roles}</td>
+                    <td class="actions">
+                        <button class="edit" onclick="editUser(${user.id}, '${user.username}', '${user.roles}')">✏️</button>
+                        <button class="delete" onclick="deleteUser(${user.id})">🗑️</button>
+                    </td>
                 `;
 
                 userTableBody.appendChild(row);
             });
-        }
-        else {
-            const lastRow = tr.item(tr.length - 1).innerHTML
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function updateUsers(params) {
+    try {
+        const lastRow = tr.item(tr.length - 1).innerHTML
             const initial = lastRow.search("<td>") + 4
             const final = lastRow.search("</td>")
-            id = lastRow.substring(initial,final);
+            id = lastRow.substring(initial, final);
             id++
             const response = await fetch(`${API_URL}/users/${id}`, {
                 method: "GET",
@@ -90,6 +67,10 @@ async function renderUsers() {
                     <td>${data.id}</td>
                     <td>${data.username}</td>
                     <td>${data.roles}</td>
+                    <td class="actions">
+                        <button class="edit" onclick="editUser(${user.id}, '${user.username}', '${user.roles}')">✏️</button>
+                        <button class="delete" onclick="deleteUser(${user.id})">🗑️</button>
+                    </td>
             `;
 
             console.log(row)
@@ -97,12 +78,71 @@ async function renderUsers() {
             console.log(userTableBody)
 
             userTableBody.appendChild(row);
-        }
-
     } catch (error) {
         console.error(error);
     }
 }
-document.addEventListener("DOMContentLoaded", renderUsers);
 
+userForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const username = document.getElementById("name").value;
+    const password = document.getElementById("password").value;
+    const roles = document.getElementById("role").value;
+
+    const url = editingUserId
+        ? `${API_URL}/users/${editingUserId}`
+        : `${API_URL}/users`;
+
+    const method = editingUserId ? "PATCH" : "POST";
+
+    await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ username, password, roles })
+    });
+
+    if(method == "POST"){
+        updateUsers();
+    }
+    else{
+        renderUsers();
+    }
+
+    resetForm();
+    
+});
+
+/* ---------- EDITAR ---------- */
+function editUser(id, username, roles) {
+    editingUserId = id;
+    document.getElementById("name").value = username;
+    document.getElementById("role").value = roles;
+
+    document.querySelector(".cardForm h2").textContent = "Editar Usuário";
+    document.querySelector(".cardForm button").textContent = "Salvar Alterações";
+}
+
+/* ---------- DELETAR ---------- */
+async function deleteUser(id) {
+    if (!confirm("Deseja realmente excluir este usuário?")) return;
+
+    await fetch(`${API_URL}/users/${id}`, {
+        method: "DELETE",
+        credentials: "include"
+    });
+
+    renderUsers();
+}
+
+/* ---------- RESET ---------- */
+function resetForm() {
+    editingUserId = null;
+    userForm.reset();
+    document.querySelector(".cardForm h2").textContent = "Novo Usuário";
+    document.querySelector(".cardForm button").textContent = "Cadastrar Usuário";
+}
+
+document.addEventListener("DOMContentLoaded", renderUsers);
 refreshBtn.addEventListener("click", renderUsers);
