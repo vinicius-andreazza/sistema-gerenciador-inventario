@@ -6,25 +6,27 @@ const users = [];
 
 const API_URL = "http://localhost:8080";
 
+let editingUserId;
+
 async function renderUsers() {
     try {
-            const response = await fetch(`${API_URL}/users`, {
-                method: "GET",
-                credentials: "include"
-            });
+        const response = await fetch(`${API_URL}/users`, {
+            method: "GET",
+            credentials: "include"
+        });
 
-            if (!response.ok) {
-                throw new Error("Erro ao buscar usuários");
-            }
+        if (!response.ok) {
+            throw new Error("Erro ao buscar usuários");
+        }
 
-            const data = await response.json();
+        const data = await response.json();
 
-            userTableBody.innerHTML = "";
+        userTableBody.innerHTML = "";
 
-            data.forEach(user => {
-                const row = document.createElement("tr");
+        data.forEach(user => {
+            const row = document.createElement("tr");
 
-                row.innerHTML = `
+            row.innerHTML = `
                     <td>${user.id}</td>
                     <td>${user.username}</td>
                     <td>${user.roles}</td>
@@ -34,8 +36,8 @@ async function renderUsers() {
                     </td>
                 `;
 
-                userTableBody.appendChild(row);
-            });
+            userTableBody.appendChild(row);
+        });
 
     } catch (error) {
         console.error(error);
@@ -44,40 +46,44 @@ async function renderUsers() {
 
 async function updateUsers(params) {
     try {
-        const lastRow = tr.item(tr.length - 1).innerHTML
+        let id = 0;
+        tr = userTableBody.children
+        if(tr.length!=0){
+            const lastRow = tr.item(tr.length - 1).innerHTML
             const initial = lastRow.search("<td>") + 4
             const final = lastRow.search("</td>")
             id = lastRow.substring(initial, final);
-            id++
-            const response = await fetch(`${API_URL}/users/${id}`, {
-                method: "GET",
-                credentials: "include"
-            });
+        }
+        id++
+        const response = await fetch(`${API_URL}/users/${id}`, {
+            method: "GET",
+            credentials: "include"
+        });
 
-            if (!response.ok) {
-                throw new Error("Erro ao buscar usuários");
-            }
+        if (!response.ok) {
+            throw new Error("Erro ao buscar usuários");
+        }
 
-            const data = await response.json();
-            const user = data.user;
+        const data = await response.json();
+        const user = data.user;
 
-            const row = document.createElement("tr");
+        const row = document.createElement("tr");
 
-            row.innerHTML = `
+        row.innerHTML = `
                     <td>${data.id}</td>
                     <td>${data.username}</td>
                     <td>${data.roles}</td>
                     <td class="actions">
-                        <button class="edit" onclick="editUser(${user.id}, '${user.username}', '${user.roles}')">✏️</button>
-                        <button class="delete" onclick="deleteUser(${user.id})">🗑️</button>
+                        <button class="edit" onclick="editUser(${data.id}, '${data.username}', '${data.roles}')">✏️</button>
+                        <button class="delete" onclick="deleteUser(${data.id})">🗑️</button>
                     </td>
             `;
 
-            console.log(row)
+        console.log(row)
 
-            console.log(userTableBody)
+        console.log(userTableBody)
 
-            userTableBody.appendChild(row);
+        userTableBody.appendChild(row);
     } catch (error) {
         console.error(error);
     }
@@ -103,15 +109,15 @@ userForm.addEventListener("submit", async function (event) {
         body: JSON.stringify({ username, password, roles })
     });
 
-    if(method == "POST"){
+    if (method == "POST") {
         updateUsers();
     }
-    else{
+    else {
         renderUsers();
     }
 
     resetForm();
-    
+
 });
 
 /* ---------- EDITAR ---------- */
