@@ -18,4 +18,14 @@ public class PageController {
         return "userDashboard";
     }
 
+    @GetMapping("/supplierDashboard")
+    public String getSupplierDashboard() {
+        return "supplierDashboard";
+    }
+
+    @GetMapping("/productDashboard")
+    public String getProducts() {
+        return "products";
+    }
+
 }

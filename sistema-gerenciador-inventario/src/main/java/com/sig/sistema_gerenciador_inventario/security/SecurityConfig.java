@@ -49,6 +49,8 @@ public class SecurityConfig {
                     auth -> auth
                     .requestMatchers("/").permitAll()
                     .requestMatchers("/userDashboard").permitAll()
+                    .requestMatchers("/supplierDashboard").permitAll()
+                    .requestMatchers("/productDashboard").permitAll()
 
                     .requestMatchers("/users").permitAll()
                     .requestMatchers("/users/*").permitAll()
@@ -57,8 +59,8 @@ public class SecurityConfig {
                     .requestMatchers("/locals/**").hasAnyRole("ADMIN", "USER")
                     .requestMatchers("/suppliers").hasAnyRole("ADMIN", "USER")
                     .requestMatchers("/suppliers/**").hasAnyRole("ADMIN", "USER")
-                    .requestMatchers("/products").hasAnyRole("ADMIN", "USER")
-                    .requestMatchers("/products/**").hasAnyRole("ADMIN", "USER")
+                    .requestMatchers("/products").permitAll()
+                    .requestMatchers("/products/**").permitAll()
                     .requestMatchers("/rawMaterials").hasAnyRole("ADMIN", "USER")
                     .requestMatchers("/rawMaterials/**").hasAnyRole("ADMIN", "USER")
 

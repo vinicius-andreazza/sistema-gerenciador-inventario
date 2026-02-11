@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Fornecedores</title>
+
+    <link rel="stylesheet" href="css/supplierDashboard.css">
+    <link rel="stylesheet" href="css/sidebar.css" />
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Gerenciamento de Fornecedores</h1>
+        </header>
+
+        <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+
+        <div th:replace="fragments/sidebar :: sidebar"></div>
+
+        <div class="supplierContent">
+            <section class="card-table">
+                <div class="card-header">
+                    <h2>Fornecedores cadastrados</h2>
+                    <button type="button" id="refreshButton">Atualizar Lista</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody id="supplierTableBody">
+
+                    </tbody>
+                </table>
+            </section>
+            <section class="card-form">
+                <h2>Novo Fornecedor</h2>
+                <form id="supplierForm">
+                    <label for="name">Nome:</label>
+                    <input type="text" name="name" id="name">
+
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email">
+
+                    <label for="phone">Telefone:</label>
+                    <input type="tel" name="phone" id="phone" pattern="(\([0-9]{2}\))\s([9]{1})?([0-9]{4})-([0-9]{4})">
+
+                    <button type="submit">Cadastrar Fornecedor</button>
+                </form>
+            </section>
+        </div>
+    </div>
+
+    <script src="js/sidebar.js"></script>
+</body>
+
+</html>

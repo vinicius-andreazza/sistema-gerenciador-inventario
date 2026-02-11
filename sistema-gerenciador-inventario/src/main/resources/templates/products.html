@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciamento de Produtos</title>
+    <link rel="stylesheet" href="css/products.css">
+    <link rel="stylesheet" href="css/sidebar.css" />
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div th:replace="fragments/sidebar :: sidebar"></div>
+
+<div class="main-content">
+
+    <header>
+        <h1>Estoque</h1>
+        <button class="btn-new" onclick="openCreateModal()">+ Novo Produto</button>
+    </header>
+
+    <section class="cards-container" id="cardsContainer"></section>
+
+</div>
+
+<!-- Modal Produto (Visualizar / Editar) -->
+<div class="modal" id="productModal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 id="modalTitle"></h2>
+
+        <div class="modal-grid" id="modalBody"></div>
+
+        <div class="modal-actions">
+            <button class="btn-secondary" onclick="enableEdit()">Editar</button>
+            <button class="btn-primary" onclick="saveEdit()">Salvar</button>
+            <button class="btn-danger" onclick="deleteProduct()">Excluir</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Cadastro -->
+<div class="modal" id="createModal">
+    <div class="modal-content">
+        <span class="close" onclick="closeCreateModal()">&times;</span>
+        <h2>Novo Produto</h2>
+
+        <form id="createForm" class="modal-grid">
+            <input placeholder="Nome" id="c_name" required>
+            <input placeholder="Categoria" id="c_category" required>
+            <input placeholder="Descrição" id="c_description" required>
+            <input type="number" placeholder="Quantidade" id="c_quantity" required>
+            <input type="number" placeholder="Quantidade Mínima" id="c_minimumQuantity" required>
+            <input placeholder="Unidade de Medida" id="c_measure" required>
+            <input placeholder="Status" id="c_status" required>
+            <input placeholder="Local" id="c_itemLocal" required>
+            <input type="number" step="0.01" placeholder="Valor" id="c_value" required>
+            <input type="number" step="0.01" placeholder="Peso" id="c_weight" required>
+            <input type="number" step="0.01" placeholder="Altura" id="c_height" required>
+            <input type="number" step="0.01" placeholder="Comprimento" id="c_length" required>
+            <input type="number" step="0.01" placeholder="Profundidade" id="c_depth" required>
+
+            <button class="btn-primary" type="submit">Cadastrar</button>
+        </form>
+    </div>
+</div>
+
+<script src="js/products.js"></script>
+<script src="js/sidebar.js"></script>
+</body>
+</html>
