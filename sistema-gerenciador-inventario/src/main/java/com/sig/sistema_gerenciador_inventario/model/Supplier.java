@@ -30,14 +30,12 @@ public class Supplier {
     @NotBlank
     private String name;
 
-    @Null
-    @Pattern(regexp = "(?:([1-9]{2})?)(\\\\d{4,5})(\\\\d{4})$/", message = "Celular inválido")
+    @Pattern(regexp = "^\\(\\d{2}\\)\\s9\\d{4}-\\d{4}$", message = "Celular inválido")
     private String phone;
 
     @NotBlank
     private String email;
 
-    @Null
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "supplier")
     private Set<RawMaterial> rawMaterial;
 

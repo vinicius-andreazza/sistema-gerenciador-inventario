@@ -57,8 +57,8 @@ public class SecurityConfig {
                     
                     .requestMatchers("/locals").hasAnyRole("ADMIN", "USER")
                     .requestMatchers("/locals/**").hasAnyRole("ADMIN", "USER")
-                    .requestMatchers("/suppliers").hasAnyRole("ADMIN", "USER")
-                    .requestMatchers("/suppliers/**").hasAnyRole("ADMIN", "USER")
+                    .requestMatchers("/suppliers").permitAll()
+                    .requestMatchers("/suppliers/**").permitAll()
                     .requestMatchers("/products").permitAll()
                     .requestMatchers("/products/**").permitAll()
                     .requestMatchers("/rawMaterials").hasAnyRole("ADMIN", "USER")
