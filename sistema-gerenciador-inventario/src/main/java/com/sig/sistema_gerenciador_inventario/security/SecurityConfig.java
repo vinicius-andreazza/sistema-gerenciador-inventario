@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.sig.sistema_gerenciador_inventario.security.exception.JwtAuthenticationEntryPoint;
 import com.sig.sistema_gerenciador_inventario.security.jwt.JwtAuthenticationFilter;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final CustomUserDetailsService customUserDetailsService;
     private final CustomLogoutHandler customLogoutHandler;
 
@@ -36,6 +38,7 @@ public class SecurityConfig {
         http.cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
+                .exceptionHandling(e -> e.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .securityMatcher("/**")
@@ -48,13 +51,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                     auth -> auth
                     .requestMatchers("/").permitAll()
-                    .requestMatchers("/userDashboard").permitAll()
+                    .requestMatchers("/userDashboard").hasRole("ADMIN")
                     .requestMatchers("/supplierDashboard").permitAll()
                     .requestMatchers("/productDashboard").permitAll()
                     .requestMatchers("/rawMaterialDashboard").permitAll()
 
-                    .requestMatchers("/users").permitAll()
-                    .requestMatchers("/users/*").permitAll()
+                    .requestMatchers("/users").hasRole("ADMIN")
+                    .requestMatchers("/users/*").hasRole("ADMIN")
                     
                     .requestMatchers("/locals").hasAnyRole("ADMIN", "USER")
                     .requestMatchers("/locals/**").hasAnyRole("ADMIN", "USER")

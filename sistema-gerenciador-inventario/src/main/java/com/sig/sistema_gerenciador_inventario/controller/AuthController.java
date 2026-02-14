@@ -11,6 +11,7 @@ import com.sig.sistema_gerenciador_inventario.model.dto.response.RefreshTokenRes
 import com.sig.sistema_gerenciador_inventario.model.dto.response.UserLoginResponse;
 import com.sig.sistema_gerenciador_inventario.service.AuthService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
@@ -27,10 +28,10 @@ public class AuthController {
     public ResponseEntity<UserLoginResponse> login(@RequestBody UserLoginRequest userLoginRequest, HttpServletResponse response){
         return ResponseEntity.ok(authService.login(userLoginRequest, response));
     }
-
+    /* 
     @PostMapping("/refreshToken")
-    public ResponseEntity<RefreshTokenResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
-        return ResponseEntity.ok(authService.refreshToken(refreshTokenRequest));
+    public ResponseEntity<RefreshTokenResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
+        return ResponseEntity.ok(authService.refreshToken(request, response));
     }
-    
+    */
 }

@@ -29,7 +29,7 @@ public class JwtValidate {
     }
     public boolean validateRefreshToken(String token) {
         Optional<RefreshToken> refreshToken = refreshTokenRepository.findByToken(token);
-        if(refreshToken.isPresent()){
+        if(!refreshToken.isPresent()){
             return false;
         }
         try {

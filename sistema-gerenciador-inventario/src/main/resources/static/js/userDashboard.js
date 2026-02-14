@@ -1,3 +1,5 @@
+import { fetchWithAuth } from "./script.js";
+
 const userForm = document.getElementById("userForm");
 const userTableBody = document.getElementById("userTableBody");
 const refreshBtn = document.getElementById("refreshUsersBtn");
@@ -10,10 +12,10 @@ let editingUserId;
 
 async function renderUsers() {
     try {
-        const response = await fetch(`${API_URL}/users`, {
+        const response = await fetchWithAuth(`${API_URL}/users`,{
             method: "GET",
             credentials: "include"
-        });
+        })
 
         if (!response.ok) {
             throw new Error("Erro ao buscar usuários");
@@ -55,7 +57,7 @@ async function updateUsers(params) {
             id = lastRow.substring(initial, final);
         }
         id++
-        const response = await fetch(`${API_URL}/users/${id}`, {
+        const response = await fetchWithAuth(`${API_URL}/users/${id}`, {
             method: "GET",
             credentials: "include"
         });
@@ -102,7 +104,7 @@ userForm.addEventListener("submit", async function (event) {
 
     const method = editingUserId ? "PATCH" : "POST";
 
-    await fetch(url, {
+    await fetchWithAuth(url, {
         method,
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -134,7 +136,7 @@ function editUser(id, username, roles) {
 async function deleteUser(id) {
     if (!confirm("Deseja realmente excluir este usuário?")) return;
 
-    await fetch(`${API_URL}/users/${id}`, {
+    await fetchWithAuth(`${API_URL}/users/${id}`, {
         method: "DELETE",
         credentials: "include"
     });

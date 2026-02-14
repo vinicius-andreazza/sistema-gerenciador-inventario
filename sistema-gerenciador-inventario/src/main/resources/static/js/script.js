@@ -1,33 +1,30 @@
-const token = getCookie("tokenJWT");
 
-fetch("http://localhost:8080/", {
-    headers: {
-        "Authorization": `Bearer ${token}`
-    },
-    credentials: "include"
-});
+const API_URL = "http://localhost:8080";
 
-async function refreshToken() {
-    const refreshToken = getCookie("refreshToken");
-
-    const response = await fetch(`${API_URL}/refresh`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify({ refreshToken })
-    });
-
-    if (response.ok) {
-        const data = await response.json();
-        setCookie("token", data.tokenJWT, 1);
-    }
-}
 
 function logout() {
-    deleteCookie("token");
-    deleteCookie("refreshToken");
-    window.location.href = "index.html";
+    fetch(`${API_URL}/logout`,{
+        credentials: "include"
+})
+    window.location.href = "/";
+}
+
+export async function fetchWithAuth(url, options = {}) {
+
+  options.headers = {
+    ...options.headers,
+    credentials: "include"
+  };
+
+  let response = await fetch(url, options);
+
+  if (response.status === 401) {
+    let response2 = await fetch(url, options)
+    if(response2.status === 401){
+        logout();
+    };
+  }
+
+  return response;
 }
 

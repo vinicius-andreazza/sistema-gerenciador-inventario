@@ -33,7 +33,7 @@ public class JwtEncoder {
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .claim("type", "refresh")
-                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME * 60))
+                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME * 60 * 60 * 24))
                 .signWith(Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8)))
                 .compact();
     }
