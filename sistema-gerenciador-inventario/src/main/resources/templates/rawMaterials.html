@@ -14,16 +14,15 @@
 <div class="main-content">
 
     <header>
-        <h1>Estoque - Produto</h1>
-        <button class="btn-new" onclick="openCreateModal()">+ Novo Produto</button>
+        <h1>Estoque - Materia Prima</h1>
+        <button class="btn-new" onclick="openCreateModal()">+ Nova Materia Prima</button>
     </header>
 
     <section class="cards-container" id="cardsContainer"></section>
 
 </div>
 
-<!-- Modal Produto (Visualizar / Editar) -->
-<div class="modal" id="productModal">
+<div class="modal" id="itemModal">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
         <h2 id="modalTitle"></h2>
@@ -33,7 +32,7 @@
         <div class="modal-actions">
             <button class="btn-secondary" onclick="enableEdit()">Editar</button>
             <button class="btn-primary" onclick="saveEdit()">Salvar</button>
-            <button class="btn-danger" onclick="deleteProduct()">Excluir</button>
+            <button class="btn-danger" onclick="deleteRawMaterial()">Excluir</button>
         </div>
     </div>
 </div>
@@ -53,18 +52,16 @@
             <input placeholder="Unidade de Medida" id="c_measure" required>
             <input placeholder="Status" id="c_status" required>
             <input placeholder="Local" id="c_itemLocal" required>
-            <input type="number" step="0.01" placeholder="Valor" id="c_value" required>
-            <input type="number" step="0.01" placeholder="Peso" id="c_weight" required>
-            <input type="number" step="0.01" placeholder="Altura" id="c_height" required>
-            <input type="number" step="0.01" placeholder="Comprimento" id="c_length" required>
-            <input type="number" step="0.01" placeholder="Profundidade" id="c_depth" required>
+            <input type="number" step="0.01" placeholder="Pacote" id="c_batch" required>
+            <input type="number" step="0.01" placeholder="Valor Unitario" id="c_unitValue" required>
+            <input type="number" step="0.01" placeholder="Fornecedores" id="c_suppliers" required>
 
             <button class="btn-primary" type="submit">Cadastrar</button>
         </form>
     </div>
 </div>
 
-<script src="js/products.js"></script>
+<script src="js/rawMaterials.js"></script>
 <script src="js/sidebar.js"></script>
 </body>
 </html>

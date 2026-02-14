@@ -28,4 +28,9 @@ public class PageController {
         return "products";
     }
 
+    @GetMapping("/rawMaterialDashboard")
+    public String getRawMaterial() {
+        return "rawMaterials";
+    }
+
 }

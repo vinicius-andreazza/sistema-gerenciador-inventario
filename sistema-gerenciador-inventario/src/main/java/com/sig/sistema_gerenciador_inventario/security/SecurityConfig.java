@@ -51,6 +51,7 @@ public class SecurityConfig {
                     .requestMatchers("/userDashboard").permitAll()
                     .requestMatchers("/supplierDashboard").permitAll()
                     .requestMatchers("/productDashboard").permitAll()
+                    .requestMatchers("/rawMaterialDashboard").permitAll()
 
                     .requestMatchers("/users").permitAll()
                     .requestMatchers("/users/*").permitAll()
