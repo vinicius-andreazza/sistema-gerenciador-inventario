@@ -1,8 +1,7 @@
 package com.sig.sistema_gerenciador_inventario.service;
 
-import java.util.List;
-
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,8 +45,8 @@ public class UserService {
         return UserResponseMapper.userResponseMap(user);
     }
 
-    public List<UserResponse> findAll(Pageable pageable) {
-        return userRepository.findAll(pageable).stream().map(UserResponseMapper::userResponseMap).toList();
+    public Page<UserResponse> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable).map(UserResponseMapper::userResponseMap);
     }
 
     @Transactional

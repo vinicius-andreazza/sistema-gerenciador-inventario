@@ -1,7 +1,6 @@
 package com.sig.sistema_gerenciador_inventario.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<UserResponse>> findAll(Pageable pageable){
+    public ResponseEntity<Page<UserResponse>> findAll(Pageable pageable){
         return ResponseEntity.ok(userService.findAll(pageable));
     }
 

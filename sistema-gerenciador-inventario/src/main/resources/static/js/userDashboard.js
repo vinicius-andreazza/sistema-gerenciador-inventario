@@ -10,9 +10,13 @@ const API_URL = "http://localhost:8080";
 
 let editingUserId;
 
-async function renderUsers() {
+let currentPage = 0;
+let totalPages = 0;
+const pageSize = 5;
+
+async function renderUsers(page = 0) {
     try {
-        const response = await fetchWithAuth(`${API_URL}/users`,{
+        const response = await fetchWithAuth(`${API_URL}/users?page=${page}&size=${pageSize}`,{
             method: "GET",
             credentials: "include"
         })
@@ -23,73 +27,42 @@ async function renderUsers() {
 
         const data = await response.json();
 
+        currentPage = data.number;
+        totalPages = data.totalPages;
+
         userTableBody.innerHTML = "";
 
-        data.forEach(user => {
+        data.content.forEach(user => {
             const row = document.createElement("tr");
 
             row.innerHTML = `
-                    <td>${user.id}</td>
-                    <td>${user.username}</td>
-                    <td>${user.roles}</td>
-                    <td class="actions">
-                        <button class="edit" onclick="editUser(${user.id}, '${user.username}', '${user.roles}')">✏️</button>
-                        <button class="delete" onclick="deleteUser(${user.id})">🗑️</button>
-                    </td>
-                `;
+                <td>${user.id}</td>
+                <td>${user.username}</td>
+                <td>${user.roles}</td>
+                <td class="actions">
+                    <button class="edit" onclick="editUser(${user.id}, '${user.username}', '${user.roles}')">✏️</button>
+                    <button class="delete" onclick="deleteUser(${user.id})">🗑️</button>
+                </td>
+            `;
 
             userTableBody.appendChild(row);
         });
 
+        updatePaginationUI();
+
     } catch (error) {
         console.error(error);
     }
 }
 
-async function updateUsers(params) {
-    try {
-        let id = 0;
-        tr = userTableBody.children
-        if(tr.length!=0){
-            const lastRow = tr.item(tr.length - 1).innerHTML
-            const initial = lastRow.search("<td>") + 4
-            const final = lastRow.search("</td>")
-            id = lastRow.substring(initial, final);
-        }
-        id++
-        const response = await fetchWithAuth(`${API_URL}/users/${id}`, {
-            method: "GET",
-            credentials: "include"
-        });
+function updatePaginationUI() {
+    document.getElementById("pageInfo").textContent =
+        `Página ${currentPage + 1} de ${totalPages}`;
 
-        if (!response.ok) {
-            throw new Error("Erro ao buscar usuários");
-        }
-
-        const data = await response.json();
-        const user = data.user;
-
-        const row = document.createElement("tr");
-
-        row.innerHTML = `
-                    <td>${data.id}</td>
-                    <td>${data.username}</td>
-                    <td>${data.roles}</td>
-                    <td class="actions">
-                        <button class="edit" onclick="editUser(${data.id}, '${data.username}', '${data.roles}')">✏️</button>
-                        <button class="delete" onclick="deleteUser(${data.id})">🗑️</button>
-                    </td>
-            `;
-
-        console.log(row)
-
-        console.log(userTableBody)
-
-        userTableBody.appendChild(row);
-    } catch (error) {
-        console.error(error);
-    }
+    document.getElementById("prevPageBtn").disabled = currentPage === 0;
+    document.getElementById("nextPageBtn").disabled = currentPage >= totalPages - 1;
 }
+
 
 userForm.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -111,12 +84,7 @@ userForm.addEventListener("submit", async function (event) {
         body: JSON.stringify({ username, password, roles })
     });
 
-    if (method == "POST") {
-        updateUsers();
-    }
-    else {
-        renderUsers();
-    }
+    renderUsers(currentPage);
 
     resetForm();
 
@@ -152,5 +120,18 @@ function resetForm() {
     document.querySelector(".cardForm button").textContent = "Cadastrar Usuário";
 }
 
-document.addEventListener("DOMContentLoaded", renderUsers);
-refreshBtn.addEventListener("click", renderUsers);
+document.getElementById("prevPageBtn").addEventListener("click", () => {
+    if (currentPage > 0) {
+        renderUsers(currentPage - 1);
+    }
+});
+
+document.getElementById("nextPageBtn").addEventListener("click", () => {
+    if (currentPage < totalPages - 1) {
+        renderUsers(currentPage + 1);
+    }
+});
+
+
+document.addEventListener("DOMContentLoaded", renderUsers(currentPage));
+refreshBtn.addEventListener("click", () => renderUsers(currentPage));

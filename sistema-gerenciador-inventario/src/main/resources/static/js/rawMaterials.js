@@ -56,7 +56,7 @@ async function saveEdit() {
     });
 
      try {
-        const response = await fetch(`${API_URL}/${selectedIndex}`, {
+        const response = await fetchWithAuth(`${API_URL}/${selectedIndex}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
@@ -79,7 +79,7 @@ async function deleteRawMaterial() {
     rawMaterials.splice(selectedIndex, 1);
 
     try {
-        const response = await fetch(`${API_URL}/${selectedIndex}`, {
+        const response = await fetchWithAuth(`${API_URL}/${selectedIndex}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             credentials: "include"
@@ -124,7 +124,7 @@ document.getElementById("createForm").addEventListener("submit", async function 
         suppliers: c_suppliers.value
     };
     try {
-        const response = await fetch(`${API_URL}`, {
+        const response = await fetchWithAuth(`${API_URL}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
@@ -146,7 +146,7 @@ document.getElementById("createForm").addEventListener("submit", async function 
 
 async function getRawMaterials() {
     try {
-        const response = await fetch(`${API_URL}`, {
+        const response = await fetchWithAuth(`${API_URL}`, {
             method: "GET",
             headers: { "Content-Type": "application/json" },
             credentials: "include"

@@ -10,7 +10,7 @@ let editingSupplierId;
 
 async function renderSuppliers() {
     try {
-        const response = await fetch(`${API_URL}/suppliers`, {
+        const response = await fetchWithAuth(`${API_URL}/suppliers`, {
             method: "GET",
             credentials: "include"
         });
@@ -56,7 +56,7 @@ async function updateSuppliers() {
             id = lastRow.substring(initial, final);
         }
         id++
-        const response = await fetch(`${API_URL}/suppliers/${id}`, {
+        const response = await fetchWithAuth(`${API_URL}/suppliers/${id}`, {
             method: "GET",
             credentials: "include"
         });
@@ -104,7 +104,7 @@ supplierForm.addEventListener("submit", async function (event) {
 
     const method = editingSupplierId ? "PATCH" : "POST";
 
-    await fetch(url, {
+    await fetchWithAuth(url, {
         method,
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -137,7 +137,7 @@ function editSupplier(id, name, phone, email) {
 async function deleteSupplier(id) {
     if (!confirm("Deseja realmente excluir este usuário?")) return;
 
-    await fetch(`${API_URL}/suppliers/${id}`, {
+    await fetchWithAuth(`${API_URL}/suppliers/${id}`, {
         method: "DELETE",
         credentials: "include"
     });
