@@ -2,6 +2,7 @@ package com.sig.sistema_gerenciador_inventario.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.sig.sistema_gerenciador_inventario.mapper.models.ProductMapper;
@@ -34,8 +35,8 @@ public class ProductService {
         return ProductResponseMapper.productMap(productCreated);
     }
 
-    public List<ProductResponse> findAll() {
-        return productRepository.findAll().stream().map(ProductResponseMapper::productMap).toList();
+    public List<ProductResponse> findAll(Pageable pageable) {
+        return productRepository.findAll(pageable).stream().map(ProductResponseMapper::productMap).toList();
     }
 
     public ProductResponse findById(Long id) {

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,8 +36,8 @@ public class ProductController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<ProductResponse>> findAll() {
-        return ResponseEntity.ok(productService.findAll());
+    public ResponseEntity<List<ProductResponse>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(productService.findAll(pageable));
     }
     
     @GetMapping("/{id}")

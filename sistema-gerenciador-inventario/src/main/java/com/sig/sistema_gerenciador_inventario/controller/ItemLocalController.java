@@ -2,6 +2,7 @@ package com.sig.sistema_gerenciador_inventario.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -35,8 +36,8 @@ public class ItemLocalController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<ItemLocalResponse>> findAll() throws Exception {
-        return ResponseEntity.ok(itemLocalService.findAll());
+    public ResponseEntity<List<ItemLocalResponse>> findAll(Pageable pageable) throws Exception {
+        return ResponseEntity.ok(itemLocalService.findAll(pageable));
     }
 
     @GetMapping("/{id}")
