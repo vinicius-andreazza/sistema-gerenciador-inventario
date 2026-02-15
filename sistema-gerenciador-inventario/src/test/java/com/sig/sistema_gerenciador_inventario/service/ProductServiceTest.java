@@ -13,6 +13,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
@@ -77,7 +78,7 @@ public class ProductServiceTest {
 
         when(productRepository.findAll()).thenReturn(products);
 
-        List<ProductResponse> responses = productService.findAll();
+        List<ProductResponse> responses = productService.findAll(PageRequest.of(0, 10));
 
         assertEquals(2, responses.size());
     }

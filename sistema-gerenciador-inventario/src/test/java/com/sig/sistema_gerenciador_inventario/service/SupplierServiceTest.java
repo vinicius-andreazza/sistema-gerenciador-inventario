@@ -13,6 +13,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
@@ -64,7 +65,7 @@ public class SupplierServiceTest {
         supplierResponseExcepted.add(new SupplierResponse(supplier2.getSupplier_id(), supplier2.getName(),
                 supplier2.getPhone(), supplier2.getEmail()));
 
-        List<SupplierResponse> supplierResponse = supplierService.findAll();
+        List<SupplierResponse> supplierResponse = supplierService.findAll(PageRequest.of(0, 10));
 
         for (int i = 0; i < supplierResponseExcepted.size(); i++) {
             verifySupplierResponse(supplierResponse.get(i), supplierResponseExcepted.get(i));

@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
@@ -70,7 +71,7 @@ public class ItemLocalServiceTest {
         localsExpectedsReponse.add(mapToResponse(itemLocalExpected));
         localsExpectedsReponse.add(mapToResponse(itemLocalExpected2));
 
-        List<ItemLocalResponse> itemLocalResponses = itemLocalService.findAll();
+        List<ItemLocalResponse> itemLocalResponses = itemLocalService.findAll(PageRequest.of(0, 10));
 
         verify(itemLocalRepository, times(1)).findAll();
         for(int i=0;i<localsExpecteds.size();i++){
