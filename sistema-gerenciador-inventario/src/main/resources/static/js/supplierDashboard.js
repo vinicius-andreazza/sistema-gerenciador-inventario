@@ -8,9 +8,13 @@ const API_URL = "http://localhost:8080";
 
 let editingSupplierId;
 
-async function renderSuppliers() {
+let currentPage = 0;
+let totalPages = 0;
+const pageSize = 5;
+
+async function renderSuppliers(page = 0) {
     try {
-        const response = await fetchWithAuth(`${API_URL}/suppliers`, {
+        const response = await fetchWithAuth(`${API_URL}/suppliers?page=${page}&size=${pageSize}`, {
             method: "GET",
             credentials: "include"
         });
@@ -21,9 +25,12 @@ async function renderSuppliers() {
 
         const data = await response.json();
 
+        currentPage = data.number;
+        totalPages = data.totalPages;
+
         supplierTableBody.innerHTML = "";
 
-        data.forEach(supplier => {
+        data.content.forEach(supplier => {
             const row = document.createElement("tr");
 
             row.innerHTML = `
@@ -39,57 +46,20 @@ async function renderSuppliers() {
 
             supplierTableBody.appendChild(row);
         });
-
+        updatePaginationUI();
     } catch (error) {
         console.error(error);
     }
 }
 
-async function updateSuppliers() {
-    try {
-        let id = 0;
-        tr = supplierTableBody.children
-        if(tr.length!=0){
-            const lastRow = tr.item(tr.length - 1).innerHTML
-            const initial = lastRow.search("<td>") + 4
-            const final = lastRow.search("</td>")
-            id = lastRow.substring(initial, final);
-        }
-        id++
-        const response = await fetchWithAuth(`${API_URL}/suppliers/${id}`, {
-            method: "GET",
-            credentials: "include"
-        });
+function updatePaginationUI() {
+    document.getElementById("pageInfo").textContent =
+        `Página ${currentPage + 1} de ${totalPages}`;
 
-        if (!response.ok) {
-            throw new Error("Erro ao buscar usuários");
-        }
-
-        const data = await response.json();
-        const supplier = data.supplier;
-
-        const row = document.createElement("tr");
-
-        row.innerHTML = `
-                    <td>${data.id}</td>
-                    <td>${data.name}</td>
-                    <td>${data.phone}</td>
-                    <td>${data.email}</td>
-                    <td class="actions">
-                        <button class="edit" onclick="editSupplier(${data.id}, '${data.name}', '${data.phone}', '${data.email}')">✏️</button>
-                        <button class="delete" onclick="deleteSupplier(${data.id})">🗑️</button>
-                    </td>
-            `;
-
-        console.log(row)
-
-        console.log(supplierTableBody)
-
-        supplierTableBody.appendChild(row);
-    } catch (error) {
-        console.error(error);
-    }
+    document.getElementById("prevPageBtn").disabled = currentPage === 0;
+    document.getElementById("nextPageBtn").disabled = currentPage >= totalPages - 1;
 }
+
 
 supplierForm.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -111,12 +81,7 @@ supplierForm.addEventListener("submit", async function (event) {
         body: JSON.stringify({ name, email, phone})
     });
 
-    if (method == "POST") {
-        updateSuppliers();
-    }
-    else {
-        renderSuppliers();
-    }
+    renderSuppliers(currentPage);
 
     resetForm();
 
@@ -142,7 +107,7 @@ async function deleteSupplier(id) {
         credentials: "include"
     });
 
-    renderSuppliers();
+    renderSuppliers(currentPage);
 }
 
 /* ---------- RESET ---------- */
@@ -152,6 +117,19 @@ function resetForm() {
     document.querySelector(".card-form h2").textContent = "Novo Fornecedor";
     document.querySelector(".card-form button").textContent = "Cadastrar Fornecedor";
 }
+
+document.getElementById("prevPageBtn").addEventListener("click", () => {
+    if (currentPage > 0) {
+        renderUsers(currentPage - 1);
+    }
+});
+
+document.getElementById("nextPageBtn").addEventListener("click", () => {
+    if (currentPage < totalPages - 1) {
+        renderUsers(currentPage + 1);
+    }
+});
+
 
 document.addEventListener("DOMContentLoaded", renderSuppliers);
 refreshBtn.addEventListener("click", renderSuppliers);

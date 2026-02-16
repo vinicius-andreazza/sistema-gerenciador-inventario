@@ -5,6 +5,7 @@
   <title>Gerenciamento de Usuários</title>
   <link rel="stylesheet" href="css/userDashboard.css" />
   <link rel="stylesheet" href="css/sidebar.css" />
+  <link rel="stylesheet" href="css/pagination.css" />
 </head>
 <body>
   <div class="container">
@@ -39,11 +40,8 @@
           </tbody>
         </table>
 
-        <div class="pagination">
-          <button id="prevPageBtn">⬅️ Anterior</button>
-          <span id="pageInfo">Página 1</span>
-          <button id="nextPageBtn">Próxima ➡️</button>
-        </div>
+        <div th:replace="fragments/pagination :: pagination"></div>
+
       </section>
 
       <!-- Formulário -->

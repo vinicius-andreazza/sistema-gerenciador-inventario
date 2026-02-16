@@ -166,30 +166,3 @@ button:hover {
   color: #fff;
   cursor: pointer;
 }
-
-.pagination {
-  margin-top: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.pagination button {
-  padding: 6px 12px;
-  font-size: 14px;
-  background-color: #444;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.pagination button:disabled {
-  background-color: #aaa;
-  cursor: not-allowed;
-}
-
-#pageInfo {
-  font-size: 14px;
-  color: #555;
-}

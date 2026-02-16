@@ -109,7 +109,7 @@ async function deleteUser(id) {
         credentials: "include"
     });
 
-    renderUsers();
+    renderUsers(currentPage);
 }
 
 /* ---------- RESET ---------- */

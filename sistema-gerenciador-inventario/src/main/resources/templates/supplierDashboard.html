@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="css/supplierDashboard.css">
     <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/pagination.css" />
 </head>
 
 <body>
@@ -40,6 +41,8 @@
 
                     </tbody>
                 </table>
+
+                <div th:replace="fragments/pagination :: pagination"></div>
             </section>
             <section class="card-form">
                 <h2>Novo Fornecedor</h2>
