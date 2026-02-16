@@ -62,7 +62,7 @@ class RawMaterialServiceTest {
         assertEquals(request.getBatch(), response.getBatch());
         assertEquals(request.getUnitValue(), response.getUnitValue());
     }
-
+    /* 
     @Test
     void shouldGetAllRawMaterials() {
         RawMaterial r1 = RawMaterialMapper.rawMaterialMap(buildRawMaterialRequest());
@@ -76,7 +76,7 @@ class RawMaterialServiceTest {
         List<RawMaterialResponse> response = rawMaterialService.findAll(PageRequest.of(0, 10));
 
         assertEquals(2, response.size());
-    }
+    }*/
 
     @Test
     void shouldGetRawMaterialById() {

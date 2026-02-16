@@ -10,8 +10,7 @@ import com.sig.sistema_gerenciador_inventario.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +35,7 @@ public class ProductController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<ProductResponse>> findAll(Pageable pageable) {
+    public ResponseEntity<Page<ProductResponse>> findAll(Pageable pageable) {
         return ResponseEntity.ok(productService.findAll(pageable));
     }
     

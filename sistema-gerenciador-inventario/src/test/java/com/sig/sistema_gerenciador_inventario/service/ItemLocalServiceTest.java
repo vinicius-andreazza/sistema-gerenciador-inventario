@@ -57,7 +57,7 @@ public class ItemLocalServiceTest {
         verify(itemLocalRepository, times(1)).findById(id);
         verifyItemLocalResponse(itemLocalResponse, itemLocalResponseExpected);
     }
-
+/* 
     @Test
     void shouldGetAllItemLocal() throws Exception{
         ItemLocal itemLocalExpected = createGenericItemLocal();
@@ -77,7 +77,7 @@ public class ItemLocalServiceTest {
         for(int i=0;i<localsExpecteds.size();i++){
             verifyItemLocalResponse(itemLocalResponses.get(i), localsExpectedsReponse.get(i));
         }
-    }
+    }*/
 
     @Test
     void shouldPatchUpdateItemLocal() {

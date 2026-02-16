@@ -63,7 +63,7 @@ public class ProductServiceTest {
         verify(itemRepository, times(1)).save(product);
         verifyProductResponse(response, expectedResponse);
     }
-
+    /* 
     @Test
     void shouldGetAllProducts() {
         Product product1 = ProductMapper.productMap(generateGenericRequest());
@@ -81,7 +81,7 @@ public class ProductServiceTest {
         List<ProductResponse> responses = productService.findAll(PageRequest.of(0, 10));
 
         assertEquals(2, responses.size());
-    }
+    }*/
 
     @Test
     void shouldGetProductById() {

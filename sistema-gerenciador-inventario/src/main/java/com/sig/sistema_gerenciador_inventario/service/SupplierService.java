@@ -1,7 +1,6 @@
 package com.sig.sistema_gerenciador_inventario.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +27,9 @@ public class SupplierService {
         return response;
     }
 
-    public List<SupplierResponse> findAll(Pageable pageable) {
-        return supplierRepository.findAll(pageable).stream()
-                .map(SupplierResponseMapper::supplierResponseMap).toList();
+    public Page<SupplierResponse> findAll(Pageable pageable) {
+        return supplierRepository.findAll(pageable)
+                .map(SupplierResponseMapper::supplierResponseMap);
     }
 
     public SupplierResponse findById(Long id) {

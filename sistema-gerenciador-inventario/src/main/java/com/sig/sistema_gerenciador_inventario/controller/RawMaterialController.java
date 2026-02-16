@@ -1,7 +1,6 @@
 package com.sig.sistema_gerenciador_inventario.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +33,7 @@ public class RawMaterialController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<RawMaterialResponse>> findAll(Pageable pageable) {
+    public ResponseEntity<Page<RawMaterialResponse>> findAll(Pageable pageable) {
         return ResponseEntity.ok(rawMaterialService.findAll(pageable));
     }
     

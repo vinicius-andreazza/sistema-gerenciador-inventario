@@ -5,13 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.sig.sistema_gerenciador_inventario.model.dto.request.RefreshTokenRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.UserLoginRequest;
-import com.sig.sistema_gerenciador_inventario.model.dto.response.RefreshTokenResponse;
 import com.sig.sistema_gerenciador_inventario.model.dto.response.UserLoginResponse;
 import com.sig.sistema_gerenciador_inventario.service.AuthService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
@@ -28,10 +25,4 @@ public class AuthController {
     public ResponseEntity<UserLoginResponse> login(@RequestBody UserLoginRequest userLoginRequest, HttpServletResponse response){
         return ResponseEntity.ok(authService.login(userLoginRequest, response));
     }
-    /* 
-    @PostMapping("/refreshToken")
-    public ResponseEntity<RefreshTokenResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
-        return ResponseEntity.ok(authService.refreshToken(request, response));
-    }
-    */
 }

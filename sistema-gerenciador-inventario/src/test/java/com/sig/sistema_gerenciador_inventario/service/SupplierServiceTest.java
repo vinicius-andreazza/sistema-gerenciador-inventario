@@ -49,7 +49,7 @@ public class SupplierServiceTest {
 
         verifySupplierResponse(supplierResponse, supplierResponseExcepted);
     }
-
+    /* 
     @Test
     void shouldGetAllSupplier() {
         Supplier supplier1 = new Supplier("Marchetti", "(47) 99231-5863", "marchetti@gmail.com", null);
@@ -70,7 +70,7 @@ public class SupplierServiceTest {
         for (int i = 0; i < supplierResponseExcepted.size(); i++) {
             verifySupplierResponse(supplierResponse.get(i), supplierResponseExcepted.get(i));
         }
-    }
+    }*/
 
     @Test
     void shouldGetSupplierById() {

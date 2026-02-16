@@ -1,7 +1,6 @@
 package com.sig.sistema_gerenciador_inventario.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +34,8 @@ public class RawMaterialService {
         return RawMaterialResponseMapper.rawMaterialMap(rawMaterialCreated);
     }
 
-    public List<RawMaterialResponse> findAll(Pageable pageable) {
-        return rawMaterialRepository.findAll(pageable).stream().map(RawMaterialResponseMapper::rawMaterialMap).toList();
+    public Page<RawMaterialResponse> findAll(Pageable pageable) {
+        return rawMaterialRepository.findAll(pageable).map(RawMaterialResponseMapper::rawMaterialMap);
     }
 
     public RawMaterialResponse findById(Long id) {

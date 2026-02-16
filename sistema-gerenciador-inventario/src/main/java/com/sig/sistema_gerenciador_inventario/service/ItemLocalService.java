@@ -1,7 +1,6 @@
 package com.sig.sistema_gerenciador_inventario.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -39,11 +38,8 @@ public class ItemLocalService {
         return itemLocalResponse;
     }
 
-    public List<ItemLocalResponse> findAll(Pageable pageable) {
-        return itemLocalRepository.findAll(pageable)
-                .stream()
-                .map(ItemLocalResponseMapper::itemLocalMap)
-                .toList();
+    public Page<ItemLocalResponse> findAll(Pageable pageable) {
+        return itemLocalRepository.findAll(pageable).map(ItemLocalResponseMapper::itemLocalMap);
     }
 
     @Transactional

@@ -10,8 +10,7 @@ import com.sig.sistema_gerenciador_inventario.service.SupplierService;
 
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +34,7 @@ public class SupplierControler {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<SupplierResponse>> findAll(Pageable pageable) {
+    public ResponseEntity<Page<SupplierResponse>> findAll(Pageable pageable) {
         return ResponseEntity.ok(supplierService.findAll(pageable));
     }
     
