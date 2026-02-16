@@ -59,6 +59,20 @@ public class Product extends Item {
         this.depth = depth;
     }
 
+    
+
+    public Product(@NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
+            @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
+            @NotBlank String measure, @NotNull StatusItem status, @NotNull Double value, @NotNull Double weight,
+            @NotNull Double height, @NotNull Double length, @NotNull Double depth) {
+        super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status);
+        this.value = value;
+        this.weight = weight;
+        this.height = height;
+        this.length = length;
+        this.depth = depth;
+    }
+
     public Product() {
     }
     

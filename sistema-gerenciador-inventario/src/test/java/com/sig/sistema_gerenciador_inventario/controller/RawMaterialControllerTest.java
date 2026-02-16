@@ -219,8 +219,8 @@ public class RawMaterialControllerTest {
                 10,
                 "KG",
                 StatusItem.ATIVO,
-                new User(),
-                new ItemLocal(),
+                1L,
+                1L,
                 50,
                 12.5,
                 Set.of()

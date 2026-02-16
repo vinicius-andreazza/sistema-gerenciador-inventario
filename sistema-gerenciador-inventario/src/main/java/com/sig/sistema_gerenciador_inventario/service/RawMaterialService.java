@@ -10,8 +10,10 @@ import com.sig.sistema_gerenciador_inventario.model.RawMaterial;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.RawMaterialPatchRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.RawMaterialRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.response.RawMaterialResponse;
+import com.sig.sistema_gerenciador_inventario.repository.ItemLocalRepository;
 import com.sig.sistema_gerenciador_inventario.repository.ItemRepository;
 import com.sig.sistema_gerenciador_inventario.repository.RawMaterialRepository;
+import com.sig.sistema_gerenciador_inventario.repository.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -26,10 +28,14 @@ public class RawMaterialService {
     private final ItemRepository itemRepository;
     private final RawMaterialRepository rawMaterialRepository;
     private final ItemService itemService;
+    private final UserRepository userRepository;
+    private final ItemLocalRepository itemLocalRepository;
 
     public RawMaterialResponse create(RawMaterialRequest rawMaterialRequest) {
         Item rawMaterial = new RawMaterial();
         rawMaterial = RawMaterialMapper.rawMaterialMap(rawMaterialRequest);
+        rawMaterial.setUser(userRepository.findById(rawMaterialRequest.getUserId()).orElseThrow(() -> new EntityNotFoundException()));
+        rawMaterial.setItemLocal(itemLocalRepository.findById(rawMaterialRequest.getItemLocalId()).orElseThrow(() -> new EntityNotFoundException()));
         RawMaterial rawMaterialCreated = (RawMaterial) itemRepository.save(rawMaterial);
         return RawMaterialResponseMapper.rawMaterialMap(rawMaterialCreated);
     }

@@ -14,8 +14,6 @@ public interface RawMaterialMapper {
                 request.getMinimiumQuantity(),
                 request.getMeasure(),
                 request.getStatus(),
-                request.getUser(),
-                request.getItemLocal(),
                 request.getBatch(),
                 request.getUnitValue(),
                 request.getSupplier()

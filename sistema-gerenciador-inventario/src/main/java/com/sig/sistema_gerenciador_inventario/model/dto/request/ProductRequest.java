@@ -30,13 +30,13 @@ public class ProductRequest extends ItemRequest {
 
     public ProductRequest(@NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
             @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
-            @NotBlank String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal) {
+            @NotBlank String measure, @NotNull StatusItem status, @NotNull Long user, @NotNull Long itemLocal) {
         super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user, itemLocal);
     }
 
     public ProductRequest(@NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
             @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
-            @NotBlank String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal,
+            @NotBlank String measure, @NotNull StatusItem status, @NotNull Long user, @NotNull Long itemLocal,
             @Null Double value, @Null Double weight, @Null Double height, @Null Double length, @Null Double depth) {
         super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user, itemLocal);
         this.value = value;

@@ -10,8 +10,10 @@ import com.sig.sistema_gerenciador_inventario.model.Product;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.ProductPatchRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.ProductRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.response.ProductResponse;
+import com.sig.sistema_gerenciador_inventario.repository.ItemLocalRepository;
 import com.sig.sistema_gerenciador_inventario.repository.ItemRepository;
 import com.sig.sistema_gerenciador_inventario.repository.ProductRepository;
+import com.sig.sistema_gerenciador_inventario.repository.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -26,10 +28,14 @@ public class ProductService {
     private final ItemRepository itemRepository;
     private final ProductRepository productRepository;
     private final ItemService itemService;
+    private final UserRepository userRepository;
+    private final ItemLocalRepository itemLocalRepository;
 
     public ProductResponse create(ProductRequest productRequest) {
         Item product = new Product();
         product = ProductMapper.productMap(productRequest);
+        product.setUser(userRepository.findById(productRequest.getUserId()).orElseThrow(() -> new EntityNotFoundException()));
+        product.setItemLocal(itemLocalRepository.findById(productRequest.getItemLocalId()).orElseThrow(() -> new EntityNotFoundException()));
         Product productCreated = (Product) itemRepository.save(product);
         return ProductResponseMapper.productMap(productCreated);
     }

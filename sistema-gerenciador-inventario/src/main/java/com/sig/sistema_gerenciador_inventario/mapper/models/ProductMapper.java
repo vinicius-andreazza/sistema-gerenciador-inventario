@@ -14,8 +14,6 @@ public interface ProductMapper {
                 request.getMinimiumQuantity(),
                 request.getMeasure(),
                 request.getStatus(),
-                request.getUser(),
-                request.getItemLocal(),
                 request.getValue(),
                 request.getWeight(),
                 request.getHeight(),

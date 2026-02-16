@@ -40,14 +40,14 @@ public class ItemRequest {
     private StatusItem status;
 
     @NotNull
-    private User user;
+    private Long userId;
 
     @NotNull
-    private ItemLocal itemLocal;
+    private Long itemLocalId;
 
     public ItemRequest(@NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
             @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
-            @NotBlank String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal) {
+            @NotBlank String measure, @NotNull StatusItem status, @NotNull Long user, @NotNull Long itemLocal) {
         this.name = name;
         this.category = category;
         this.typeItem = typeItem;
@@ -56,8 +56,8 @@ public class ItemRequest {
         this.minimiumQuantity = minimiumQuantity;
         this.measure = measure;
         this.status = status;
-        this.user = user;
-        this.itemLocal = itemLocal;
+        this.userId = user;
+        this.itemLocalId = itemLocal;
     }
 
     public ItemRequest() {

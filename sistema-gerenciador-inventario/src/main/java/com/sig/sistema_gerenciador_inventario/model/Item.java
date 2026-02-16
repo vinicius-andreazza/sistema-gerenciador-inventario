@@ -96,6 +96,21 @@ public class Item {
         this.itemLocal = itemLocal;
     }
 
+    
+
+    public Item(@NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
+            @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
+            @NotBlank String measure, @NotNull StatusItem status) {
+        this.name = name;
+        this.category = category;
+        this.typeItem = typeItem;
+        this.description = description;
+        this.quantity = quantity;
+        this.minimiumQuantity = minimiumQuantity;
+        this.measure = measure;
+        this.status = status;
+    }
+
 
 
     public Item() {

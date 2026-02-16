@@ -55,6 +55,16 @@ public class RawMaterial extends Item {
         this.supplier = supplier;
     }
 
+    public RawMaterial(@NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
+            @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
+            @NotBlank String measure, @NotNull StatusItem status, @NotNull Integer batch, @NotNull Double unitValue,
+            @NotNull Set<Supplier> supplier) {
+        super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status);
+        this.batch = batch;
+        this.unitValue = unitValue;
+        this.supplier = supplier;
+    }
+
     public RawMaterial() {
     }
 

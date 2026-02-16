@@ -26,13 +26,13 @@ public class RawMaterialRequest extends ItemRequest {
 
     public RawMaterialRequest(@NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
             @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
-            @NotBlank String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal) {
+            @NotBlank String measure, @NotNull StatusItem status, @NotNull Long user, @NotNull Long itemLocal) {
         super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user, itemLocal);
     }
 
     public RawMaterialRequest(@NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
             @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
-            @NotBlank String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal,
+            @NotBlank String measure, @NotNull StatusItem status, @NotNull Long user, @NotNull Long itemLocal,
             @NotNull Integer batch, @NotNull Double unitValue, @NotNull Set<Supplier> supplier) {
         super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user, itemLocal);
         this.batch = batch;
