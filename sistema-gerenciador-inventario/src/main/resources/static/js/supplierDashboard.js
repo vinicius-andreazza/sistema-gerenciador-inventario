@@ -1,3 +1,5 @@
+import { fetchWithAuth } from "./script.js";
+
 const supplierForm = document.getElementById("supplierForm");
 const supplierTableBody = document.getElementById("supplierTableBody");
 const refreshBtn = document.getElementById("refreshButton");
@@ -131,5 +133,5 @@ document.getElementById("nextPageBtn").addEventListener("click", () => {
 });
 
 
-document.addEventListener("DOMContentLoaded", renderSuppliers);
-refreshBtn.addEventListener("click", renderSuppliers);
+document.addEventListener("DOMContentLoaded",() => renderSuppliers(currentPage));
+refreshBtn.addEventListener("click",() => renderSuppliers(currentPage));

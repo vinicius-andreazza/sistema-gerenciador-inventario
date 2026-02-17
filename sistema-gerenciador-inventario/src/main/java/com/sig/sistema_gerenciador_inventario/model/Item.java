@@ -35,7 +35,7 @@ public class Item {
     private CategoryItem category;
 
     @NotNull
-    @Column(insertable=false, updatable=false)
+    @Column(updatable=false)
     private TypeItem typeItem;
 
     @NotBlank

@@ -1,7 +1,13 @@
+import { fetchWithAuth } from "./script.js";
+
 let products = [];
 let selectedIndex = null;
 
 const API_URL = "http://localhost:8080/products";
+
+let currentPage = 0;
+let totalPages = 0;
+const pageSize = 6;
 
 /* Render Cards */
 function renderCards() {
@@ -56,7 +62,7 @@ async function saveEdit() {
     });
 
      try {
-        const response = await fetchWithAuth(`${API_URL}/${selectedIndex}`, {
+        const response = await fetchWithAuth(`${API_URL}/${product.id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
@@ -70,16 +76,17 @@ async function saveEdit() {
         console.log(error)
     }
 
-    renderCards();
+    getProducts(currentPage);
     closeModal();
 }
 
 /* Excluir */
 async function deleteProduct() {
     products.splice(selectedIndex, 1);
+    const product = products[selectedIndex];
 
     try {
-        const response = await fetchWithAuth(`${API_URL}/${selectedIndex}`, {
+        const response = await fetchWithAuth(`${API_URL}/${product.id}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             credentials: "include"
@@ -92,18 +99,18 @@ async function deleteProduct() {
         console.log(error)
     }
 
-    renderCards();
+    getProducts(currentPage);
     closeModal();
 }
 
 /* Modal Criar */
 function openCreateModal() {
-    document.getElementById("createModal").style.display = "flex";
-}
+    document.getElementById("createModal").style.display = "flex"
+};
 
 function closeCreateModal() {
-    document.getElementById("createModal").style.display = "none";
-}
+    document.getElementById("createModal").style.display = "none"
+};
 
 document.getElementById("createForm").addEventListener("submit", async function (e) {
     e.preventDefault();
@@ -114,11 +121,11 @@ document.getElementById("createForm").addEventListener("submit", async function 
         typeItem: "PRODUTO",
         description: c_description.value,
         quantity: c_quantity.value,
-        minimumQuantity: c_minimumQuantity.value,
+        minimiumQuantity: c_minimumQuantity.value,
         measure: c_measure.value,
         status: c_status.value,
-        user: "eike",
-        itemLocal: c_itemLocal.value,
+        userId: 1,
+        itemLocalId: c_itemLocal.value,
         value: c_value.value,
         weight: c_weight.value,
         height: c_height.value,
@@ -130,7 +137,7 @@ document.getElementById("createForm").addEventListener("submit", async function 
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
-            body: JSON.stringify({ product })
+            body: JSON.stringify( product )
         });
 
         if (response.ok) {
@@ -140,31 +147,44 @@ document.getElementById("createForm").addEventListener("submit", async function 
         console.log(error)
     }
 
-    products.push(product);
-    renderCards();
+    getProducts(currentPage);
     closeCreateModal();
     this.reset();
 });
 
-async function getProducts() {
+async function getProducts(page = 0) {
     try {
-        const response = await fetchWithAuth(`${API_URL}`, {
+        const response = await fetchWithAuth(`${API_URL}?page=${page}&size=${pageSize}`, {
             method: "GET",
             headers: { "Content-Type": "application/json" },
             credentials: "include"
         });
 
         const data = await response.json()
-        console.log("data:"+data)
-        data.forEach(p => {
-            p.itemLocal = p.itemLocal.local_id
-            products.push(p)
-            console.log(p)
-        })
+
+        products = [];
+
+        currentPage = data.number;
+        totalPages = data.totalPages;
+
+        data.content.forEach(p => {
+            p.itemLocal = p.itemLocal.local_id;
+            products.push(p);
+        });
+
+        renderCards();
+        updatePaginationUI();
     } catch (error) {
         console.log(error)
     }
-    renderCards();
+}
+
+function updatePaginationUI() {
+    document.getElementById("pageInfo").textContent =
+        `Página ${currentPage + 1} de ${totalPages}`;
+
+    document.getElementById("prevPageBtn").disabled = currentPage === 0;
+    document.getElementById("nextPageBtn").disabled = currentPage >= totalPages - 1;
 }
 
 /* Sidebar */
@@ -173,4 +193,23 @@ function toggleSidebar() {
     sidebar.classList.toggle("collapsed");
 }
 
-document.addEventListener("DOMContentLoaded", getProducts());
+document.getElementById("prevPageBtn").addEventListener("click", () => {
+    if (currentPage > 0) {
+        getProducts(currentPage - 1);
+    }
+});
+
+document.getElementById("nextPageBtn").addEventListener("click", () => {
+    if (currentPage < totalPages - 1) {
+        getProducts(currentPage + 1);
+    }
+});
+
+document.addEventListener("DOMContentLoaded", () => getProducts(0));
+
+window.openCreateModal = openCreateModal;
+window.closeCreateModal = closeCreateModal;
+window.openModal = openModal;
+window.enableEdit = enableEdit;
+window.saveEdit = saveEdit;
+window.deleteProduct = deleteProduct;
