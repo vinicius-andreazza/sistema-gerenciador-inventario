@@ -4,8 +4,10 @@ import com.sig.sistema_gerenciador_inventario.model.enums.CategoryItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.StatusItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.TypeItem;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -14,22 +16,28 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@PrimaryKeyJoinColumn(name="item_id")
+@PrimaryKeyJoinColumn(name="id_item")
+@Table(name = "T_SGI_PRODUCT")
 public class Product extends Item {
     
     @NotNull
+    @Column(name = "vl_value")
     private Double value;
 
     @NotNull
+    @Column(name = "vl_weight")
     private Double weight;
 
     @NotNull
+    @Column(name = "vl_height")
     private Double height;
 
     @NotNull
+    @Column(name = "vl_length")
     private Double length;
 
     @NotNull
+    @Column(name = "vl_depth")
     private Double depth;
 
     public Product(Long item_id, @NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,

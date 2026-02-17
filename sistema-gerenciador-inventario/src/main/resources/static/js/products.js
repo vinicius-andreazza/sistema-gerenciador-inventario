@@ -7,7 +7,7 @@ const API_URL = "http://localhost:8080/products";
 
 let currentPage = 0;
 let totalPages = 0;
-const pageSize = 6;
+const pageSize = 15;
 
 /* Render Cards */
 function renderCards() {
@@ -37,7 +37,10 @@ function openModal(index) {
 
     Object.keys(product).forEach(key => {
         body.innerHTML += `
-            <input value="${product[key]}" id="edit_${key}" disabled>
+            <div class="field-group">
+                <label for="edit_${key}">${formatLabel(key)}</label>
+                <input value="${product[key]}" id="edit_${key}" disabled>
+            </div>
         `;
     });
 
@@ -205,10 +208,17 @@ document.getElementById("nextPageBtn").addEventListener("click", () => {
     }
 });
 
+function formatLabel(text) {
+    return text
+        .replace(/([A-Z])/g, ' $1')  // separa camelCase
+        .replace(/^./, str => str.toUpperCase()); // primeira letra maiúscula
+}
+
 document.addEventListener("DOMContentLoaded", () => getProducts(0));
 
 window.openCreateModal = openCreateModal;
 window.closeCreateModal = closeCreateModal;
+window.closeModal = closeModal;
 window.openModal = openModal;
 window.enableEdit = enableEdit;
 window.saveEdit = saveEdit;

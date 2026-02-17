@@ -166,7 +166,7 @@ class RawMaterialServiceTest {
     private RawMaterialRequest buildRawMaterialRequest() {
         return new RawMaterialRequest(
                 "Matéria-prima A",
-                CategoryItem.Embalagem,
+                CategoryItem.EMBALAGEM,
                 TypeItem.MATERIA_PRIMA,
                 "Descrição teste",
                 100,

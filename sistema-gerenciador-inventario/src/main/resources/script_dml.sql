@@ -1,0 +1,116 @@
+USE sgidb;
+
+-- ========================
+-- USERS
+-- ========================
+INSERT INTO T_SGI_USERS (nm_user, ds_password, ds_role) VALUES
+('admin', '$2a$12$yC4FVA1Yvitp6v9ihpmbO.ugREdtNI0xc/KBwk0vOqZfnMPKBrFr6', 'ROLE_ADMIN'),
+('vinicius', '$2a$12$GbTFUFlg14ButSLvPBIVyOIrUS7eLaViUO9wsjaWpqtVQyJueQ3v.', 'ROLE_USER'),
+('pedro', '$2a$12$bpE6vfIF9mRguboS4uLXYueWcisYT5A0gZXxzl3NdlIFXpR2Bhtoa', 'ROLE_USER'),
+('felipe', '$2a$12$6PPnOPKlNKBTX51Sv1.jUOEOX/JxSvuYmPIMId8m4TXqS4d2gcGpm', 'ROLE_USER'),
+('julio', '$2a$12$rdrXUsDOcLhg.NzyNDxLGOh2LbLukv4esXr2qQ37CNZ2zubR/ge6O', 'ROLE_USER');
+
+-- ========================
+-- SUPPLIERS
+-- ========================
+INSERT INTO T_SGI_SUPPLIER (nm_supplier, ds_phone, ds_email) VALUES
+('Fornecedor Alpha', '(47) 999990001', 'alpha@email.com'),
+('Fornecedor Beta', '(47) 999990002', 'beta@email.com'),
+('Fornecedor Gamma', '(47) 999990003', 'gamma@email.com'),
+('Fornecedor Delta', '(47) 999990004', 'delta@email.com'),
+('Fornecedor Omega', '(47) 999990005', 'omega@email.com');
+
+-- ========================
+-- LOCALS (20)
+-- ========================
+INSERT INTO T_SGI_LOCAL (nm_sector, nr_position, ds_shelf) VALUES
+('A',1,'A1'),('A',2,'A2'),('A',3,'A3'),('A',4,'A4'),('A',5,'A5'),
+('B',1,'B1'),('B',2,'B2'),('B',3,'B3'),('B',4,'B4'),('B',5,'B5'),
+('C',1,'C1'),('C',2,'C2'),('C',3,'C3'),('C',4,'C4'),('C',5,'C5'),
+('D',1,'D1'),('D',2,'D2'),('D',3,'D3'),('D',4,'D4'),('D',5,'D5');
+
+-- ========================
+-- ITEMS (20 PRODUTOS)
+-- ========================
+INSERT INTO T_SGI_ITEM
+(nm_item, ds_category, tp_item, ds_item, nr_quantity, nr_minimium_quantity, ds_measure, st_item, id_user, id_local)
+VALUES
+('Produto 1','ELETRÔNICOS','PRODUTO','Produto eletrônico 1',50,10,'UN','ATIVO',1,1),
+('Produto 2','ELETRÔNICOS','PRODUTO','Produto eletrônico 2',40,10,'UN','ATIVO',2,2),
+('Produto 3','ELETRÔNICOS','PRODUTO','Produto eletrônico 3',30,10,'UN','ATIVO',3,3),
+('Produto 4','ELETRÔNICOS','PRODUTO','Produto eletrônico 4',20,5,'UN','ATIVO',4,4),
+('Produto 5','ELETRÔNICOS','PRODUTO','Produto eletrônico 5',10,5,'UN','ATIVO',5,5),
+('Produto 6','MADEIRA','PRODUTO','Produto móveis 6',60,10,'UN','ATIVO',1,6),
+('Produto 7','MADEIRA','PRODUTO','Produto móveis 7',70,10,'UN','ATIVO',2,7),
+('Produto 8','MADEIRA','PRODUTO','Produto móveis 8',80,10,'UN','ATIVO',3,8),
+('Produto 9','MADEIRA','PRODUTO','Produto móveis 9',90,10,'UN','ATIVO',4,9),
+('Produto 10','MADEIRA','PRODUTO','Produto móveis 10',100,10,'UN','ATIVO',5,10),
+('Produto 11','QUÍMICOS','PRODUTO','Produto limpeza 11',25,5,'UN','ATIVO',1,11),
+('Produto 12','QUÍMICOS','PRODUTO','Produto limpeza 12',35,5,'UN','ATIVO',2,12),
+('Produto 13','QUÍMICOS','PRODUTO','Produto limpeza 13',45,5,'UN','ATIVO',3,13),
+('Produto 14','QUÍMICOS','PRODUTO','Produto limpeza 14',55,5,'UN','ATIVO',4,14),
+('Produto 15','QUÍMICOS','PRODUTO','Produto limpeza 15',65,5,'UN','ATIVO',5,15),
+('Produto 16','GRÃOS','PRODUTO','Produto alimento 16',15,5,'KG','ATIVO',1,16),
+('Produto 17','GRÃOS','PRODUTO','Produto alimento 17',25,5,'KG','ATIVO',2,17),
+('Produto 18','GRÃOS','PRODUTO','Produto alimento 18',35,5,'KG','ATIVO',3,18),
+('Produto 19','GRÃOS','PRODUTO','Produto alimento 19',45,5,'KG','ATIVO',4,19),
+('Produto 20','GRÃOS','PRODUTO','Produto alimento 20',55,5,'KG','ATIVO',5,20);
+
+-- ========================
+-- ITEMS (20 MATÉRIAS-PRIMAS)
+-- ========================
+INSERT INTO T_SGI_ITEM
+(nm_item, ds_category, tp_item, ds_item, nr_quantity, nr_minimium_quantity, ds_measure, st_item, id_user, id_local)
+VALUES
+('MP 1','INSUMO','MATERIA_PRIMA','Materia prima 1',100,20,'KG','ATIVO',1,1),
+('MP 2','INSUMO','MATERIA_PRIMA','Materia prima 2',110,20,'KG','ATIVO',2,2),
+('MP 3','INSUMO','MATERIA_PRIMA','Materia prima 3',120,20,'KG','ATIVO',3,3),
+('MP 4','INSUMO','MATERIA_PRIMA','Materia prima 4',130,20,'KG','ATIVO',4,4),
+('MP 5','INSUMO','MATERIA_PRIMA','Materia prima 5',140,20,'KG','ATIVO',5,5),
+('MP 6','INSUMO','MATERIA_PRIMA','Materia prima 6',150,20,'KG','ATIVO',1,6),
+('MP 7','INSUMO','MATERIA_PRIMA','Materia prima 7',160,20,'KG','ATIVO',2,7),
+('MP 8','INSUMO','MATERIA_PRIMA','Materia prima 8',170,20,'KG','ATIVO',3,8),
+('MP 9','INSUMO','MATERIA_PRIMA','Materia prima 9',180,20,'KG','ATIVO',4,9),
+('MP 10','INSUMO','MATERIA_PRIMA','Materia prima 10',190,20,'KG','ATIVO',5,10),
+('MP 11','INSUMO','MATERIA_PRIMA','Materia prima 11',200,20,'KG','ATIVO',1,11),
+('MP 12','INSUMO','MATERIA_PRIMA','Materia prima 12',210,20,'KG','ATIVO',2,12),
+('MP 13','INSUMO','MATERIA_PRIMA','Materia prima 13',220,20,'KG','ATIVO',3,13),
+('MP 14','INSUMO','MATERIA_PRIMA','Materia prima 14',230,20,'KG','ATIVO',4,14),
+('MP 15','INSUMO','MATERIA_PRIMA','Materia prima 15',240,20,'KG','ATIVO',5,15),
+('MP 16','INSUMO','MATERIA_PRIMA','Materia prima 16',250,20,'KG','ATIVO',1,16),
+('MP 17','INSUMO','MATERIA_PRIMA','Materia prima 17',260,20,'KG','ATIVO',2,17),
+('MP 18','INSUMO','MATERIA_PRIMA','Materia prima 18',270,20,'KG','ATIVO',3,18),
+('MP 19','INSUMO','MATERIA_PRIMA','Materia prima 19',280,20,'KG','ATIVO',4,19),
+('MP 20','INSUMO','MATERIA_PRIMA','Materia prima 20',290,20,'KG','ATIVO',5,20);
+
+-- ========================
+-- PRODUCT DETAILS (ids 1–20)
+-- ========================
+INSERT INTO T_SGI_PRODUCT
+(id_item, vl_value, vl_weight, vl_height, vl_length, vl_depth)
+VALUES
+(1,100,1.2,10,20,5),(2,120,1.3,10,20,5),(3,140,1.4,10,20,5),
+(4,160,1.5,10,20,5),(5,180,1.6,10,20,5),(6,200,1.7,10,20,5),
+(7,220,1.8,10,20,5),(8,240,1.9,10,20,5),(9,260,2.0,10,20,5),
+(10,280,2.1,10,20,5),(11,300,2.2,10,20,5),(12,320,2.3,10,20,5),
+(13,340,2.4,10,20,5),(14,360,2.5,10,20,5),(15,380,2.6,10,20,5),
+(16,400,2.7,10,20,5),(17,420,2.8,10,20,5),(18,440,2.9,10,20,5),
+(19,460,3.0,10,20,5),(20,480,3.1,10,20,5);
+
+-- ========================
+-- RAW MATERIAL DETAILS (ids 21–40)
+-- ========================
+INSERT INTO T_SGI_RAW_MATERIAL
+(id_item, nr_batch, vl_unit)
+VALUES
+(21,1,10),(22,1,11),(23,1,12),(24,1,13),(25,1,14),
+(26,1,15),(27,1,16),(28,1,17),(29,1,18),(30,1,19),
+(31,1,20),(32,1,21),(33,1,22),(34,1,23),(35,1,24),
+(36,1,25),(37,1,26),(38,1,27),(39,1,28),(40,1,29);
+
+-- ========================
+-- SUPPLIER x MATERIAL RELATION
+-- ========================
+INSERT INTO T_SUPPLIER_MATERIAL (id_supplier, id_raw_material) VALUES
+(1,21),(1,22),(2,23),(2,24),(3,25),(3,26),(4,27),(4,28),(5,29),(5,30),
+(1,31),(2,32),(3,33),(4,34),(5,35),(1,36),(2,37),(3,38),(4,39),(5,40);

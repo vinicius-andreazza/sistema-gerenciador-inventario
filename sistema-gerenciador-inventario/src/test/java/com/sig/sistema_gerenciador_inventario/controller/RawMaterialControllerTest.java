@@ -212,7 +212,7 @@ public class RawMaterialControllerTest {
     private RawMaterialRequest generateGenericRequest() {
         return new RawMaterialRequest(
                 "Matéria-prima A",
-                CategoryItem.Embalagem,
+                CategoryItem.EMBALAGEM,
                 TypeItem.MATERIA_PRIMA,
                 "Descrição teste",
                 100,

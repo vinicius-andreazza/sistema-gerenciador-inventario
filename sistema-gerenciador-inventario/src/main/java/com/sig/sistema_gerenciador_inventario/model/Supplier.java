@@ -4,12 +4,14 @@ import java.util.Set;
 
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
@@ -22,18 +24,23 @@ import lombok.Setter;
 @Setter
 @Data
 @Entity
+@Table(name = "T_SGI_SUPPLIER")
 public class Supplier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_supplier")
     private Long supplier_id;
 
     @NotBlank
+    @Column(name = "nm_supplier")
     private String name;
 
     @Pattern(regexp = "^\\(\\d{2}\\)\\s9\\d{4}-\\d{4}$", message = "Celular inválido")
+    @Column(name = "ds_phone")
     private String phone;
 
     @NotBlank
+    @Column(name = "ds_email")
     private String email;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "supplier")

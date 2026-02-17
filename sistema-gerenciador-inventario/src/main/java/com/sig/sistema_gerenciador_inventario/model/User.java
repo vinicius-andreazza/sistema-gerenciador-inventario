@@ -20,22 +20,24 @@ import lombok.Setter;
 @Getter
 @Setter
 @Data
-@Table(name = "users")
+@Table(name = "T_SGI_USERS")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "id_user")
     private Long id;
 
-    @Column(unique = true)
+    @Column(name = "nm_user",unique = true)
     @NotBlank
     private String username;
 
     @NotBlank
+    @Column(name = "ds_password")
     private String password;
 
     @Enumerated(EnumType.STRING)
     @NotNull
+    @Column(name = "ds_role")
     private UserRole roles;
 
     public User(Long id,@NotBlank String username, @NotBlank String password, @NotNull UserRole roles) {

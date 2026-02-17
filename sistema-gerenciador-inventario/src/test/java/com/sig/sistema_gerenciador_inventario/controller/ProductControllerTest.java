@@ -209,7 +209,7 @@ public class ProductControllerTest {
     private ProductRequest generateGenericRequest() {
         return new ProductRequest(
                 "Produto A",
-                CategoryItem.Embalagem,
+                CategoryItem.EMBALAGEM,
                 TypeItem.PRODUTO,
                 "Descrição",
                 10,

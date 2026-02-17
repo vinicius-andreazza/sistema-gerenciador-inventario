@@ -6,12 +6,16 @@ import com.sig.sistema_gerenciador_inventario.model.enums.TypeItem;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -23,45 +27,57 @@ import lombok.Setter;
 @Setter
 @Data
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "T_SGI_ITEM")
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_item")
     private Long item_id;
 
     @NotBlank
+    @Column(name = "nm_item")
     private String name;
 
     @NotNull
+    @Column(name = "ds_category")
+    @Enumerated(EnumType.STRING)
     private CategoryItem category;
 
     @NotNull
-    @Column(updatable=false)
+    @Column(name = "tp_item", updatable=false)
+    @Enumerated(EnumType.STRING)
     private TypeItem typeItem;
 
     @NotBlank
+    @Column(name = "ds_item")
     private String description;
 
     @NotNull
+    @Column(name = "nr_quantity")
     private Integer quantity;
 
     @NotNull
+    @Column(name = "nr_minimium_quantity")
     private Integer minimiumQuantity;
 
     @NotBlank
+    @Column(name = "ds_measure")
     private String measure;
 
     @NotNull
+    @Column(name = "st_item")
+    @Enumerated(EnumType.STRING)
     private StatusItem status;
 
     @NotNull
     @ManyToOne
+    @JoinColumn(name = "id_user")
     private User user;
 
     @NotNull
     @ManyToOne
+    @JoinColumn(name = "id_local")
     private ItemLocal itemLocal;
-
-    
 
     public Item(Long item_id, @NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
             @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
