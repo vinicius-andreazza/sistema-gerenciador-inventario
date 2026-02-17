@@ -5,6 +5,7 @@
     <title>Gerenciamento de Produtos</title>
     <link rel="stylesheet" href="css/items.css">
     <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/pagination.css">
 </head>
 <body>
 
@@ -19,7 +20,8 @@
     </header>
 
     <section class="cards-container" id="cardsContainer"></section>
-
+    <div th:replace="fragments/pagination :: pagination"></div>
+    
 </div>
 
 <div class="modal" id="itemModal">
@@ -61,7 +63,8 @@
     </div>
 </div>
 
-<script src="js/rawMaterials.js"></script>
+<script type="module" src="js/rawMaterials.js"></script>
+<script type="module" src="js/script.js"></script>
 <script src="js/sidebar.js"></script>
 </body>
 </html>

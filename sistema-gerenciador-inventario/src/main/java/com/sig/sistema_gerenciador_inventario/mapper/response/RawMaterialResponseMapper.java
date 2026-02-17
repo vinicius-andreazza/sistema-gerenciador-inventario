@@ -1,5 +1,7 @@
 package com.sig.sistema_gerenciador_inventario.mapper.response;
 
+import java.util.stream.Collectors;
+
 import com.sig.sistema_gerenciador_inventario.model.RawMaterial;
 import com.sig.sistema_gerenciador_inventario.model.dto.response.RawMaterialResponse;
 
@@ -17,7 +19,7 @@ public interface RawMaterialResponseMapper {
                 rawMaterial.getItemLocal(),
                 rawMaterial.getBatch(),
                 rawMaterial.getUnitValue(),
-                rawMaterial.getSupplier()
+                rawMaterial.getSupplier().stream().map(s -> s.getName()).collect(Collectors.toSet())
         );
     }
 }

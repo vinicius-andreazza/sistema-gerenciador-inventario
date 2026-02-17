@@ -20,14 +20,14 @@ public class RawMaterialResponse extends ItemResponse {
     private double unitValue;
 
     @NonNull
-    private Set<Supplier> supplier;
+    private Set<String> supplier;
 
     
 
     public RawMaterialResponse(@NonNull Long id, @NonNull String name, @NonNull CategoryItem category,
             @NonNull String description, @NonNull Integer quantity, @NonNull Integer minimiumQuantity,
             @NonNull String measure, @NonNull StatusItem status, @NonNull ItemLocal itemLocal, @NonNull int batch,
-            @NonNull double unitValue, @NonNull Set<Supplier> supplier) {
+            @NonNull double unitValue, @NonNull Set<String> supplier) {
         super(id, name, category, description, quantity, minimiumQuantity, measure, status, itemLocal);
         this.batch = batch;
         this.unitValue = unitValue;
@@ -37,7 +37,7 @@ public class RawMaterialResponse extends ItemResponse {
     public RawMaterialResponse(@NonNull String name, @NonNull CategoryItem category, @NonNull String description,
             @NonNull int quantity, @NonNull Integer minimiumQuantity, @NonNull String measure,
             @NonNull StatusItem status, @NonNull ItemLocal itemLocal, @NonNull int batch, @NonNull double unitValue,
-            @NonNull Set<Supplier> supplier) {
+            @NonNull Set<String> supplier) {
         super(name, category, description, quantity, minimiumQuantity, measure, status, itemLocal);
         this.batch = batch;
         this.unitValue = unitValue;
