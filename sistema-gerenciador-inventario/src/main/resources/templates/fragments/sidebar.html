@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 
 <aside th:fragment="sidebar" id="sidebar" class="sidebar">
@@ -12,6 +12,9 @@
         <a th:href="@{/productDashboard}">📦 Produtos</a>
         <a th:href="@{/rawMaterialDashboard}">🧪 Matérias-Primas</a>
         <a th:href="@{/supplierDashboard}">🏭 Fornecedores</a>
+        <a th:href="@{/userDashboard}" sec:authorize="hasRole('ADMIN')">
+            👤 Usuarios
+        </a>
     </nav>
 </aside>
 

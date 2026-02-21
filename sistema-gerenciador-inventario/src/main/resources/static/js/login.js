@@ -36,7 +36,7 @@ form.addEventListener("submit", async function (event) {
         setCookie("token", data.token, 1);
         setCookie("refreshToken", data.refreshToken, 7);
 
-        window.location.href = "/userDashboard";
+        window.location.href = "/telaInicial";
 
     } catch (error) {
         errorMessage.textContent = error.message;

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Inventário</title>
+    <link rel="stylesheet" href="css/tela-inicial.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div th:replace="fragments/sidebar :: sidebar"></div>
+
+<div class="main-content">
+
+    <!-- HEADER -->
+    <header class="header">
+        <h1>Dashboard</h1>
+        <p>Visão geral do estoque</p>
+    </header>
+
+    <!-- CARDS DE MÉTRICAS -->
+    <section class="metrics">
+
+        <div class="metric-card">
+            <h3>Total de Produtos</h3>
+            <span id="totalProducts">0</span>
+        </div>
+
+        <div class="metric-card warning">
+            <h3>Estoque Baixo</h3>
+            <span id="lowStock">0</span>
+        </div>
+
+        <div class="metric-card success">
+            <h3>Valor Total em Estoque</h3>
+            <span id="totalValue">R$ 0,00</span>
+        </div>
+
+        <div class="metric-card">
+            <h3>Itens Ativos</h3>
+            <span id="activeItems">0</span>
+        </div>
+
+    </section>
+
+    <!-- ATALHOS -->
+    <section class="quick-actions">
+        <h2>Ações Rápidas</h2>
+
+        <div class="actions-grid">
+            <div class="action-card" onclick="goTo('products')">
+                <p>Gerenciar Produtos</p>
+            </div>
+
+            <div class="action-card" onclick="goTo('materiaPrima')">
+                <p>Gerenciar Materia Prima</p>
+            </div>
+
+            <div class="action-card" onclick="goTo('fornecedores')">
+                <p>Fornecedores</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TABELA RESUMO -->
+    <section class="recent-products">
+        <h2>Últimos Produtos Alterados</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Qtd</th>
+                    <th>Valor</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="recentTable"></tbody>
+        </table>
+    </section>
+
+</div>
+
+<script src="js/tela-inicial.js"></script>
+<script src="js/sidebar.js"></script>
+</body>
+</html>

@@ -135,3 +135,6 @@ document.getElementById("nextPageBtn").addEventListener("click", () => {
 
 document.addEventListener("DOMContentLoaded", renderUsers(currentPage));
 refreshBtn.addEventListener("click", () => renderUsers(currentPage));
+
+window.editUser = editUser;
+window.deleteUser = deleteUser;

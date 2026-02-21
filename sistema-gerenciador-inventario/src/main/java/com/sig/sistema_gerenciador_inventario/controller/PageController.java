@@ -33,4 +33,9 @@ public class PageController {
         return "rawMaterials";
     }
 
+    @GetMapping("/telaInicial")
+    public String getTelaInicial() {
+        return "tela-inicial";
+    }
+
 }
