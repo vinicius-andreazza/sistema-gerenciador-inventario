@@ -35,9 +35,9 @@ INSERT INTO T_SGI_LOCAL (nm_sector, nr_position, ds_shelf) VALUES
 INSERT INTO T_SGI_ITEM
 (id_item, nm_item, ds_category, tp_item, ds_item, nr_quantity, nr_minimium_quantity, ds_measure, st_item, id_user, id_local, vl_value)
 VALUES
-(1,'Produto 1','ELETRÔNICOS','PRODUTO','Produto eletrônico 1',50,10,'UN','ATIVO',1,1,100),
+(1,'Produto 1','ELETRÔNICOS','PRODUTO','Produto eletrônico 1',5,10,'UN','ATIVO',1,1,100),
 (2,'Produto 2','ELETRÔNICOS','PRODUTO','Produto eletrônico 2',40,10,'UN','ATIVO',2,2,120),
-(3,'Produto 3','ELETRÔNICOS','PRODUTO','Produto eletrônico 3',30,10,'UN','ATIVO',3,3,140),
+(3,'Produto 3','ELETRÔNICOS','PRODUTO','Produto eletrônico 3',9,10,'UN','ATIVO',3,3,140),
 (4,'Produto 4','ELETRÔNICOS','PRODUTO','Produto eletrônico 4',20,5,'UN','ATIVO',4,4,160),
 (5,'Produto 5','ELETRÔNICOS','PRODUTO','Produto eletrônico 5',10,5,'UN','ATIVO',5,5,180),
 (6,'Produto 6','MADEIRA','PRODUTO','Produto móveis 6',60,10,'UN','ATIVO',1,6,200),
@@ -45,7 +45,7 @@ VALUES
 (8,'Produto 8','MADEIRA','PRODUTO','Produto móveis 8',80,10,'UN','ATIVO',3,8,240),
 (9,'Produto 9','MADEIRA','PRODUTO','Produto móveis 9',90,10,'UN','ATIVO',4,9,260),
 (10,'Produto 10','MADEIRA','PRODUTO','Produto móveis 10',100,10,'UN','ATIVO',5,10,280),
-(11,'Produto 11','QUÍMICOS','PRODUTO','Produto limpeza 11',25,5,'UN','ATIVO',1,11,300),
+(11,'Produto 11','QUÍMICOS','PRODUTO','Produto limpeza 11',25,35,'UN','ATIVO',1,11,300),
 (12,'Produto 12','QUÍMICOS','PRODUTO','Produto limpeza 12',35,5,'UN','ATIVO',2,12,320),
 (13,'Produto 13','QUÍMICOS','PRODUTO','Produto limpeza 13',45,5,'UN','ATIVO',3,13,340),
 (14,'Produto 14','QUÍMICOS','PRODUTO','Produto limpeza 14',55,5,'UN','ATIVO',4,14,360),
@@ -62,15 +62,15 @@ VALUES
 INSERT INTO T_SGI_ITEM
 (id_item, nm_item, ds_category, tp_item, ds_item, nr_quantity, nr_minimium_quantity, ds_measure, st_item, id_user, id_local, vl_value)
 VALUES
-(21,'MP 1','INSUMO','MATERIA_PRIMA','Materia prima 1',100,20,'KG','ATIVO',1,1,10),
-(22,'MP 2','INSUMO','MATERIA_PRIMA','Materia prima 2',110,20,'KG','ATIVO',2,2,11),
+(21,'MP 1','INSUMO','MATERIA_PRIMA','Materia prima 1',100,120,'KG','ATIVO',1,1,10),
+(22,'MP 2','INSUMO','MATERIA_PRIMA','Materia prima 2',110,200,'KG','ATIVO',2,2,11),
 (23,'MP 3','INSUMO','MATERIA_PRIMA','Materia prima 3',120,20,'KG','ATIVO',3,3,12),
 (24,'MP 4','INSUMO','MATERIA_PRIMA','Materia prima 4',130,20,'KG','ATIVO',4,4,13),
 (25,'MP 5','INSUMO','MATERIA_PRIMA','Materia prima 5',140,20,'KG','ATIVO',5,5,14),
 (26,'MP 6','INSUMO','MATERIA_PRIMA','Materia prima 6',150,20,'KG','ATIVO',1,6,15),
 (27,'MP 7','INSUMO','MATERIA_PRIMA','Materia prima 7',160,20,'KG','ATIVO',2,7,16),
 (28,'MP 8','INSUMO','MATERIA_PRIMA','Materia prima 8',170,20,'KG','ATIVO',3,8,17),
-(29,'MP 9','INSUMO','MATERIA_PRIMA','Materia prima 9',180,20,'KG','ATIVO',4,9,18),
+(29,'MP 9','INSUMO','MATERIA_PRIMA','Materia prima 9',10,20,'KG','ATIVO',4,9,18),
 (30,'MP 10','INSUMO','MATERIA_PRIMA','Materia prima 10',190,20,'KG','ATIVO',5,10,19),
 (31,'MP 11','INSUMO','MATERIA_PRIMA','Materia prima 11',200,20,'KG','ATIVO',1,11,20),
 (32,'MP 12','INSUMO','MATERIA_PRIMA','Materia prima 12',210,20,'KG','ATIVO',2,12,21),

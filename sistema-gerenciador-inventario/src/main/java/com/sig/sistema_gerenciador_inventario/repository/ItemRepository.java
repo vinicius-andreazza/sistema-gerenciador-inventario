@@ -10,4 +10,6 @@ import com.sig.sistema_gerenciador_inventario.model.Item;
 public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query("SELECT SUM(i.quantity * i.value) FROM Item i")
     public Double getTotalValue();
+    @Query("SELECT COUNT(i) FROM Item i WHERE i.quantity < i.minimiumQuantity")
+    public Long getLowStock();
 }

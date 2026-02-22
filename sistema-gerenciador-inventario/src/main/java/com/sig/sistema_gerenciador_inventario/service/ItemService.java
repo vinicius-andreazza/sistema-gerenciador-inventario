@@ -14,10 +14,12 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
     public Double getTotalValue(){
-        System.out.println(itemRepository.getTotalValue());
         return itemRepository.getTotalValue();
     }
 
+    public Long getLowStock(){
+        return itemRepository.getLowStock();
+    }
 
     public void patchItemFields(Item item, ItemPatchRequest request) {
 

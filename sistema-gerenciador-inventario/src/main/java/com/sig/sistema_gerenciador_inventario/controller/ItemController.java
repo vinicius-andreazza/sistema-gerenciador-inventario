@@ -19,4 +19,9 @@ public class ItemController {
     public ResponseEntity<Double> getTotalValue() {
         return ResponseEntity.ok(itemService.getTotalValue());
     }
+
+    @GetMapping("/lowStock")
+    public ResponseEntity<Long> getLowStock() {
+        return ResponseEntity.ok(itemService.getLowStock());
+    }
 }

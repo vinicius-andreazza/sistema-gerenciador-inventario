@@ -18,6 +18,17 @@ async function fetchTotalProdutcs() {
     return await data;
 }
 
+async function fetchLowStock() {
+    const response = await fetch(`${API_URL}/items/lowStock`,{
+        method: "GET",
+        credentials: "include"
+    })
+
+    const data = await response.json();
+    console.log(data);
+    return await data;
+}
+
 async function fetchTotalValue() {
     const response = await fetch(`${API_URL}/items/totalValue`,{
         method: "GET",
@@ -34,7 +45,7 @@ async function loadMetrics() {
     const totalProduct = await fetchTotalProdutcs();
     document.getElementById("totalProducts").innerText = totalProduct;
 
-    const low = products.filter(p => p.quantity <= p.minimumQuantity).length;
+    const low = await fetchLowStock();
     document.getElementById("lowStock").innerText = low;
 
     const totalValue = await fetchTotalValue();
