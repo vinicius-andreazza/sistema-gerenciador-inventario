@@ -1,3 +1,4 @@
+import { fetchWithAuth } from "./script.js";
 // Simulação de dados
 let products = [
     { name: "Parafuso", quantity: 120, value: 1.5, status: "ATIVO", minimumQuantity: 50 },
@@ -7,30 +8,8 @@ let products = [
 
 const API_URL = "http://localhost:8080";
 
-async function fetchTotalProdutcs() {
-    const response = await fetch(`${API_URL}/products/total`,{
-        method: "GET",
-        credentials: "include"
-    })
-
-    const data = await response.json();
-    console.log(data);
-    return await data;
-}
-
-async function fetchLowStock() {
-    const response = await fetch(`${API_URL}/items/lowStock`,{
-        method: "GET",
-        credentials: "include"
-    })
-
-    const data = await response.json();
-    console.log(data);
-    return await data;
-}
-
-async function fetchTotalValue() {
-    const response = await fetch(`${API_URL}/items/totalValue`,{
+async function fetchMetrics(url) {
+    const response = await fetchWithAuth(url,{
         method: "GET",
         credentials: "include"
     })
@@ -42,16 +21,16 @@ async function fetchTotalValue() {
 
 // MÉTRICAS
 async function loadMetrics() {
-    const totalProduct = await fetchTotalProdutcs();
+    const totalProduct = await fetchMetrics(`${API_URL}/products/total`);
     document.getElementById("totalProducts").innerText = totalProduct;
 
-    const low = await fetchLowStock();
+    const low = await fetchMetrics(`${API_URL}/items/lowStock`);
     document.getElementById("lowStock").innerText = low;
 
-    const totalValue = await fetchTotalValue();
+    const totalValue = await fetchMetrics(`${API_URL}/items/totalValue`);
     document.getElementById("totalValue").innerText = formatCurrency(totalValue);
 
-    const active = products.filter(p => p.status === "ATIVO").length;
+    const active = await fetchMetrics(`${API_URL}/items/activeItems`);
     document.getElementById("activeItems").innerText = active;
 }
 
@@ -89,3 +68,5 @@ function formatCurrency(value) {
 // INIT
 loadMetrics();
 loadRecent();
+
+window.goTo = goTo;

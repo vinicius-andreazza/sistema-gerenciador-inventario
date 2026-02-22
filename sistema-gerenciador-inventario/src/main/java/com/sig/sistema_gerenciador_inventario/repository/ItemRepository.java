@@ -12,4 +12,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     public Double getTotalValue();
     @Query("SELECT COUNT(i) FROM Item i WHERE i.quantity < i.minimiumQuantity")
     public Long getLowStock();
+    @Query("SELECT COUNT(i) FROM Item i WHERE i.status = 'ATIVO'")
+    public Long getActiveItems();
 }

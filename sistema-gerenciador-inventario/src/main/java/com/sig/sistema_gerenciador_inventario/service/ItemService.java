@@ -20,6 +20,10 @@ public class ItemService {
     public Long getLowStock(){
         return itemRepository.getLowStock();
     }
+    
+    public Long getActiveItems(){
+        return itemRepository.getActiveItems();
+    }
 
     public void patchItemFields(Item item, ItemPatchRequest request) {
 

@@ -24,4 +24,9 @@ public class ItemController {
     public ResponseEntity<Long> getLowStock() {
         return ResponseEntity.ok(itemService.getLowStock());
     }
+
+    @GetMapping("/activeItems")
+    public ResponseEntity<Long> getActiveItems() {
+        return ResponseEntity.ok(itemService.getActiveItems());
+    }
 }
