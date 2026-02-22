@@ -20,6 +20,10 @@ import lombok.RequiredArgsConstructor;
 public class SupplierService {
     private final SupplierRepository supplierRepository;
 
+    public Long count(){
+        return supplierRepository.count();
+    }
+
     public SupplierResponse create(SupplierRequest supplierRequest) {
         Supplier supplierCreated = SupplierMapper.supplierMap(supplierRequest);
         supplierCreated = supplierRepository.save(supplierCreated);

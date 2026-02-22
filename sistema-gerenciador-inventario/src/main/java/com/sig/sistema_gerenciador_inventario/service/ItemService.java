@@ -1,9 +1,13 @@
 package com.sig.sistema_gerenciador_inventario.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.sig.sistema_gerenciador_inventario.mapper.response.ItemLowStockResponseMapper;
 import com.sig.sistema_gerenciador_inventario.model.Item;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.ItemPatchRequest;
+import com.sig.sistema_gerenciador_inventario.model.dto.response.ItemLowStockResponse;
 import com.sig.sistema_gerenciador_inventario.repository.ItemRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -17,12 +21,18 @@ public class ItemService {
         return itemRepository.getTotalValue();
     }
 
-    public Long getLowStock(){
-        return itemRepository.getLowStock();
+    public Long getQuantityInLowStock(){
+        return itemRepository.countLowStock();
     }
     
     public Long getActiveItems(){
         return itemRepository.getActiveItems();
+    }
+
+    public Page<ItemLowStockResponse> getLowStock(Pageable pageable){
+        Page<Item> item = itemRepository.getLowStock(pageable);
+        Page<ItemLowStockResponse> itemResponse = item.map(ItemLowStockResponseMapper::itemLowStockMapper);
+        return itemResponse;
     }
 
     public void patchItemFields(Item item, ItemPatchRequest request) {

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("suppliers")
@@ -58,5 +59,11 @@ public class SupplierControler {
         supplierService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getTotalSuppliers() {
+        return ResponseEntity.ok(supplierService.count());
+    }
+    
     
 }

@@ -2,87 +2,100 @@ import { fetchWithAuth } from "./script.js";
 
 const API_URL = "http://localhost:8080";
 
-// Tratamento de erro robusto para evitar "Unexpected token F"
+let allItems = []; // Armazenará os itens carregados para permitir busca local
+
 async function fetchMetrics(url) {
     try {
-        const response = await fetchWithAuth(url, {
-            method: "GET",
-            credentials: "include"
-        });
-
-        if (!response.ok) {
-            console.warn(`Servidor retornou erro ${response.status} para ${url}`);
-            return 0;
-        }
-
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.includes("application/json")) {
-            return await response.json();
-        } else {
-            const text = await response.text();
-            return isNaN(text) ? 0 : parseFloat(text);
-        }
+        const response = await fetchWithAuth(url, { method: "GET", credentials: "include" });
+        if (!response.ok) return 0;
+        
+        const data = await response.json();
+        // Se a API retornar um Page do Spring, extraímos o 'content', senão retornamos o dado direto
+        return data.content !== undefined ? data.content : data;
     } catch (error) {
         console.error("Erro na requisição:", error);
         return 0;
     }
 }
 
-let mockData = [
-    { name: "Parafuso Sextavado", type: "Materia-Prima", location: "Corredor A", quantity: 12, min: 50, status: "CRÍTICO" },
-    { name: "Painel Solar 300W", type: "Produto", location: "Setor B", quantity: 85, min: 20, status: "OK" },
-    { name: "Tinta Epóxi", type: "Materia-Prima", location: "Almoxarifado", quantity: 5, min: 10, status: "CRÍTICO" }
-];
-
 async function initDashboard() {
     await loadMetrics();
-    renderAlerts();
-    renderTable();
+    await loadLowStockData(); // Carrega os dados reais da sua nova rota
+    setupSearch();
+}
+
+async function loadLowStockData() {
+    // Chamada para sua rota GetMapping("/lowStock")
+    // Passamos size=5 para pegar apenas os mais críticos para o Dashboard
+    const data = await fetchMetrics(`${API_URL}/items/lowStock?size=5&sort=quantity,asc`);
+    
+    // Se data for um array (vindo do .content do Page), usamos ele
+    allItems = Array.isArray(data) ? data : [];
+    
+    renderAlerts(allItems);
+    renderTable(allItems);
+}
+
+function renderAlerts(items) {
+    const container = document.getElementById("alertsList");
+    if (!items || items.length === 0) {
+        container.innerHTML = `<div class="alert-item" style="border-left-color: var(--success); background: #f0fdf4;">
+            <span>✅ Estoque em dia! Nenhum item abaixo do mínimo.</span>
+        </div>`;
+        return;
+    }
+
+    container.innerHTML = items.map(item => `
+        <div class="alert-item">
+            <span>⚠️ <strong>${item.name}</strong></span>
+            <span>Estoque: <b style="color: var(--danger)">${item.quantity}</b> / Min: ${item.minimiumQuantity || '---'}</span>
+        </div>
+    `).join('');
+}
+
+function renderTable(items) {
+    const table = document.getElementById("recentTable");
+    if (!items || items.length === 0) {
+        table.innerHTML = `<tr><td colspan="5" style="text-align:center">Nenhum dado encontrado</td></tr>`;
+        return;
+    }
+
+    table.innerHTML = items.map(item => `
+        <tr>
+            <td><strong>${item.name}</strong></td>
+            <td>${item.type || 'Item'}</td>
+            <td>${item.locationName || 'Geral'}</td>
+            <td>${item.quantity}</td>
+            <td><span class="status-badge crítico">ABAIXO DO MÍN</span></td>
+        </tr>
+    `).join('');
+}
+
+// FUNCIONALIDADE DE BUSCA
+function setupSearch() {
+    const searchInput = document.getElementById("searchInput");
+    searchInput.addEventListener("input", (e) => {
+        const term = e.target.value.toLowerCase();
+        const filtered = allItems.filter(item => 
+            item.name.toLowerCase().includes(term) || 
+            (item.locationName && item.locationName.toLowerCase().includes(term))
+        );
+        renderTable(filtered);
+    });
 }
 
 async function loadMetrics() {
-    const [total, low, value] = await Promise.all([
+    const [total, low, value, suppliers] = await Promise.all([
         fetchMetrics(`${API_URL}/products/total`),
-        fetchMetrics(`${API_URL}/items/lowStock`),
+        fetchMetrics(`${API_URL}/items/quantityInLowStock`),
         fetchMetrics(`${API_URL}/items/totalValue`),
+        fetchMetrics(`${API_URL}/suppliers/count`)
     ]);
 
     document.getElementById("totalProducts").innerText = total;
     document.getElementById("lowStock").innerText = low;
     document.getElementById("totalValue").innerText = formatCurrency(value);
-    document.getElementById("activeSuppliers").innerText = "---"; // Ajuste conforme seu endpoint de fornecedores
-}
-
-function renderAlerts() {
-    const container = document.getElementById("alertsList");
-    const criticalItems = mockData.filter(i => i.quantity < i.min);
-    
-    if (criticalItems.length === 0) {
-        container.innerHTML = `<p style="color: #666; padding: 10px;">✅ Todos os itens estão com estoque normal.</p>`;
-        return;
-    }
-
-    container.innerHTML = criticalItems.map(item => `
-        <div class="alert-item">
-            <span>⚠️ <strong>${item.name}</strong> (${item.location})</span>
-            <span>Estoque: <b style="color: var(--danger)">${item.quantity}</b> / Min: ${item.min}</span>
-        </div>
-    `).join('');
-}
-
-function renderTable() {
-    const table = document.getElementById("recentTable");
-    table.innerHTML = mockData.map(p => `
-        <tr>
-            <td><strong>${p.name}</strong></td>
-            <td>${p.type}</td>
-            <td>${p.location}</td>
-            <td>${p.quantity}</td>
-            <td><span class="status-badge ${p.status.toLowerCase()}" 
-                style="padding: 4px 8px; border-radius: 4px; font-size: 12px; background: ${p.status === 'OK' ? '#dcfce7' : '#fee2e2'}; color: ${p.status === 'OK' ? '#166534' : '#991b1b'}">
-                ${p.status}</span></td>
-        </tr>
-    `).join('');
+    document.getElementById("activeSuppliers").innerText = suppliers;
 }
 
 function goTo(page) {
