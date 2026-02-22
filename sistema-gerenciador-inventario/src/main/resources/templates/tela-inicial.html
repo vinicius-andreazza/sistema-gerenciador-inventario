@@ -12,78 +12,78 @@
 <div th:replace="fragments/sidebar :: sidebar"></div>
 
 <div class="main-content">
-
-    <!-- HEADER -->
     <header class="header">
-        <h1>Dashboard</h1>
-        <p>Visão geral do estoque</p>
+        <div class="header-info">
+            <h1>Dashboard de Inventário</h1>
+            <p>Status em tempo real do seu estoque</p>
+        </div>
+        <div class="quick-search">
+            <input type="text" id="searchInput" placeholder="Buscar item ou local...">
+        </div>
     </header>
 
-    <!-- CARDS DE MÉTRICAS -->
     <section class="metrics">
-
         <div class="metric-card">
-            <h3>Total de Produtos</h3>
-            <span id="totalProducts">0</span>
+            <div class="card-icon blue">📦</div>
+            <div class="card-data">
+                <h3>Total de Itens</h3>
+                <span id="totalProducts">0</span>
+            </div>
         </div>
-
         <div class="metric-card warning">
-            <h3>Estoque Baixo</h3>
-            <span id="lowStock">0</span>
+            <div class="card-icon yellow">⚠️</div>
+            <div class="card-data">
+                <h3>Abaixo do Mínimo</h3>
+                <span id="lowStock">0</span>
+            </div>
         </div>
-
         <div class="metric-card success">
-            <h3>Valor Total em Estoque</h3>
-            <span id="totalValue">R$ 0,00</span>
+            <div class="card-icon green">💰</div>
+            <div class="card-data">
+                <h3>Patrimônio Total</h3>
+                <span id="totalValue">R$ 0,00</span>
+            </div>
         </div>
-
         <div class="metric-card">
-            <h3>Itens Ativos</h3>
-            <span id="activeItems">0</span>
-        </div>
-
-    </section>
-
-    <!-- ATALHOS -->
-    <section class="quick-actions">
-        <h2>Ações Rápidas</h2>
-
-        <div class="actions-grid">
-            <div class="action-card" onclick="goTo('products')">
-                <p>Gerenciar Produtos</p>
-            </div>
-
-            <div class="action-card" onclick="goTo('materiaPrima')">
-                <p>Gerenciar Materia Prima</p>
-            </div>
-
-            <div class="action-card" onclick="goTo('fornecedores')">
-                <p>Fornecedores</p>
+            <div class="card-icon purple">🏢</div>
+            <div class="card-data">
+                <h3>Fornecedores</h3>
+                <span id="activeSuppliers">0</span>
             </div>
         </div>
     </section>
 
-    <!-- TABELA RESUMO -->
+    <div class="dashboard-grid full-width-alerts">
+        <section class="alerts-container">
+            <div class="table-header">
+                <h3>Alertas de Reposição Crítica</h3>
+            </div>
+            <div id="alertsList" class="alerts-list">
+                </div>
+        </section>
+    </div>
+
     <section class="recent-products">
-        <h2>Últimos Produtos Alterados</h2>
-
+        <div class="table-header">
+            <h2>Movimentações Recentes</h2>
+            <button class="btn-view-all" onclick="goTo('products')">Ver Estoque Completo</button>
+        </div>
         <table>
             <thead>
                 <tr>
-                    <th>Nome</th>
-                    <th>Qtd</th>
-                    <th>Valor</th>
+                    <th>Item</th>
+                    <th>Tipo</th>
+                    <th>Localização</th>
+                    <th>Qtd Atual</th>
                     <th>Status</th>
                 </tr>
             </thead>
             <tbody id="recentTable"></tbody>
         </table>
     </section>
-
 </div>
 
 <script type="module" src="js/tela-inicial.js"></script>
-<script type="module" src="js/script.js"></script>
 <script src="js/sidebar.js"></script>
 </body>
 </html>
