@@ -126,7 +126,7 @@ class RawMaterialServiceTest {
         RawMaterial rawMaterial = RawMaterialMapper.rawMaterialMap(buildRawMaterialRequest());
         rawMaterial.setItem_id(id);
         rawMaterial.setBatch(10);
-        rawMaterial.setUnitValue(5.0);
+        rawMaterial.setValue(5.0);
 
         when(rawMaterialRepository.findById(id))
                 .thenReturn(Optional.of(rawMaterial));

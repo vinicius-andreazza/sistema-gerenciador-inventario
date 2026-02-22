@@ -4,9 +4,21 @@ import org.springframework.stereotype.Service;
 
 import com.sig.sistema_gerenciador_inventario.model.Item;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.ItemPatchRequest;
+import com.sig.sistema_gerenciador_inventario.repository.ItemRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class ItemService {
+    private final ItemRepository itemRepository;
+
+    public Double getTotalValue(){
+        System.out.println(itemRepository.getTotalValue());
+        return itemRepository.getTotalValue();
+    }
+
+
     public void patchItemFields(Item item, ItemPatchRequest request) {
 
     item.setName(

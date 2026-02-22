@@ -84,9 +84,9 @@ public class RawMaterialService {
         rawMaterial.setBatch(
                 request.getBatch() != null ? request.getBatch() : rawMaterial.getBatch());
 
-        rawMaterial.setUnitValue(
-                request.getUnitValue() != null ? request.getUnitValue() : rawMaterial.getUnitValue());
-
+        rawMaterial.setValue(
+                request.getUnitValue() != null ? request.getUnitValue() : rawMaterial.getValue());
+                
         rawMaterial.setSupplier(
                 request.getSupplier() != null ? request.getSupplier() : rawMaterial.getSupplier());
     }

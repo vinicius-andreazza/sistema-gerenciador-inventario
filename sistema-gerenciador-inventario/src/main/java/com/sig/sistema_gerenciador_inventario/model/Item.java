@@ -79,9 +79,13 @@ public class Item {
     @JoinColumn(name = "id_local")
     private ItemLocal itemLocal;
 
+    @NotNull
+    @Column(name = "vl_value")
+    private Double value;
+
     public Item(Long item_id, @NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
             @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
-            @NotBlank String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal) {
+            @NotBlank String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal, @NotNull Double value) {
         this.item_id = item_id;
         this.name = name;
         this.category = category;
@@ -93,13 +97,14 @@ public class Item {
         this.status = status;
         this.user = user;
         this.itemLocal = itemLocal;
+        this.value = value;
     }
 
 
 
     public Item(@NotNull String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
             @NotNull String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
-            @NotNull String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal) {
+            @NotNull String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal, @NotNull Double value) {
         this.name = name;
         this.category = category;
         this.typeItem = typeItem;
@@ -110,13 +115,14 @@ public class Item {
         this.status = status;
         this.user = user;
         this.itemLocal = itemLocal;
+        this.value = value;
     }
 
     
 
     public Item(@NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
             @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
-            @NotBlank String measure, @NotNull StatusItem status) {
+            @NotBlank String measure, @NotNull StatusItem status, @NotNull Double value) {
         this.name = name;
         this.category = category;
         this.typeItem = typeItem;
@@ -125,6 +131,7 @@ public class Item {
         this.minimiumQuantity = minimiumQuantity;
         this.measure = measure;
         this.status = status;
+        this.value = value;
     }
 
 

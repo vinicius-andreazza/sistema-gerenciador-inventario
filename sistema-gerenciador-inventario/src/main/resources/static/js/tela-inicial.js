@@ -5,15 +5,40 @@ let products = [
     { name: "Madeira MDF", quantity: 30, value: 50, status: "ATIVO", minimumQuantity: 15 }
 ];
 
+const API_URL = "http://localhost:8080";
+
+async function fetchTotalProdutcs() {
+    const response = await fetch(`${API_URL}/products/total`,{
+        method: "GET",
+        credentials: "include"
+    })
+
+    const data = await response.json();
+    console.log(data);
+    return await data;
+}
+
+async function fetchTotalValue() {
+    const response = await fetch(`${API_URL}/items/totalValue`,{
+        method: "GET",
+        credentials: "include"
+    })
+
+    const data = await response.json();
+    console.log(data);
+    return await data;
+}
+
 // MÉTRICAS
-function loadMetrics() {
-    document.getElementById("totalProducts").innerText = products.length;
+async function loadMetrics() {
+    const totalProduct = await fetchTotalProdutcs();
+    document.getElementById("totalProducts").innerText = totalProduct;
 
     const low = products.filter(p => p.quantity <= p.minimumQuantity).length;
     document.getElementById("lowStock").innerText = low;
 
-    const totalValue = products.reduce((sum, p) => sum + (p.quantity * p.value), 0);
-    document.getElementById("totalValue").innerText = "R$ " + totalValue.toFixed(2);
+    const totalValue = await fetchTotalValue();
+    document.getElementById("totalValue").innerText = formatCurrency(totalValue);
 
     const active = products.filter(p => p.status === "ATIVO").length;
     document.getElementById("activeItems").innerText = active;
@@ -41,6 +66,13 @@ function goTo(page) {
     if (page === "products") window.location.href = "/productDashboard";
     if (page === "materiaPrima") window.location.href = "/rawMaterialDashboard";
     if (page === "fornecedores") window.location.href = "/supplierDashboard";
+}
+
+function formatCurrency(value) {
+    return value.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
 }
 
 // INIT

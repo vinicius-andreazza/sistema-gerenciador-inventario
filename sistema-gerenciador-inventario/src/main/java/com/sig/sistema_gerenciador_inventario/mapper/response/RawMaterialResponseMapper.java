@@ -18,7 +18,7 @@ public interface RawMaterialResponseMapper {
                 rawMaterial.getStatus(),
                 rawMaterial.getItemLocal(),
                 rawMaterial.getBatch(),
-                rawMaterial.getUnitValue(),
+                rawMaterial.getValue(),
                 rawMaterial.getSupplier().stream().map(s -> s.getName()).collect(Collectors.toSet())
         );
     }

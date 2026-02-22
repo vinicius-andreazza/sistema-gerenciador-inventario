@@ -1,4 +1,6 @@
+create database if not exists sgidb;
 
+use sgidb;
 
 drop table if exists T_SGI_USERS;
 drop table if exists T_SGI_LOCAL;
@@ -40,12 +42,12 @@ create table T_SGI_ITEM(
     ds_measure char(2) not null,
     st_item varchar(15) not null,
     id_user bigint not null,
-    id_local bigint not null
+    id_local bigint not null,
+    vl_value decimal(8,2) not null
 );
 
 create table T_SGI_PRODUCT(
 	id_item bigint not null,
-	vl_value decimal(8,2) not null,
 	vl_weight decimal(7,3) not null,
     vl_height decimal(5,2) not null,
     vl_length decimal(5,2) not null,
@@ -54,8 +56,7 @@ create table T_SGI_PRODUCT(
 
 create table T_SGI_RAW_MATERIAL(
 	id_item bigint not null,
-	nr_batch int not null,
-	vl_unit decimal(7,3) not null
+	nr_batch int not null
 );
 
 create table T_SUPPLIER_MATERIAL(

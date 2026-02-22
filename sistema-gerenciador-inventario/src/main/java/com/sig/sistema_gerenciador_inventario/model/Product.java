@@ -21,10 +21,6 @@ import lombok.Setter;
 public class Product extends Item {
     
     @NotNull
-    @Column(name = "vl_value")
-    private Double value;
-
-    @NotNull
     @Column(name = "vl_weight")
     private Double weight;
 
@@ -46,8 +42,7 @@ public class Product extends Item {
             @NotNull Double value, @NotNull Double weight, @NotNull Double height, @NotNull Double length,
             @NotNull Double depth) {
         super(item_id, name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user,
-                itemLocal);
-        this.value = value;
+                itemLocal, value);
         this.weight = weight;
         this.height = height;
         this.length = length;
@@ -59,8 +54,7 @@ public class Product extends Item {
             @NotNull String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal,
             @NotNull Double value, @NotNull Double weight, @NotNull Double height, @NotNull Double length,
             @NotNull Double depth) {
-        super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user, itemLocal);
-        this.value = value;
+        super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user, itemLocal, value);
         this.weight = weight;
         this.height = height;
         this.length = length;
@@ -73,8 +67,7 @@ public class Product extends Item {
             @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
             @NotBlank String measure, @NotNull StatusItem status, @NotNull Double value, @NotNull Double weight,
             @NotNull Double height, @NotNull Double length, @NotNull Double depth) {
-        super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status);
-        this.value = value;
+        super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status, value);
         this.weight = weight;
         this.height = height;
         this.length = length;

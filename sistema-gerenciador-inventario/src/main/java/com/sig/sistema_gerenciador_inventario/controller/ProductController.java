@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/products")
@@ -58,6 +57,11 @@ public class ProductController {
     public ResponseEntity<?> deleteById(@PathVariable Long id){
         productService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/total")
+    public ResponseEntity<Integer> getQuantityProducts() {
+        return ResponseEntity.ok(productService.getQuantityOfProducts());
     }
     
 }

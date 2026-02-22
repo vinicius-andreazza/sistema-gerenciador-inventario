@@ -31,6 +31,10 @@ public class ProductService {
     private final UserRepository userRepository;
     private final ItemLocalRepository itemLocalRepository;
 
+    public Integer getQuantityOfProducts(){
+        return productRepository.sumTotalQuantity();
+    }
+
     public ProductResponse create(ProductRequest productRequest) {
         Item product = new Product();
         product = ProductMapper.productMap(productRequest);

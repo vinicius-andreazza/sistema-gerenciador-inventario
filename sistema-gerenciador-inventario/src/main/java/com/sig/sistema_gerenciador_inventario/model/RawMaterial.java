@@ -32,10 +32,6 @@ public class RawMaterial extends Item {
     private Integer batch;
 
     @NotNull
-    @Column(name = "vl_unit")
-    private Double unitValue;
-
-    @NotNull
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "T_SUPPLIER_MATERIAL", joinColumns = @JoinColumn(name = "id_raw_material"), inverseJoinColumns = @JoinColumn(name = "id_supplier"))
     private Set<Supplier> supplier;
@@ -43,30 +39,27 @@ public class RawMaterial extends Item {
     public RawMaterial(@NotNull Long id,@NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
             @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
             @NotBlank String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal,
-            @NotNull Integer batch, @NotNull Double unitValue, @NotNull Set<Supplier> supplier) {
-        super(id, name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user, itemLocal);
+            @NotNull Integer batch, @NotNull Double value, @NotNull Set<Supplier> supplier) {
+        super(id, name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user, itemLocal, value);
         this.batch = batch;
-        this.unitValue = unitValue;
         this.supplier = supplier;
     }
 
     public RawMaterial(@NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
             @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
             @NotBlank String measure, @NotNull StatusItem status, @NotNull User user, @NotNull ItemLocal itemLocal,
-            @NotNull Integer batch, @NotNull Double unitValue, @NotNull Set<Supplier> supplier) {
-        super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user, itemLocal);
+            @NotNull Integer batch, @NotNull Double value, @NotNull Set<Supplier> supplier) {
+        super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status, user, itemLocal, value);
         this.batch = batch;
-        this.unitValue = unitValue;
         this.supplier = supplier;
     }
 
     public RawMaterial(@NotBlank String name, @NotNull CategoryItem category, @NotNull TypeItem typeItem,
             @NotBlank String description, @NotNull Integer quantity, @NotNull Integer minimiumQuantity,
-            @NotBlank String measure, @NotNull StatusItem status, @NotNull Integer batch, @NotNull Double unitValue,
+            @NotBlank String measure, @NotNull StatusItem status, @NotNull Integer batch, @NotNull Double value,
             @NotNull Set<Supplier> supplier) {
-        super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status);
+        super(name, category, typeItem, description, quantity, minimiumQuantity, measure, status, value);
         this.batch = batch;
-        this.unitValue = unitValue;
         this.supplier = supplier;
     }
 
