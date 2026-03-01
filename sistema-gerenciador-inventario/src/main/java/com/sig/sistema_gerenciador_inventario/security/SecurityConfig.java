@@ -52,26 +52,26 @@ public class SecurityConfig {
                     auth -> auth
                     .requestMatchers("/").permitAll()
                     .requestMatchers("/userDashboard").hasRole("ADMIN")
-                    .requestMatchers("/supplierDashboard").permitAll()
-                    .requestMatchers("/productDashboard").permitAll()
-                    .requestMatchers("/rawMaterialDashboard").permitAll()
+                    .requestMatchers("/supplierDashboard").hasAnyRole("ADMIN", "USER")
+                    .requestMatchers("/productDashboard").hasAnyRole("ADMIN", "USER")
+                    .requestMatchers("/rawMaterialDashboard").hasAnyRole("ADMIN", "USER")
 
                     .requestMatchers("/users").hasRole("ADMIN")
                     .requestMatchers("/users/*").hasRole("ADMIN")
                     
                     .requestMatchers("/locals").hasAnyRole("ADMIN", "USER")
                     .requestMatchers("/locals/**").hasAnyRole("ADMIN", "USER")
-                    .requestMatchers("/suppliers").permitAll()
-                    .requestMatchers("/suppliers/**").permitAll()
-                    .requestMatchers("/products").permitAll()
-                    .requestMatchers("/products/**").permitAll()
+                    .requestMatchers("/suppliers").hasAnyRole("ADMIN", "USER")
+                    .requestMatchers("/suppliers/**").hasAnyRole("ADMIN", "USER")
+                    .requestMatchers("/products").hasAnyRole("ADMIN", "USER")
+                    .requestMatchers("/products/**").hasAnyRole("ADMIN", "USER")
                     .requestMatchers("/rawMaterials").hasAnyRole("ADMIN", "USER")
                     .requestMatchers("/rawMaterials/**").hasAnyRole("ADMIN", "USER")
 
                     .requestMatchers("/refreshToken").permitAll()
                     .requestMatchers("/login").permitAll()
                     
-                    .anyRequest().permitAll()
+                    .anyRequest().authenticated()
                 );
 
         return http.build();
