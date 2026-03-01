@@ -2,7 +2,7 @@ import { fetchWithAuth } from "./script.js";
 
 const API_URL = "http://localhost:8080";
 
-let allItems = []; // Armazenará os itens carregados para permitir busca local
+let allItems = [];
 
 async function fetchMetrics(url) {
     try {
@@ -10,7 +10,6 @@ async function fetchMetrics(url) {
         if (!response.ok) return 0;
         
         const data = await response.json();
-        // Se a API retornar um Page do Spring, extraímos o 'content', senão retornamos o dado direto
         return data.content !== undefined ? data.content : data;
     } catch (error) {
         console.error("Erro na requisição:", error);
@@ -20,16 +19,13 @@ async function fetchMetrics(url) {
 
 async function initDashboard() {
     await loadMetrics();
-    await loadLowStockData(); // Carrega os dados reais da sua nova rota
+    await loadLowStockData();
     setupSearch();
 }
 
 async function loadLowStockData() {
-    // Chamada para sua rota GetMapping("/lowStock")
-    // Passamos size=5 para pegar apenas os mais críticos para o Dashboard
     const data = await fetchMetrics(`${API_URL}/items/lowStock?size=5&sort=quantity,asc`);
     
-    // Se data for um array (vindo do .content do Page), usamos ele
     allItems = Array.isArray(data) ? data : [];
     
     renderAlerts(allItems);
@@ -71,7 +67,6 @@ function renderTable(items) {
     `).join('');
 }
 
-// FUNCIONALIDADE DE BUSCA
 function setupSearch() {
     const searchInput = document.getElementById("searchInput");
     searchInput.addEventListener("input", (e) => {
@@ -114,6 +109,5 @@ function formatCurrency(value) {
     });
 }
 
-// Inicialização
 initDashboard();
 window.goTo = goTo;

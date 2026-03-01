@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sig.sistema_gerenciador_inventario.model.dto.request.ItemLocalRequest;
 import com.sig.sistema_gerenciador_inventario.model.dto.request.ItemLocalPatchRequest;
@@ -35,8 +36,8 @@ public class ItemLocalController {
     }
 
     @GetMapping("")
-    public ResponseEntity<Page<ItemLocalResponse>> findAll(Pageable pageable) throws Exception {
-        return ResponseEntity.ok(itemLocalService.findAll(pageable));
+    public ResponseEntity<Page<ItemLocalResponse>> findAll(@RequestParam(value = "search", required = false) String search, Pageable pageable) throws Exception {
+        return ResponseEntity.ok(itemLocalService.findAll(search, pageable));
     }
 
     @GetMapping("/{id}")

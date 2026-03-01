@@ -38,7 +38,10 @@ public class ItemLocalService {
         return itemLocalResponse;
     }
 
-    public Page<ItemLocalResponse> findAll(Pageable pageable) {
+    public Page<ItemLocalResponse> findAll(String search, Pageable pageable) {
+        if (search != null && !search.isEmpty()) {
+            return itemLocalRepository.findBySetorOrPacote(search, pageable).map(ItemLocalResponseMapper::itemLocalMap);
+        }
         return itemLocalRepository.findAll(pageable).map(ItemLocalResponseMapper::itemLocalMap);
     }
 
@@ -51,13 +54,12 @@ public class ItemLocalService {
         ItemLocal itemLocalShouldBeUpdated = itemLocalRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Local não encontrado"));
 
-
         itemLocalShouldBeUpdated.setSectorName(itemLocalRequest.sectorName());
         itemLocalShouldBeUpdated.setPosition(itemLocalRequest.position());
         itemLocalShouldBeUpdated.setShelf(itemLocalRequest.shelf());
 
         ItemLocal itemUpdated = itemLocalRepository.save(itemLocalShouldBeUpdated);
-        
+
         ItemLocalResponse itemLocalResponse = ItemLocalResponseMapper.itemLocalMap(itemUpdated);
         return itemLocalResponse;
     }
@@ -70,7 +72,6 @@ public class ItemLocalService {
 
         ItemLocal itemLocalShouldBeUpdated = itemLocalRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Local não encontrado"));
-
 
         itemLocalShouldBeUpdated.setSectorName(
                 itemLocalPatchRequest.sectorName() == null
@@ -85,7 +86,6 @@ public class ItemLocalService {
                 .setShelf(itemLocalPatchRequest.shelf() == null
                         ? itemLocalShouldBeUpdated.getShelf()
                         : itemLocalPatchRequest.shelf());
-
 
         ItemLocal itemUpdated = itemLocalRepository.save(itemLocalShouldBeUpdated);
 

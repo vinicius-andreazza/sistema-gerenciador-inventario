@@ -38,4 +38,10 @@ public class PageController {
         return "tela-inicial";
     }
 
+    @GetMapping("/localDashboard")
+    public String getLocalDashboard() {
+        return "localDashboard";
+    }
+
+
 }

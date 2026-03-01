@@ -5,7 +5,6 @@ import java.util.Set;
 import org.jspecify.annotations.NonNull;
 
 import com.sig.sistema_gerenciador_inventario.model.ItemLocal;
-import com.sig.sistema_gerenciador_inventario.model.Supplier;
 import com.sig.sistema_gerenciador_inventario.model.enums.CategoryItem;
 import com.sig.sistema_gerenciador_inventario.model.enums.StatusItem;
 
