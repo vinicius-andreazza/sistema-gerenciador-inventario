@@ -135,3 +135,7 @@ document.getElementById("nextPageBtn").addEventListener("click", () => {
 
 document.addEventListener("DOMContentLoaded",() => renderSuppliers(currentPage));
 refreshBtn.addEventListener("click",() => renderSuppliers(currentPage));
+
+window.editSupplier = editSupplier;
+window.deleteSupplier = deleteSupplier;
+

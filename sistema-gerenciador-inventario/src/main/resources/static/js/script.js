@@ -18,11 +18,17 @@ export async function fetchWithAuth(url, options = {}) {
 
   let response = await fetch(url, options);
 
+
   if (response.status === 401) {
     let response2 = await fetch(url, options)
     if(response2.status === 401){
         logout();
     };
+  }
+  if(response.status == 500){
+    const json = await response.json();
+    console.log(json.message)
+    alert(json.message)
   }
 
   return response;

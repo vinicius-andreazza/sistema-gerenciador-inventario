@@ -64,9 +64,9 @@ searchInput.addEventListener("input", (e) => {
 stockForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    const sector = document.getElementById("sector").value;
-    const packageVal = document.getElementById("package").value;
-    const capacity = document.getElementById("capacity").value;
+    const sectorName = document.getElementById("sector").value;
+    const shelf = document.getElementById("package").value;
+    const position = document.getElementById("position").value;
 
     const url = editingStockId ? `${API_URL}/${editingStockId}` : API_URL;
     const method = editingStockId ? "PATCH" : "POST";
@@ -75,7 +75,7 @@ stockForm.addEventListener("submit", async function (event) {
         method,
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ sector, package: packageVal, capacity })
+        body: JSON.stringify({ sectorName, shelf, position })
     });
 
     renderStock(currentPage);
