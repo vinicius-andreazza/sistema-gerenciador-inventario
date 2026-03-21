@@ -71,6 +71,9 @@ public class SecurityConfig {
                     .requestMatchers("/refreshToken").permitAll()
                     .requestMatchers("/login").permitAll()
                     
+                    .requestMatchers("/css/**").permitAll()
+                    .requestMatchers("/js/**").permitAll()
+
                     .anyRequest().authenticated()
                 );
 
